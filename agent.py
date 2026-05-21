@@ -6,6 +6,9 @@ import os
 from datetime import datetime
 from typing import Any, Optional
 import uvicorn
+import argparse
+import subprocess
+import sys
 
 import httpx
 from fastapi import FastAPI, HTTPException
@@ -245,8 +248,8 @@ async def deterministic_light_agent(req: AgentRequest) -> dict[str, Any]:
 
     return response
 
-@app.post("/purelyprocesslightagent")
-async def purely_process_light_agent(req: ProcessSensorRequest) -> dict[str, Any]:
+@app.post("/lightagent")
+async def light_agent(req: ProcessSensorRequest) -> dict[str, Any]:
     # Orchestration-only endpoint: process engine passes sensor_payload argument.
     merged = normalize_sensor_payload(req.sensor_payload)
     decision = llm_decide(merged)
@@ -260,22 +263,12 @@ async def purely_process_light_agent(req: ProcessSensorRequest) -> dict[str, Any
     }
 
 
-@app.post("/purely_process_light_agent")
-async def purely_process_light_agent_snake(req: ProcessSensorRequest) -> dict[str, Any]:
-    return await purely_process_light_agent(req)
+@app.post("/light_agent")
+async def light_agent_alias(req: ProcessSensorRequest) -> dict[str, Any]:
+    return await light_agent(req)
 
 
-@app.post("/purelyprocessinglightagent")
-async def purely_processing_light_agent_compat(req: ProcessSensorRequest) -> dict[str, Any]:
-    return await purely_process_light_agent(req)
-
-
-@app.post("/purely_processing_light_agent")
-async def purely_processing_light_agent_snake_compat(req: ProcessSensorRequest) -> dict[str, Any]:
-    return await purely_process_light_agent(req)
-
-
-@app.post("/purelyprocesslightagent/debug")
+@app.post("/light_agent/debug")
 async def purely_process_light_agent_debug(req: ProcessSensorRequest) -> dict[str, Any]:
     merged = normalize_sensor_payload(req.sensor_payload)
     decision = llm_decide(merged)
@@ -287,11 +280,11 @@ async def purely_process_light_agent_debug(req: ProcessSensorRequest) -> dict[st
 
 
 def run_server():
-    uvicorn.run("subscriber:app", port=9321, log_level="info")
+    uvicorn.run("agent:app", port=4749, log_level="info")
 
 
-PID_FILE = "subscriber.pid"
-LOG_FILE = "subscriber.log"
+PID_FILE = "agent.pid"
+LOG_FILE = "agent.log"
 
 
 def _read_pid(pid_file=PID_FILE):

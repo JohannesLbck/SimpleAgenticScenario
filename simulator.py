@@ -5,6 +5,7 @@ from typing import Any, Optional
 import random
 import os
 import uvicorn
+import argparse
 
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
@@ -130,13 +131,13 @@ def sensor_all() -> dict:
     return data
 
 
-@app.post("/readsensor")
+@app.get("/readsensor")
 def readsensor(_: ReadSensorRequest | None = None) -> dict:
     # Process-engine compatible endpoint: request body may contain a data argument.
     return sensor_all()
 
 
-@app.post("/read_sensor")
+@app.get("/read_sensor")
 def read_sensor_alias(payload: ReadSensorRequest | None = None) -> dict:
     return readsensor(payload)
 
@@ -168,11 +169,11 @@ def lumen_state() -> dict:
 
 
 def run_server():
-    uvicorn.run("subscriber:app", port=9321, log_level="info")
+    uvicorn.run("simulator:app", port=4648, log_level="info")
 
 
-PID_FILE = "subscriber.pid"
-LOG_FILE = "subscriber.log"
+PID_FILE = "simulator.pid"
+LOG_FILE = "simulator.log"
 
 
 def _read_pid(pid_file=PID_FILE):
@@ -206,7 +207,7 @@ def _start_daemon():
     log_path = os.path.join(os.path.dirname(__file__), LOG_FILE)
     with open(log_path, "a") as log_file:
         proc = subprocess.Popen(
-            [sys.executable, "-m", "uvicorn", "subscriber:app", "--port", "9321", "--log-level", "info"],
+            [sys.executable, "-m", "uvicorn", "subscriber:app", "--port", "4648", "--log-level", "info"],
             cwd=os.path.dirname(__file__),
             stdout=log_file,
             stderr=log_file,
