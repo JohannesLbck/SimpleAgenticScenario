@@ -1,0 +1,176 @@
+<testset xmlns="http://cpee.org/ns/properties/2.0">
+  <executionhandler>ruby</executionhandler>
+  <dataelements>
+    <sensor_payload/>
+    <lumen/>
+    <reason/>
+  </dataelements>
+  <endpoints>
+    <timeout>https-post://cpee.org/services/timeout.php</timeout>
+    <subprocess>https-post://cpee.org/flow/start/url/</subprocess>
+    <readsensor>http://power.bpm.cit.tum.de/agentic/readsensor</readsensor>
+    <processllm>http://power.bpm.cit.tum.de/agentic/purely_process_light_agent</processllm>
+    <changelumens>http://power.bpm.cit.tum.de/agentic/changelumens</changelumens>
+  </endpoints>
+  <attributes>
+    <guarded>none</guarded>
+    <info>SensorLLMLumen</info>
+    <theme>packed</theme>
+    <modeltype>CPEE</modeltype>
+    <guarded_id/>
+    <creator>Copilot</creator>
+    <author>Copilot</author>
+    <model_uuid>11a8f2d9-0bd5-4e69-b53a-d34a5f25d6c1</model_uuid>
+    <model_version/>
+    <design_stage>development</design_stage>
+    <design_dir>Staff.dir/LLM.dir/Lighting.dir</design_dir>
+    <requirements>{"R1"=&gt;"activity_sends('Read Sensor Information', 'sensor_payload') and activity_receives('Process Sensor via LLM Agent', 'sensor_payload')", "R2"=&gt;"activity_sends('Process Sensor via LLM Agent', 'lumen') and activity_receives('Change Lumens Service', 'lumen')"}</requirements>
+  </attributes>
+  <description>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <call id="a1" endpoint="readsensor">
+        <parameters>
+          <label>Read Sensor Information</label>
+          <color/>
+          <method>:post</method>
+          <arguments>
+            <data/>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result">data.sensor_payload = result</finalize>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+        </documentation>
+      </call>
+
+      <call id="a2" endpoint="processllm">
+        <parameters>
+          <label>Process Sensor via LLM Agent</label>
+          <color/>
+          <method>:post</method>
+          <arguments>
+            <sensor_payload>!data.sensor_payload</sensor_payload>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result">data.lumen = result['lumen']; data.reason = result['reason']</finalize>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+        </documentation>
+      </call>
+
+      <call id="a3" endpoint="changelumens">
+        <parameters>
+          <label>Change Lumens Service</label>
+          <color/>
+          <method>:post</method>
+          <arguments>
+            <lumen>!data.lumen</lumen>
+            <reason>!data.reason</reason>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+        </documentation>
+      </call>
+    </description>
+  </description>
+  <transformation>
+    <description type="copy"/>
+    <dataelements type="none"/>
+    <endpoints type="none"/>
+  </transformation>
+</testset>
