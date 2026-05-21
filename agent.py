@@ -12,7 +12,7 @@ import sys
 import signal
 
 import httpx
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from openai import OpenAI
 from pydantic import BaseModel, Field, ValidationError, field_validator
 
@@ -20,6 +20,17 @@ SIMULATOR_BASE_URL = os.getenv("SIMULATOR_BASE_URL", "http://127.0.0.1:8001")
 OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 
 app = FastAPI(title="Lumen Agent Service", version="1.0.0")
+
+
+@app.middleware("http")
+async def log_raw_request(request: Request, call_next):
+    body = await request.body()
+    print("REQ", request.method, request.url.path)
+    print("REQ content-type:", request.headers.get("content-type"))
+    print("REQ raw body:", body.decode("utf-8", errors="replace"))
+    response = await call_next(request)
+    print("RESP status:", response.status_code)
+    return response
 
 
 class SensorPayload(BaseModel):
