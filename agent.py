@@ -9,11 +9,12 @@ import uvicorn
 import argparse
 import subprocess
 import sys
+import signal
 
 import httpx
 from fastapi import FastAPI, HTTPException
 from openai import OpenAI
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ValidationError, field_validator
 
 SIMULATOR_BASE_URL = os.getenv("SIMULATOR_BASE_URL", "http://127.0.0.1:8001")
 OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
@@ -36,7 +37,28 @@ class AgentRequest(BaseModel):
 
 
 class ProcessSensorRequest(BaseModel):
-    sensor_payload: Any
+    sensor_payload: SensorPayload
+
+    @field_validator("sensor_payload", mode="before")
+    @classmethod
+    def parse_sensor_payload(cls, value: Any) -> SensorPayload:
+        if isinstance(value, SensorPayload):
+            return value
+        if isinstance(value, dict):
+            return SensorPayload.model_validate(value)
+        if isinstance(value, str):
+            raw = value.strip()
+            try:
+                return SensorPayload.model_validate_json(raw)
+            except ValidationError:
+                try:
+                    parsed = ast.literal_eval(raw)
+                except Exception as exc:
+                    raise ValueError("sensor_payload is not valid JSON or dict string") from exc
+                if not isinstance(parsed, dict):
+                    raise ValueError("sensor_payload must decode to an object")
+                return SensorPayload.model_validate(parsed)
+        raise ValueError("sensor_payload must be an object or JSON string")
 
 
 class ProcessSensorResult(BaseModel):
@@ -176,24 +198,8 @@ def merged_signals_from_request(req: AgentRequest) -> dict[str, Any]:
     return request_signals
 
 
-def normalize_sensor_payload(sensor_payload: Any) -> dict[str, Any]:
-    if isinstance(sensor_payload, dict):
-        normalized = sensor_payload
-    elif isinstance(sensor_payload, str):
-        raw = sensor_payload.strip()
-        try:
-            normalized = json.loads(raw)
-        except json.JSONDecodeError:
-            try:
-                parsed = ast.literal_eval(raw)
-            except Exception as exc:
-                raise HTTPException(status_code=400, detail="sensor_payload is not valid JSON or dict string") from exc
-            if not isinstance(parsed, dict):
-                raise HTTPException(status_code=400, detail="sensor_payload must decode to an object")
-            normalized = parsed
-    else:
-        raise HTTPException(status_code=400, detail="sensor_payload must be an object or JSON string")
-
+def normalize_sensor_payload(sensor_payload: SensorPayload) -> dict[str, Any]:
+    normalized = sensor_payload.model_dump(exclude_none=True)
     if "time_of_day" not in normalized:
         normalized["time_of_day"] = infer_time_of_day(datetime.now().hour)
     return normalized

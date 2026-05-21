@@ -7,14 +7,18 @@
   </dataelements>
   <endpoints>
     <timeout>https-post://cpee.org/services/timeout.php</timeout>
+    <user>https-post://cpee.org/services/timeout-user.php</user>
+    <auto>https-post://cpee.org/services/timeout-auto.php</auto>
     <subprocess>https-post://cpee.org/flow/start/url/</subprocess>
-    <readsensor>http://power.bpm.cit.tum.de/agentic/readsensor</readsensor>
+    <readsensor>http://power.bpm.cit.tum.de/simulator/readsensor</readsensor>
     <processllm>http://power.bpm.cit.tum.de/agentic/purely_process_light_agent</processllm>
-    <changelumens>http://power.bpm.cit.tum.de/agentic/changelumens</changelumens>
+    <changelumens>http://power.bpm.cit.tum.de/simulator/changelumens</changelumens>
+    <send>https-post://cpee.org/ing/correlators/message/send/</send>
+    <receive>https-get://cpee.org/ing/correlators/message/receive/</receive>
   </endpoints>
   <attributes>
     <guarded>none</guarded>
-    <info>SensorLLMLumen</info>
+    <info>Light Switch Scenario Generated</info>
     <theme>packed</theme>
     <modeltype>CPEE</modeltype>
     <guarded_id/>
@@ -23,7 +27,7 @@
     <model_uuid>11a8f2d9-0bd5-4e69-b53a-d34a5f25d6c1</model_uuid>
     <model_version/>
     <design_stage>development</design_stage>
-    <design_dir>Staff.dir/LLM.dir/Lighting.dir</design_dir>
+    <design_dir>Staff.dir/Loebbi.dir/AgenticFundamentals.dir</design_dir>
     <requirements>{"R1"=&gt;"activity_sends('Read Sensor Information', 'sensor_payload') and activity_receives('Process Sensor via LLM Agent', 'sensor_payload')", "R2"=&gt;"activity_sends('Process Sensor via LLM Agent', 'lumen') and activity_receives('Change Lumens Service', 'lumen')"}</requirements>
   </attributes>
   <description>
@@ -73,7 +77,6 @@
           </implementation>
         </documentation>
       </call>
-
       <call id="a2" endpoint="processllm">
         <parameters>
           <label>Process Sensor via LLM Agent</label>
@@ -119,7 +122,6 @@
           </implementation>
         </documentation>
       </call>
-
       <call id="a3" endpoint="changelumens">
         <parameters>
           <label>Change Lumens Service</label>
