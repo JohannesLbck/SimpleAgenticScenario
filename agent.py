@@ -36,31 +36,6 @@ class AgentRequest(BaseModel):
     apply_to_lumen_service: bool = True
 
 
-class ProcessSensorRequest(BaseModel):
-    sensor_payload: SensorPayload
-
-    @field_validator("sensor_payload", mode="before")
-    @classmethod
-    def parse_sensor_payload(cls, value: Any) -> SensorPayload:
-        if isinstance(value, SensorPayload):
-            return value
-        if isinstance(value, dict):
-            return SensorPayload.model_validate(value)
-        if isinstance(value, str):
-            raw = value.strip()
-            try:
-                return SensorPayload.model_validate_json(raw)
-            except ValidationError:
-                try:
-                    parsed = ast.literal_eval(raw)
-                except Exception as exc:
-                    raise ValueError("sensor_payload is not valid JSON or dict string") from exc
-                if not isinstance(parsed, dict):
-                    raise ValueError("sensor_payload must decode to an object")
-                return SensorPayload.model_validate(parsed)
-        raise ValueError("sensor_payload must be an object or JSON string")
-
-
 class ProcessSensorResult(BaseModel):
     lumen: int
     reason: str
@@ -255,9 +230,9 @@ async def deterministic_light_agent(req: AgentRequest) -> dict[str, Any]:
     return response
 
 @app.post("/lightagent")
-async def light_agent(req: ProcessSensorRequest) -> dict[str, Any]:
+async def light_agent(req: SensorPayload) -> dict[str, Any]:
     # Orchestration-only endpoint: process engine passes sensor_payload argument.
-    merged = normalize_sensor_payload(req.sensor_payload)
+    merged = normalize_sensor_payload(req)
     decision = llm_decide(merged)
     result = ProcessSensorResult(
         lumen=decision.lumen,
@@ -270,13 +245,13 @@ async def light_agent(req: ProcessSensorRequest) -> dict[str, Any]:
 
 
 @app.post("/light_agent")
-async def light_agent_alias(req: ProcessSensorRequest) -> dict[str, Any]:
+async def light_agent_alias(req: SensorPayload) -> dict[str, Any]:
     return await light_agent(req)
 
 
 @app.post("/light_agent/debug")
-async def purely_process_light_agent_debug(req: ProcessSensorRequest) -> dict[str, Any]:
-    merged = normalize_sensor_payload(req.sensor_payload)
+async def purely_process_light_agent_debug(req: SensorPayload) -> dict[str, Any]:
+    merged = normalize_sensor_payload(req)
     decision = llm_decide(merged)
     return {
         "lumen": decision.lumen,
