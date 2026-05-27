@@ -19,7 +19,7 @@ import urllib.request
 
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 
 PID_FILE = "simulator_static.pid"
@@ -46,12 +46,6 @@ class ReadSensorRequest(BaseModel):
     data: Optional[Any] = None
 
 
-class LumenCommand(BaseModel):
-    lumen: int = Field(ge=0, le=3000)
-    reason: Optional[str] = None
-    source: str = "llm-agent"
-
-
 class DatasetSimulatorState:
     def __init__(self, dataset_path: Path) -> None:
         self.dataset_path = dataset_path
@@ -60,7 +54,6 @@ class DatasetSimulatorState:
         self.started_at = datetime.now()
         self.last_mapped_second: float | None = None
         self.current_lumen = 0
-        self.last_command_source = "none"
         self._load_dataset()
 
     def _load_dataset(self) -> None:
@@ -329,28 +322,22 @@ def sensor_all() -> JSONResponse:
 
 
 @app.put("/changelumens")
-def change_lumens(payload: LumenCommand) -> JSONResponse:
-    state.current_lumen = payload.lumen
-    state.last_command_source = payload.source
+def change_lumens(lumen: int) -> JSONResponse:
+    state.current_lumen = lumen
     return JSONResponse(content={
         "status": "applied",
-        "applied_lumen": state.current_lumen,
-        "reason": payload.reason,
-        "source": state.last_command_source,
-        "applied_at": datetime.now().isoformat(),
     })
 
 
 @app.put("/change_lumens")
-def change_lumens_alias(payload: LumenCommand) -> JSONResponse:
-    return change_lumens(payload)
+def change_lumens_alias(lumen: int) -> JSONResponse:
+    return change_lumens(lumen)
 
 
 @app.get("/changelumens/state")
 def lumen_state() -> JSONResponse:
     return JSONResponse(content={
         "current_lumen": state.current_lumen,
-        "last_command_source": state.last_command_source,
     })
 
 

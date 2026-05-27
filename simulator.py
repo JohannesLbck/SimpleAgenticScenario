@@ -195,7 +195,6 @@ def change_lumens_alias(payload: LumenCommand) -> dict:
 def lumen_state() -> dict:
     return {
         "current_lumen": state.current_lumen,
-        "last_command_source": state.last_command_source,
     }
 
 
