@@ -189,8 +189,6 @@ class DatasetSimulatorState:
             "current_light_lumen": row["current_light_lumen"],
             "gt_target_lumen": row["gt_target"],
             "user_input": row["user_input"],
-            "callback": callback,
-            "callbacks": callbacks,
         }
         logger.info("readsensor response=%s", payload)
         return payload
