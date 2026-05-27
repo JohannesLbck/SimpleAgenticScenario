@@ -209,8 +209,20 @@ def _send_delayed_callback(
     event_row: dict[str, Any],
     delay_seconds: float,
 ) -> None:
+    print(
+        "[simulator_static] scheduling callback",
+        {
+            "callback_url": callback_url,
+            "callback_id": callback_id,
+            "delay_seconds": round(delay_seconds, 3),
+            "event_dataset_timestamp": event_row["timestamp"].isoformat(),
+            "trigger": event_row["trigger"],
+        },
+    )
+
     def _worker() -> None:
         if delay_seconds > 0:
+            print(f"[simulator_static] waiting {delay_seconds:.3f}s before callback PUT")
             time.sleep(delay_seconds)
 
         payload = state.payload_for_row(event_row, datetime.now())
@@ -232,7 +244,16 @@ def _send_delayed_callback(
         )
 
         try:
+            print(
+                "[simulator_static] sending callback PUT",
+                {
+                    "callback_url": callback_url,
+                    "callback_id": callback_id,
+                    "payload": payload,
+                },
+            )
             with urllib.request.urlopen(req, timeout=15) as resp:
+                print(f"[simulator_static] callback PUT success status={resp.status}")
                 logger.info(
                     "Delivered callback to %s status=%s payload=%s",
                     callback_url,
@@ -240,6 +261,7 @@ def _send_delayed_callback(
                     payload,
                 )
         except urllib.error.URLError as exc:
+            print(f"[simulator_static] callback PUT failed error={exc}")
             logger.error("Failed to deliver callback to %s error=%s", callback_url, exc)
 
     threading.Thread(target=_worker, daemon=True).start()
@@ -261,6 +283,16 @@ def readsensor(request: Request) -> dict[str, Any] | JSONResponse:
     callback_id = request.headers.get("cpee-callback-id")
 
     if callback_url:
+        print(
+            "[simulator_static] async readsensor request",
+            {
+                "callback_url": callback_url,
+                "callback_id": callback_id,
+                "instance": request.headers.get("cpee-instance"),
+                "activity": request.headers.get("cpee-activity"),
+                "label": request.headers.get("cpee-label"),
+            },
+        )
         mapped_second = state.mapped_second_now()
         event_row, event_dataset_second = state.next_event_after(mapped_second)
         delay_seconds = state.real_seconds_until(mapped_second, event_dataset_second)
@@ -280,6 +312,7 @@ def readsensor(request: Request) -> dict[str, Any] | JSONResponse:
             "next_event_dataset_timestamp": event_row["timestamp"].isoformat(),
             "seconds_until_callback": round(delay_seconds, 3),
         }
+        print("[simulator_static] returning async ACK", ack_payload)
         response = JSONResponse(status_code=202, content=ack_payload)
         response.headers["CPEE-CALLBACK"] = "true"
         return response
