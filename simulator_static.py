@@ -1,0 +1,429 @@
+from __future__ import annotations
+
+from bisect import bisect_right
+from datetime import datetime
+from pathlib import Path
+from typing import Any, Optional
+import argparse
+import csv
+import json
+import logging
+import os
+import signal
+import subprocess
+import sys
+import threading
+import time
+import urllib.error
+import urllib.request
+
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
+from pydantic import BaseModel, Field
+
+
+PID_FILE = "simulator_static.pid"
+LOG_FILE = "simulator_static.log"
+DATASET_FILE = "artificial_week_sensor_dataset.csv"
+LOOP_DATASET_SECONDS = 7 * 24 * 60 * 60
+PORT = 4649
+
+
+app = FastAPI(title="Static Sensor Dataset Simulator", version="1.0.0")
+
+
+logger = logging.getLogger("simulator_static")
+if not logger.handlers:
+    logger.setLevel(logging.INFO)
+    log_path = os.path.join(os.path.dirname(__file__), LOG_FILE)
+    file_handler = logging.FileHandler(log_path)
+    file_handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(message)s"))
+    logger.addHandler(file_handler)
+    logger.propagate = False
+
+
+class ReadSensorRequest(BaseModel):
+    data: Optional[Any] = None
+
+
+class LumenCommand(BaseModel):
+    lumen: int = Field(ge=0, le=3000)
+    reason: Optional[str] = None
+    source: str = "llm-agent"
+
+
+class DatasetSimulatorState:
+    def __init__(self, dataset_path: Path) -> None:
+        self.dataset_path = dataset_path
+        self.rows: list[dict[str, Any]] = []
+        self.row_seconds: list[float] = []
+        self.started_at = datetime.now()
+        self.last_mapped_second: float | None = None
+        self.current_lumen = 0
+        self.last_command_source = "none"
+        self._load_dataset()
+
+    def _load_dataset(self) -> None:
+        with self.dataset_path.open(newline="", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            raw_rows = list(reader)
+
+        parsed_rows: list[dict[str, Any]] = []
+        for row in raw_rows:
+            timestamp = datetime.fromisoformat(row["timestamp"])
+            parsed_rows.append(
+                {
+                    "timestamp": timestamp,
+                    "ambient_light_lux": float(row["ambient_light_lux"]),
+                    "occupancy_count": int(row["occupancy_count"]),
+                    "motion_detected": row["motion_detected"].strip().upper() == "TRUE",
+                    "hour": float(row["hour"]),
+                    "current_light_lumen": int(row["Current Light Lumen"]),
+                    "gt_target": int(row["GT - Target"]),
+                    "user_input": row["User Input"],
+                    "trigger": row.get("trigger", "scheduled_30m"),
+                }
+            )
+
+        parsed_rows.sort(key=lambda x: x["timestamp"])
+
+        dataset_start = parsed_rows[0]["timestamp"]
+        self.rows = parsed_rows
+        self.row_seconds = [
+            (row["timestamp"] - dataset_start).total_seconds() % LOOP_DATASET_SECONDS
+            for row in parsed_rows
+        ]
+
+    def _mapped_dataset_second(self, now: datetime) -> float:
+        elapsed_real_seconds = (now - self.started_at).total_seconds()
+        # 1 real minute maps to 1 dataset hour.
+        dataset_elapsed_seconds = elapsed_real_seconds * 60.0
+        return dataset_elapsed_seconds % LOOP_DATASET_SECONDS
+
+    def _row_at(self, mapped_second: float) -> dict[str, Any]:
+        idx = bisect_right(self.row_seconds, mapped_second) - 1
+        if idx < 0:
+            idx = len(self.rows) - 1
+        return self.rows[idx]
+
+    def _events_between(self, previous: float | None, current: float) -> list[dict[str, Any]]:
+        if previous is None:
+            return []
+
+        def in_window(value: float) -> bool:
+            if current >= previous:
+                return previous < value <= current
+            return value > previous or value <= current
+
+        events: list[dict[str, Any]] = []
+        for sec, row in zip(self.row_seconds, self.rows):
+            if not str(row["trigger"]).startswith("event_"):
+                continue
+            if in_window(sec):
+                events.append(row)
+        return events
+
+    def mapped_second_now(self) -> float:
+        return self._mapped_dataset_second(datetime.now())
+
+    def next_event_after(self, mapped_second: float) -> tuple[dict[str, Any], float]:
+        event_candidates = [
+            (sec, row)
+            for sec, row in zip(self.row_seconds, self.rows)
+            if str(row["trigger"]).startswith("event_")
+        ]
+        if not event_candidates:
+            raise RuntimeError("Dataset does not contain event_ rows.")
+
+        for sec, row in event_candidates:
+            if sec > mapped_second:
+                return row, sec
+
+        # Loop around to the first event in the dataset week.
+        first_sec, first_row = event_candidates[0]
+        return first_row, first_sec
+
+    def real_seconds_until(self, mapped_second: float, target_dataset_second: float) -> float:
+        if target_dataset_second >= mapped_second:
+            dataset_delta = target_dataset_second - mapped_second
+        else:
+            dataset_delta = (LOOP_DATASET_SECONDS - mapped_second) + target_dataset_second
+
+        # 1 real minute maps to 1 dataset hour => dataset runs 60x faster than wall clock.
+        return dataset_delta / 60.0
+
+    def payload_for_row(self, row: dict[str, Any], actual_now: datetime) -> dict[str, Any]:
+        return {
+            "dataset_timestamp": row["timestamp"].isoformat(),
+            "actual_timestamp": actual_now.isoformat(),
+            "trigger": row["trigger"],
+            "ambient_light_lux": row["ambient_light_lux"],
+            "occupancy_count": row["occupancy_count"],
+            "motion_detected": row["motion_detected"],
+            "hour": row["hour"],
+            "current_light_lumen": row["current_light_lumen"],
+            "gt_target_lumen": row["gt_target"],
+            "user_input": row["user_input"],
+        }
+
+    def read_current(self) -> dict[str, Any]:
+        now = datetime.now()
+        mapped_second = self._mapped_dataset_second(now)
+        row = self._row_at(mapped_second)
+        events = self._events_between(self.last_mapped_second, mapped_second)
+        self.last_mapped_second = mapped_second
+
+        callbacks = [
+            {
+                "dataset_timestamp": e["timestamp"].isoformat(),
+                "trigger": e["trigger"],
+                "user_input": e["user_input"],
+                "message": "dataset event triggered",
+            }
+            for e in events
+        ]
+
+        callback = callbacks[0] if callbacks else None
+
+        payload = {
+            "dataset_timestamp": row["timestamp"].isoformat(),
+            "actual_timestamp": now.isoformat(),
+            "trigger": row["trigger"],
+            "ambient_light_lux": row["ambient_light_lux"],
+            "occupancy_count": row["occupancy_count"],
+            "motion_detected": row["motion_detected"],
+            "hour": row["hour"],
+            "current_light_lumen": row["current_light_lumen"],
+            "gt_target_lumen": row["gt_target"],
+            "user_input": row["user_input"],
+            "callback": callback,
+            "callbacks": callbacks,
+        }
+        logger.info("readsensor response=%s", payload)
+        return payload
+
+
+def _send_delayed_callback(
+    callback_url: str,
+    callback_id: str | None,
+    event_row: dict[str, Any],
+    delay_seconds: float,
+) -> None:
+    def _worker() -> None:
+        if delay_seconds > 0:
+            time.sleep(delay_seconds)
+
+        payload = state.payload_for_row(event_row, datetime.now())
+        payload["message"] = "dataset event reached"
+
+        body = json.dumps(payload).encode("utf-8")
+        headers = {
+            "Content-Type": "application/json",
+        }
+        if callback_id:
+            headers["CPEE-CALLBACK-ID"] = callback_id
+        headers["CPEE-UPDATE"] = "false"
+
+        req = urllib.request.Request(
+            callback_url,
+            data=body,
+            headers=headers,
+            method="PUT",
+        )
+
+        try:
+            with urllib.request.urlopen(req, timeout=15) as resp:
+                logger.info(
+                    "Delivered callback to %s status=%s payload=%s",
+                    callback_url,
+                    resp.status,
+                    payload,
+                )
+        except urllib.error.URLError as exc:
+            logger.error("Failed to deliver callback to %s error=%s", callback_url, exc)
+
+    threading.Thread(target=_worker, daemon=True).start()
+
+
+state = DatasetSimulatorState(Path(__file__).with_name(DATASET_FILE))
+
+
+@app.get("/health")
+def health() -> dict[str, Any]:
+    return {
+        "status": "ok",
+    }
+
+
+@app.get("/readsensor")
+def readsensor(request: Request) -> dict[str, Any] | JSONResponse:
+    callback_url = request.headers.get("cpee-callback")
+    callback_id = request.headers.get("cpee-callback-id")
+
+    if callback_url:
+        mapped_second = state.mapped_second_now()
+        event_row, event_dataset_second = state.next_event_after(mapped_second)
+        delay_seconds = state.real_seconds_until(mapped_second, event_dataset_second)
+
+        _send_delayed_callback(
+            callback_url=callback_url,
+            callback_id=callback_id,
+            event_row=event_row,
+            delay_seconds=delay_seconds,
+        )
+
+        ack_payload = {
+            "status": "acknowledged",
+            "response": "Ack.: Response later",
+            "callback_url": callback_url,
+            "callback_id": callback_id,
+            "next_event_dataset_timestamp": event_row["timestamp"].isoformat(),
+            "seconds_until_callback": round(delay_seconds, 3),
+        }
+        response = JSONResponse(status_code=202, content=ack_payload)
+        response.headers["CPEE-CALLBACK"] = "true"
+        return response
+
+    return state.read_current()
+
+
+@app.get("/read_sensor")
+def read_sensor_alias(request: Request) -> dict[str, Any] | JSONResponse:
+    return readsensor(request)
+
+
+@app.post("/read_sensor")
+def read_sensor_alias_post(request: Request, payload: ReadSensorRequest | None = None) -> dict[str, Any] | JSONResponse:
+    return readsensor(request)
+
+
+@app.get("/sensor/all")
+def sensor_all() -> dict[str, Any]:
+    return state.read_current()
+
+@app.post("/changelumens")
+def change_lumens(payload: LumenCommand) -> dict[str, Any]:
+    state.current_lumen = payload.lumen
+    state.last_command_source = payload.source
+    return {
+        "status": "applied",
+        "applied_lumen": state.current_lumen,
+        "reason": payload.reason,
+        "source": state.last_command_source,
+        "applied_at": datetime.now().isoformat(),
+    }
+
+
+@app.post("/change_lumens")
+def change_lumens_alias(payload: LumenCommand) -> dict[str, Any]:
+    return change_lumens(payload)
+
+
+@app.get("/changelumens/state")
+def lumen_state() -> dict[str, Any]:
+    return {
+        "current_lumen": state.current_lumen,
+        "last_command_source": state.last_command_source,
+    }
+
+
+def run_server() -> None:
+    import uvicorn
+
+    uvicorn.run("simulator_static:app", port=PORT, log_level="info")
+
+
+def _read_pid(pid_file: str = PID_FILE) -> int | None:
+    if not os.path.exists(pid_file):
+        return None
+    try:
+        with open(pid_file, "r", encoding="utf-8") as f:
+            return int(f.read().strip())
+    except Exception:
+        return None
+
+
+def _is_running(pid: int | None) -> bool:
+    if not pid:
+        return False
+    try:
+        os.kill(pid, 0)
+        return True
+    except OSError:
+        return False
+
+
+def _start_daemon() -> None:
+    existing_pid = _read_pid()
+    if _is_running(existing_pid):
+        print(f"Static simulator already running with PID {existing_pid}")
+        return
+    if existing_pid and os.path.exists(PID_FILE):
+        os.remove(PID_FILE)
+
+    log_path = os.path.join(os.path.dirname(__file__), LOG_FILE)
+    with open(log_path, "a", encoding="utf-8") as log_file:
+        proc = subprocess.Popen(
+            [
+                sys.executable,
+                "-m",
+                "uvicorn",
+                "simulator_static:app",
+                "--port",
+                str(PORT),
+                "--log-level",
+                "info",
+            ],
+            cwd=os.path.dirname(__file__),
+            stdout=log_file,
+            stderr=log_file,
+            start_new_session=True,
+        )
+
+    with open(PID_FILE, "w", encoding="utf-8") as f:
+        f.write(str(proc.pid))
+    print(f"Started static simulator daemon with PID {proc.pid}")
+
+
+def _stop_daemon() -> None:
+    pid = _read_pid()
+    if not pid:
+        print("No simulator_static.pid found. Static simulator is not running.")
+        return
+    if not _is_running(pid):
+        print(f"Stale PID file found for PID {pid}. Removing it.")
+        if os.path.exists(PID_FILE):
+            os.remove(PID_FILE)
+        return
+
+    print(f"Stopping static simulator daemon PID {pid}")
+    os.kill(pid, signal.SIGINT)
+    if os.path.exists(PID_FILE):
+        os.remove(PID_FILE)
+
+
+def _status_daemon() -> None:
+    pid = _read_pid()
+    if _is_running(pid):
+        print(f"Static simulator is running with PID {pid}")
+    elif pid:
+        print(f"Static simulator is not running (stale PID {pid})")
+    else:
+        print("Static simulator is not running")
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Manage the static dataset simulator service")
+    parser.add_argument("--stop", action="store_true", help="Stop the background static simulator daemon")
+    parser.add_argument("--status", action="store_true", help="Show static simulator daemon status")
+    parser.add_argument("--foreground", action="store_true", help="Run in foreground for debugging")
+    args = parser.parse_args()
+
+    if args.stop:
+        _stop_daemon()
+    elif args.status:
+        _status_daemon()
+    elif args.foreground:
+        run_server()
+    else:
+        _start_daemon()
