@@ -78,7 +78,6 @@ class DatasetSimulatorState:
                     "occupancy_count": int(row["occupancy_count"]),
                     "motion_detected": row["motion_detected"].strip().upper() == "TRUE",
                     "hour": float(row["hour"]),
-                    "current_light_lumen": int(row["Current Light Lumen"]),
                     "gt_target": int(row["GT - Target"]),
                     "user_input": row["User Input"],
                     "trigger": row.get("trigger", "scheduled_30m"),
@@ -154,7 +153,7 @@ class DatasetSimulatorState:
             "occupancy_count": row["occupancy_count"],
             "motion_detected": row["motion_detected"],
             "hour": row["hour"],
-            "current_light_lumen": row["current_light_lumen"],
+            "current_light_lumen": self.current_lumen,
             "gt_target_lumen": row["gt_target"],
             "user_input": row["user_input"],
         }
@@ -186,7 +185,7 @@ class DatasetSimulatorState:
             "occupancy_count": row["occupancy_count"],
             "motion_detected": row["motion_detected"],
             "hour": row["hour"],
-            "current_light_lumen": row["current_light_lumen"],
+            "current_light_lumen": self.current_lumen,
             "gt_target_lumen": row["gt_target"],
             "user_input": row["user_input"],
         }
@@ -329,7 +328,7 @@ def sensor_all() -> JSONResponse:
     return JSONResponse(content=state.read_current())
 
 
-@app.post("/changelumens")
+@app.put("/changelumens")
 def change_lumens(payload: LumenCommand) -> JSONResponse:
     state.current_lumen = payload.lumen
     state.last_command_source = payload.source
@@ -342,7 +341,7 @@ def change_lumens(payload: LumenCommand) -> JSONResponse:
     })
 
 
-@app.post("/change_lumens")
+@app.put("/change_lumens")
 def change_lumens_alias(payload: LumenCommand) -> JSONResponse:
     return change_lumens(payload)
 
