@@ -16,6 +16,7 @@ import threading
 import time
 import urllib.error
 import urllib.request
+from urllib.parse import parse_qs
 
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
@@ -347,16 +348,66 @@ def sensor_all() -> JSONResponse:
 
 
 @app.put("/changelumens")
-def change_lumens(lumen: int) -> JSONResponse:
-    state.current_lumen = lumen
+async def change_lumens(request: Request, lumen: Optional[int] = None) -> JSONResponse:
+    lumen_value: Optional[int] = lumen
+
+    if lumen_value is None:
+        raw_value: Any = None
+        content_type = (request.headers.get("content-type") or "").split(";")[0].strip().lower()
+
+        if content_type == "application/json":
+            try:
+                payload = await request.json()
+            except Exception:
+                payload = {}
+            if isinstance(payload, dict):
+                raw_value = payload.get("lumen")
+        elif content_type == "application/x-www-form-urlencoded":
+            body = await request.body()
+            parsed = parse_qs(body.decode("utf-8", errors="replace"), keep_blank_values=True)
+            values = parsed.get("lumen")
+            if values:
+                raw_value = values[0]
+
+        if raw_value is None or str(raw_value).strip() == "":
+            return JSONResponse(
+                status_code=400,
+                content={
+                    "status": "error",
+                    "message": "Missing 'lumen' value. Provide it via query, JSON, or form body.",
+                },
+            )
+
+        try:
+            lumen_value = int(str(raw_value).strip())
+        except ValueError:
+            return JSONResponse(
+                status_code=400,
+                content={
+                    "status": "error",
+                    "message": "Invalid 'lumen' value. Expected integer.",
+                },
+            )
+
+    if lumen_value < 0 or lumen_value > 3000:
+        return JSONResponse(
+            status_code=400,
+            content={
+                "status": "error",
+                "message": "'lumen' must be between 0 and 3000.",
+            },
+        )
+
+    state.current_lumen = lumen_value
     return JSONResponse(content={
         "status": "applied",
+        "applied_lumen": state.current_lumen,
     })
 
 
 @app.put("/change_lumens")
-def change_lumens_alias(lumen: int) -> JSONResponse:
-    return change_lumens(lumen)
+async def change_lumens_alias(request: Request, lumen: Optional[int] = None) -> JSONResponse:
+    return await change_lumens(request, lumen)
 
 
 @app.get("/changelumens/state")
