@@ -96,8 +96,8 @@ class DatasetSimulatorState:
 
     def _mapped_dataset_second(self, now: datetime) -> float:
         elapsed_real_seconds = (now - self.started_at).total_seconds()
-        # 1 real minute maps to 1 dataset hour.
-        dataset_elapsed_seconds = elapsed_real_seconds * 60.0
+        # 6 real seconds map to 1 dataset hour.
+        dataset_elapsed_seconds = elapsed_real_seconds * 600.0
         return dataset_elapsed_seconds % LOOP_DATASET_SECONDS
 
     def _row_at(self, mapped_second: float) -> dict[str, Any]:
@@ -106,7 +106,7 @@ class DatasetSimulatorState:
             idx = len(self.rows) - 1
         return self.rows[idx]
 
-    def _events_between(self, previous: float | None, current: float) -> list[dict[str, Any]]:
+    def _rows_between(self, previous: float | None, current: float) -> list[dict[str, Any]]:
         if previous is None:
             return []
 
@@ -115,30 +115,25 @@ class DatasetSimulatorState:
                 return previous < value <= current
             return value > previous or value <= current
 
-        events: list[dict[str, Any]] = []
+        rows_in_window: list[dict[str, Any]] = []
         for sec, row in zip(self.row_seconds, self.rows):
             if in_window(sec):
-                events.append(row)
-        return events
+                rows_in_window.append(row)
+        return rows_in_window
 
     def mapped_second_now(self) -> float:
         return self._mapped_dataset_second(datetime.now())
 
     def next_event_after(self, mapped_second: float) -> tuple[dict[str, Any], float]:
-        event_candidates = [
-            (sec, row)
-            for sec, row in zip(self.row_seconds, self.rows)
-            if str(row["trigger"]).startswith("event_")
-        ]
-        if not event_candidates:
-            raise RuntimeError("Dataset does not contain event_ rows.")
+        if not self.rows:
+            raise RuntimeError("Dataset is empty.")
 
-        for sec, row in event_candidates:
+        for sec, row in zip(self.row_seconds, self.rows):
             if sec > mapped_second:
                 return row, sec
 
-        # Loop around to the first event in the dataset week.
-        first_sec, first_row = event_candidates[0]
+        # Loop around to the first row in the dataset week.
+        first_sec, first_row = self.row_seconds[0], self.rows[0]
         return first_row, first_sec
 
     def real_seconds_until(self, mapped_second: float, target_dataset_second: float) -> float:
@@ -147,8 +142,8 @@ class DatasetSimulatorState:
         else:
             dataset_delta = (LOOP_DATASET_SECONDS - mapped_second) + target_dataset_second
 
-        # 1 real minute maps to 1 dataset hour => dataset runs 60x faster than wall clock.
-        return dataset_delta / 60.0
+        # 6 real seconds map to 1 dataset hour => dataset runs 600x faster than wall clock.
+        return dataset_delta / 600.0
 
     def payload_for_row(self, row: dict[str, Any], actual_now: datetime) -> dict[str, Any]:
         return {
@@ -168,7 +163,7 @@ class DatasetSimulatorState:
         now = datetime.now()
         mapped_second = self._mapped_dataset_second(now)
         row = self._row_at(mapped_second)
-        events = self._events_between(self.last_mapped_second, mapped_second)
+        rows_since_last_read = self._rows_between(self.last_mapped_second, mapped_second)
         self.last_mapped_second = mapped_second
 
         callbacks = [
@@ -178,7 +173,7 @@ class DatasetSimulatorState:
                 "user_input": e["user_input"],
                 "message": "dataset event triggered",
             }
-            for e in events
+            for e in rows_since_last_read
         ]
 
         callback = callbacks[0] if callbacks else None
@@ -275,8 +270,8 @@ def health() -> dict[str, Any]:
     }
 
 
-@app.get("/readsensor", response_model=None)
-def readsensor(request: Request) -> dict[str, Any] | JSONResponse:
+@app.get("/readsensor_callback", response_model=None)
+def readsensor_callback(request: Request) -> JSONResponse:
     callback_url = request.headers.get("cpee-callback")
     callback_id = request.headers.get("cpee-callback-id")
 
@@ -315,47 +310,51 @@ def readsensor(request: Request) -> dict[str, Any] | JSONResponse:
         response.headers["CPEE-CALLBACK"] = "true"
         return response
 
-    return state.read_current()
+    return JSONResponse(status_code=200, content=state.read_current())
 
+@app.get("/readsensor", response_model=None)
+def readsensor(request: Request) -> JSONResponse:
+    return JSONResponse(status_code=200, content=state.read_current())
 
 @app.get("/read_sensor", response_model=None)
-def read_sensor_alias(request: Request) -> dict[str, Any] | JSONResponse:
-    return readsensor(request)
+def read_sensor_alias(request: Request) -> JSONResponse:
+    return JSONResponse(content=readsensor(request))
 
 
 @app.post("/read_sensor", response_model=None)
-def read_sensor_alias_post(request: Request, payload: ReadSensorRequest | None = None) -> dict[str, Any] | JSONResponse:
-    return readsensor(request)
+def read_sensor_alias_post(request: Request, payload: ReadSensorRequest | None = None) -> JSONResponse:
+    return JSONResponse(content=readsensor(request))
 
 
 @app.get("/sensor/all")
-def sensor_all() -> dict[str, Any]:
-    return state.read_current()
+def sensor_all() -> JSONResponse:
+    return JSONResponse(content=state.read_current())
+
 
 @app.post("/changelumens")
-def change_lumens(payload: LumenCommand) -> dict[str, Any]:
+def change_lumens(payload: LumenCommand) -> JSONResponse:
     state.current_lumen = payload.lumen
     state.last_command_source = payload.source
-    return {
+    return JSONResponse(content={
         "status": "applied",
         "applied_lumen": state.current_lumen,
         "reason": payload.reason,
         "source": state.last_command_source,
         "applied_at": datetime.now().isoformat(),
-    }
+    })
 
 
 @app.post("/change_lumens")
-def change_lumens_alias(payload: LumenCommand) -> dict[str, Any]:
+def change_lumens_alias(payload: LumenCommand) -> JSONResponse:
     return change_lumens(payload)
 
 
 @app.get("/changelumens/state")
-def lumen_state() -> dict[str, Any]:
-    return {
+def lumen_state() -> JSONResponse:
+    return JSONResponse(content={
         "current_lumen": state.current_lumen,
         "last_command_source": state.last_command_source,
-    }
+    })
 
 
 def run_server() -> None:
