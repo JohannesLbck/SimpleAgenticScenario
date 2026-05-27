@@ -32,6 +32,31 @@ PORT = 4649
 app = FastAPI(title="Static Sensor Dataset Simulator", version="1.0.0")
 
 
+@app.middleware("http")
+async def log_raw_request(request: Request, call_next):
+    body = await request.body()
+    raw_text = body.decode("utf-8", errors="replace")
+    print(
+        "[simulator_static] raw request",
+        {
+            "method": request.method,
+            "path": request.url.path,
+            "content_type": request.headers.get("content-type"),
+            "body": raw_text,
+        },
+    )
+    logger.info(
+        "raw request method=%s path=%s content_type=%s body=%s",
+        request.method,
+        request.url.path,
+        request.headers.get("content-type"),
+        raw_text,
+    )
+    response = await call_next(request)
+    print(f"[simulator_static] response status={response.status_code} path={request.url.path}")
+    return response
+
+
 logger = logging.getLogger("simulator_static")
 if not logger.handlers:
     logger.setLevel(logging.INFO)
