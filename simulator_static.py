@@ -255,7 +255,7 @@ def health() -> dict[str, Any]:
     }
 
 
-@app.get("/readsensor")
+@app.get("/readsensor", response_model=None)
 def readsensor(request: Request) -> dict[str, Any] | JSONResponse:
     callback_url = request.headers.get("cpee-callback")
     callback_id = request.headers.get("cpee-callback-id")
@@ -287,12 +287,12 @@ def readsensor(request: Request) -> dict[str, Any] | JSONResponse:
     return state.read_current()
 
 
-@app.get("/read_sensor")
+@app.get("/read_sensor", response_model=None)
 def read_sensor_alias(request: Request) -> dict[str, Any] | JSONResponse:
     return readsensor(request)
 
 
-@app.post("/read_sensor")
+@app.post("/read_sensor", response_model=None)
 def read_sensor_alias_post(request: Request, payload: ReadSensorRequest | None = None) -> dict[str, Any] | JSONResponse:
     return readsensor(request)
 
