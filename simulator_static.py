@@ -117,8 +117,6 @@ class DatasetSimulatorState:
 
         events: list[dict[str, Any]] = []
         for sec, row in zip(self.row_seconds, self.rows):
-            if not str(row["trigger"]).startswith("event_"):
-                continue
             if in_window(sec):
                 events.append(row)
         return events
