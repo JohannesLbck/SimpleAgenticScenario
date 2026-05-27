@@ -2,6 +2,10 @@ from __future__ import annotations
 
 from datetime import datetime
 from typing import Any, Optional
+import logging
+import sys
+import subprocess
+import signal
 import random
 import os
 import uvicorn
@@ -10,7 +14,21 @@ import argparse
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
 
+
+PID_FILE = "simulator.pid"
+LOG_FILE = "simulator.log"
+
 app = FastAPI(title="Sensor and Lumen Simulator", version="1.0.0")
+
+
+logger = logging.getLogger("simulator")
+if not logger.handlers:
+    logger.setLevel(logging.INFO)
+    log_path = os.path.join(os.path.dirname(__file__), LOG_FILE)
+    file_handler = logging.FileHandler(log_path)
+    file_handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(message)s"))
+    logger.addHandler(file_handler)
+    logger.propagate = False
 
 
 class SensorOverrides(BaseModel):
@@ -39,6 +57,10 @@ class SimulatorState:
 
 
 state = SimulatorState()
+
+
+def _log_sensor_response(sensor_name: str, payload: dict[str, Any]) -> None:
+    logger.info("sensor=%s response=%s", sensor_name, payload)
 
 
 def infer_time_of_day(hour: int) -> str:
@@ -80,7 +102,9 @@ def ambient_light() -> dict:
     lux = state.overrides.ambient_light_lux
     if lux is None:
         lux = round(_ambient_light_default(hour), 2)
-    return {"ambient_light_lux": lux}
+    payload = {"ambient_light_lux": lux}
+    _log_sensor_response("ambient-light", payload)
+    return payload
 
 
 @app.get("/sensor/occupancy")
@@ -88,7 +112,9 @@ def occupancy() -> dict:
     count = state.overrides.occupancy_count
     if count is None:
         count = _occupancy_default(datetime.now().hour)
-    return {"occupancy_count": count}
+    payload = {"occupancy_count": count}
+    _log_sensor_response("occupancy", payload)
+    return payload
 
 
 @app.get("/sensor/motion")
@@ -97,7 +123,9 @@ def motion() -> dict:
         detected = state.overrides.motion_detected
     else:
         detected = random.choice([True, True, True, False])
-    return {"motion_detected": detected}
+    payload = {"motion_detected": detected}
+    _log_sensor_response("motion", payload)
+    return payload
 
 
 @app.get("/sensor/context")
@@ -113,12 +141,14 @@ def context() -> dict:
     if cloud_cover is None:
         cloud_cover = random.choice([10, 20, 35, 50, 75, 90])
 
-    return {
+    payload = {
         "hour": hour,
         "time_of_day": tod,
         "screen_brightness_nits": screen_nits,
         "weather_cloud_cover_pct": cloud_cover,
     }
+    _log_sensor_response("context", payload)
+    return payload
 
 
 @app.get("/sensor/all")
@@ -128,6 +158,7 @@ def sensor_all() -> dict:
     data.update(occupancy())
     data.update(motion())
     data.update(context())
+    logger.info("sensor=all response=%s", data)
     return data
 
 
@@ -171,9 +202,6 @@ def lumen_state() -> dict:
 def run_server():
     uvicorn.run("simulator:app", port=4648, log_level="info")
 
-
-PID_FILE = "simulator.pid"
-LOG_FILE = "simulator.log"
 
 
 def _read_pid(pid_file=PID_FILE):
