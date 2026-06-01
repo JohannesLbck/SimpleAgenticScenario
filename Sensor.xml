@@ -1,0 +1,428 @@
+<testset xmlns="http://cpee.org/ns/properties/2.0">
+  <executionhandler>ruby</executionhandler>
+  <dataelements>
+    <lumen>1144</lumen>
+    <sensor_payload>{"dataset_timestamp":"2026-05-19T09:31:54","actual_timestamp":"2026-06-01T11:19:52.065807","trigger":"event_user_input","ambient_light_lux":349.0,"occupancy_count":1,"motion_detected":true,"hour":9.5317,"current_light_lumen":0,"gt_target_lumen":0,"user_input":"Can you make the light flicker?"}</sensor_payload>
+    <target>151.0</target>
+    <time>midday</time>
+    <occupancy>1</occupancy>
+    <current>0</current>
+    <ambient>349.0</ambient>
+    <motion>true</motion>
+  </dataelements>
+  <endpoints>
+    <user>https-post://cpee.org/services/timeout-user.php</user>
+    <auto>https-post://cpee.org/services/timeout-auto.php</auto>
+    <subprocess>https-post://cpee.org/flow/start/url/</subprocess>
+    <timeout>https-post://cpee.org/services/timeout.php</timeout>
+    <send>https-post://cpee.org/ing/correlators/message/send/</send>
+    <receive>https-get://cpee.org/ing/correlators/message/receive/</receive>
+    <sensors>https://power.bpm.cit.tum.de/simulator/readsensor</sensors>
+    <changelumens>https://power.bpm.cit.tum.de/simulator/changelumens</changelumens>
+  </endpoints>
+  <attributes>
+    <guarded>none</guarded>
+    <modeltype>CPEE</modeltype>
+    <theme>extended</theme>
+    <guarded_id/>
+    <info>CallbackSensor</info>
+    <creator>Christine Ashcreek</creator>
+    <author>Christine Ashcreek</author>
+    <model_uuid>5013e6fe-adaa-4800-aa5c-b5861fbd2b8c</model_uuid>
+    <model_version/>
+    <design_dir>Staff.dir/Loebbi.dir/AgenticFundamentals.dir</design_dir>
+    <design_stage>development</design_stage>
+  </attributes>
+  <description>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <loop eid="e1" mode="pre_test" condition="true">
+        <_probability>
+          <_probability_min/>
+          <_probability_max/>
+          <_probability_avg/>
+        </_probability>
+        <_annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_iteration>false</_iteration>
+          </_logging_behavior>
+        </_annotations>
+        <call id="a1" endpoint="sensors">
+          <parameters>
+            <label>GetSensor</label>
+            <color/>
+            <method>:get</method>
+            <arguments/>
+          </parameters>
+          <code>
+            <signal>false</signal>
+            <prepare/>
+            <finalize output="result">data.sensor_payload = result.to_json()
+data.occupancy = result["occupancy_count"]
+data.time = result["dataset_timestamp"].split("T").last
+data.current = result["current_light_lumen"]
+data.ambient = result["ambient_light_lux"]
+data.motion = result["motion_detected"]</finalize>
+            <update output="result"/>
+            <rescue output="result"/>
+          </code>
+          <annotations>
+            <_generic/>
+            <_logging_behavior>
+              <_exclude>false</_exclude>
+              <_include>false</_include>
+            </_logging_behavior>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+            <code>
+              <description/>
+            </code>
+          </documentation>
+        </call>
+        <choose eid="e2" mode="exclusive" label="occupancy comparison">
+          <alternative eid="e4" condition="data.occupancy &lt; 1  and data.current== 0">
+            <_probability>
+              <_probability_min/>
+              <_probability_max/>
+              <_probability_avg/>
+            </_probability>
+          </alternative>
+          <alternative eid="e3" condition="data.occupancy &lt; 1  and data.current != 0">
+            <_probability>
+              <_probability_min/>
+              <_probability_max/>
+              <_probability_avg/>
+            </_probability>
+            <call id="a2" endpoint="changelumens">
+              <parameters>
+                <label>Set lumen to 0</label>
+                <color/>
+                <method>:put</method>
+                <arguments>
+                  <lumen>0</lumen>
+                </arguments>
+              </parameters>
+              <code>
+                <signal>false</signal>
+                <prepare/>
+                <finalize output="result"/>
+                <update output="result"/>
+                <rescue output="result"/>
+              </code>
+              <annotations>
+                <_generic/>
+                <_logging_behavior>
+                  <_exclude>false</_exclude>
+                  <_include>false</_include>
+                </_logging_behavior>
+                <_timing>
+                  <_timing_weight/>
+                  <_timing_avg/>
+                  <explanations/>
+                </_timing>
+                <_shifting>
+                  <_shifting_type>Duration</_shifting_type>
+                </_shifting>
+                <_context_data_analysis>
+                  <probes/>
+                  <ips/>
+                </_context_data_analysis>
+                <report>
+                  <url/>
+                </report>
+                <_notes>
+                  <_notes_general/>
+                </_notes>
+              </annotations>
+              <documentation>
+                <input/>
+                <output/>
+                <implementation>
+                  <description/>
+                </implementation>
+                <code>
+                  <description/>
+                </code>
+              </documentation>
+            </call>
+          </alternative>
+          <otherwise>
+            <manipulate id="a3" label="convert time to time of day">
+              <code>hour = data.time.split(":").first.to_i
+
+data.time =
+  if hour &gt;= 23 || hour &lt; 6
+    "night"
+  elsif hour &lt; 9
+    "morning"
+  elsif hour &lt; 14
+    "midday"
+  elsif hour &lt; 18
+    "afternoon"
+  else
+    "evening"
+  end</code>
+              <annotations>
+                <_logging_behavior>
+                  <_exclude>false</_exclude>
+                </_logging_behavior>
+                <_context_data_analysis>
+                  <probes/>
+                </_context_data_analysis>
+              </annotations>
+            </manipulate>
+            <choose eid="e5" mode="exclusive" label="">
+              <alternative eid="e10" condition="data.time == &quot;evening&quot;">
+                <manipulate id="a6" label="">
+                  <code>data.target = 300 - (data.ambient - data.current*7.5761)</code>
+                  <annotations>
+                    <_logging_behavior>
+                      <_exclude>false</_exclude>
+                    </_logging_behavior>
+                    <_context_data_analysis>
+                      <probes/>
+                    </_context_data_analysis>
+                  </annotations>
+                </manipulate>
+                <_probability>
+                  <_probability_min/>
+                  <_probability_max/>
+                  <_probability_avg/>
+                </_probability>
+              </alternative>
+              <alternative eid="e9" condition="data.time == &quot;afternoon&quot;">
+                <manipulate id="a7" label="">
+                  <code>data.target = 300 - (data.ambient - data.current*7.5761)</code>
+                  <annotations>
+                    <_logging_behavior>
+                      <_exclude>false</_exclude>
+                    </_logging_behavior>
+                    <_context_data_analysis>
+                      <probes/>
+                    </_context_data_analysis>
+                  </annotations>
+                </manipulate>
+                <_probability>
+                  <_probability_min/>
+                  <_probability_max/>
+                  <_probability_avg/>
+                </_probability>
+              </alternative>
+              <alternative eid="e8" condition="data.time == &quot;midday&quot;">
+                <manipulate id="a8" label="">
+                  <code>data.target = 500 - (data.ambient - data.current*7.5761)</code>
+                  <annotations>
+                    <_logging_behavior>
+                      <_exclude>false</_exclude>
+                    </_logging_behavior>
+                    <_context_data_analysis>
+                      <probes/>
+                    </_context_data_analysis>
+                  </annotations>
+                </manipulate>
+                <_probability>
+                  <_probability_min/>
+                  <_probability_max/>
+                  <_probability_avg/>
+                </_probability>
+              </alternative>
+              <alternative eid="e7" condition="data.time == &quot;morning&quot;">
+                <manipulate id="a9" label="">
+                  <code>data.target = 200 - (data.ambient - data.current*7.5761)</code>
+                  <annotations>
+                    <_logging_behavior>
+                      <_exclude>false</_exclude>
+                    </_logging_behavior>
+                    <_context_data_analysis>
+                      <probes/>
+                    </_context_data_analysis>
+                  </annotations>
+                </manipulate>
+                <_probability>
+                  <_probability_min/>
+                  <_probability_max/>
+                  <_probability_avg/>
+                </_probability>
+              </alternative>
+              <alternative eid="e6" condition="data.time == &quot;night&quot;">
+                <choose eid="e11" mode="exclusive" label="">
+                  <alternative eid="e12" condition="data.motion">
+                    <manipulate id="a10" label="">
+                      <code>data.target = 50 - data.ambient</code>
+                      <annotations>
+                        <_logging_behavior>
+                          <_exclude>false</_exclude>
+                        </_logging_behavior>
+                        <_context_data_analysis>
+                          <probes/>
+                        </_context_data_analysis>
+                      </annotations>
+                    </manipulate>
+                    <_probability>
+                      <_probability_min/>
+                      <_probability_max/>
+                      <_probability_avg/>
+                    </_probability>
+                  </alternative>
+                  <otherwise>
+                    <manipulate id="a11" label="">
+                      <code>data.target = 0</code>
+                      <annotations>
+                        <_logging_behavior>
+                          <_exclude>false</_exclude>
+                        </_logging_behavior>
+                        <_context_data_analysis>
+                          <probes/>
+                        </_context_data_analysis>
+                      </annotations>
+                    </manipulate>
+                  </otherwise>
+                </choose>
+                <_probability>
+                  <_probability_min/>
+                  <_probability_max/>
+                  <_probability_avg/>
+                </_probability>
+              </alternative>
+              <otherwise/>
+            </choose>
+            <choose eid="e13" mode="exclusive" label="">
+              <alternative eid="e14" condition="data.target &lt; 1">
+                <_probability>
+                  <_probability_min/>
+                  <_probability_max/>
+                  <_probability_avg/>
+                </_probability>
+              </alternative>
+              <otherwise>
+                <manipulate id="a13" label="Calculate Lumen based on target">
+                  <code>data.lumen = (data.target * 7.5761).round</code>
+                  <annotations>
+                    <_logging_behavior>
+                      <_exclude>false</_exclude>
+                    </_logging_behavior>
+                    <_context_data_analysis>
+                      <probes/>
+                    </_context_data_analysis>
+                  </annotations>
+                </manipulate>
+                <call id="a12" endpoint="changelumens">
+                  <parameters>
+                    <label>Change Lumens</label>
+                    <color/>
+                    <method>:put</method>
+                    <arguments>
+                      <lumen>!data.lumen</lumen>
+                    </arguments>
+                  </parameters>
+                  <annotations>
+                    <_generic/>
+                    <_logging_behavior>
+                      <_exclude>false</_exclude>
+                      <_include>false</_include>
+                    </_logging_behavior>
+                    <_timing>
+                      <_timing_weight/>
+                      <_timing_avg/>
+                      <explanations/>
+                    </_timing>
+                    <_shifting>
+                      <_shifting_type>Duration</_shifting_type>
+                    </_shifting>
+                    <_context_data_analysis>
+                      <probes/>
+                      <ips/>
+                    </_context_data_analysis>
+                    <report>
+                      <url/>
+                    </report>
+                    <_notes>
+                      <_notes_general/>
+                    </_notes>
+                  </annotations>
+                  <documentation>
+                    <input/>
+                    <output/>
+                    <implementation>
+                      <description/>
+                    </implementation>
+                  </documentation>
+                </call>
+              </otherwise>
+            </choose>
+          </otherwise>
+        </choose>
+        <call id="a4" endpoint="timeout">
+          <parameters>
+            <label>wait for next iteration</label>
+            <color/>
+            <arguments>
+              <timeout>1</timeout>
+              <data/>
+            </arguments>
+          </parameters>
+          <annotations>
+            <_generic/>
+            <_logging_behavior>
+              <_exclude>false</_exclude>
+              <_include>false</_include>
+            </_logging_behavior>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+          </documentation>
+        </call>
+      </loop>
+    </description>
+  </description>
+  <transformation>
+    <description type="copy"/>
+    <dataelements type="none"/>
+    <endpoints type="none"/>
+  </transformation>
+</testset>

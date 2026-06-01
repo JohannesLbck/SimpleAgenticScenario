@@ -27,7 +27,8 @@ from pydantic import BaseModel
 PID_FILE = "simulator_static.pid"
 LOG_FILE = "simulator_static.log"
 XES_YAML_LOG_FILE = "simulator_static.xes.yaml"
-DATASET_FILE = "artificial_week_sensor_dataset.csv"
+#DATASET_FILE = "artificial_week_sensor_dataset.csv"
+DATASET_FILE = "artificial_week_sensor_dataset_no_user_input.csv"
 LOOP_DATASET_SECONDS = 7 * 24 * 60 * 60
 PORT = 4649
 
@@ -142,7 +143,7 @@ class DatasetSimulatorState:
                     "motion_detected": row["motion_detected"].strip().upper() == "TRUE",
                     "hour": float(row["hour"]),
                     "gt_target": int(row["GT - Target"]),
-                    "user_input": row["User Input"],
+                    #"user_input": row["User Input"],
                     "trigger": row.get("trigger", "scheduled_30m"),
                 }
             )
@@ -218,7 +219,7 @@ class DatasetSimulatorState:
             "hour": row["hour"],
             "current_light_lumen": self.current_lumen,
             "gt_target_lumen": row["gt_target"],
-            "user_input": row["user_input"],
+            #"user_input": row["user_input"],
         }
 
     def read_current(self) -> dict[str, Any]:
@@ -232,7 +233,7 @@ class DatasetSimulatorState:
             {
                 "dataset_timestamp": e["timestamp"].isoformat(),
                 "trigger": e["trigger"],
-                "user_input": e["user_input"],
+                #"user_input": e["user_input"],
                 "message": "dataset event triggered",
             }
             for e in rows_since_last_read
@@ -250,7 +251,7 @@ class DatasetSimulatorState:
             "hour": row["hour"],
             "current_light_lumen": self.current_lumen,
             "gt_target_lumen": row["gt_target"],
-            "user_input": row["user_input"],
+            #"user_input": row["user_input"],
         }
         logger.info("readsensor response=%s", payload)
         return payload
