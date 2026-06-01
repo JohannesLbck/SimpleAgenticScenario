@@ -32,6 +32,7 @@ htmlcov/
 
 # Logs
 *.log
+*.xes.yaml
 
 # IDE / editor
 .vscode/
