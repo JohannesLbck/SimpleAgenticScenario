@@ -1,3 +1,5 @@
+#!/bin/ruby
+
 require 'ruby_llm'
 require "ruby_llm/mcp"
 
@@ -42,10 +44,11 @@ anthropic_chat.with_tools(*sleep_client.tools)
 
 if(ARGV[0]) then
   prompt = ARGV[0]
+  puts "-------------------------------prompt:-------------------------------\n#{prompt}"
   response = anthropic_chat.ask(prompt)
-  puts response.content()
+  puts "-------------------------------answer:-------------------------------\n#{response.content()}"
 else
-  pp "Provide the prompt as an argument!"
+  puts "Provide the prompt as an argument!"
 end
 
 
