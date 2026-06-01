@@ -16,6 +16,7 @@ import threading
 import time
 import urllib.error
 import urllib.request
+import uuid
 from urllib.parse import parse_qs
 
 from fastapi import FastAPI, Request
@@ -25,6 +26,7 @@ from pydantic import BaseModel
 
 PID_FILE = "simulator_static.pid"
 LOG_FILE = "simulator_static.log"
+XES_YAML_LOG_FILE = "simulator_static.xes.yaml"
 DATASET_FILE = "artificial_week_sensor_dataset.csv"
 LOOP_DATASET_SECONDS = 7 * 24 * 60 * 60
 PORT = 4649
@@ -33,32 +35,8 @@ PORT = 4649
 app = FastAPI(title="Static Sensor Dataset Simulator", version="1.0.0")
 
 
-@app.middleware("http")
-async def log_raw_request(request: Request, call_next):
-    body = await request.body()
-    raw_text = body.decode("utf-8", errors="replace")
-    print(
-        "[simulator_static] raw request",
-        {
-            "method": request.method,
-            "path": request.url.path,
-            "content_type": request.headers.get("content-type"),
-            "body": raw_text,
-        },
-    )
-    logger.info(
-        "raw request method=%s path=%s content_type=%s body=%s",
-        request.method,
-        request.url.path,
-        request.headers.get("content-type"),
-        raw_text,
-    )
-    response = await call_next(request)
-    print(f"[simulator_static] response status={response.status_code} path={request.url.path}")
-    return response
-
-
 logger = logging.getLogger("simulator_static")
+xes_log_lock = threading.Lock()
 if not logger.handlers:
     logger.setLevel(logging.INFO)
     log_path = os.path.join(os.path.dirname(__file__), LOG_FILE)
@@ -66,6 +44,74 @@ if not logger.handlers:
     file_handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(message)s"))
     logger.addHandler(file_handler)
     logger.propagate = False
+
+
+def _yaml_scalar(value: Any) -> str:
+    text = str(value)
+    escaped = text.replace("\\", "\\\\").replace('"', '\\"').replace("\n", "\\n")
+    return f'"{escaped}"'
+
+
+def _append_xes_yaml_event(event: dict[str, Any]) -> None:
+    log_path = os.path.join(os.path.dirname(__file__), XES_YAML_LOG_FILE)
+    lines = ["- event:"]
+    for key, value in event.items():
+        lines.append(f"    {key}: {_yaml_scalar(value)}")
+    lines.append("")
+
+    with xes_log_lock:
+        with open(log_path, "a", encoding="utf-8") as log_file:
+            log_file.write("\n".join(lines))
+
+
+def _write_middleware_xes_event(
+    *,
+    request: Request,
+    lifecycle: str,
+    data: dict[str, Any],
+) -> None:
+    event = {
+        "concept:instance": request.url.path,
+        "concept:name": "http_middleware",
+        "id:id": "simulator_static",
+        "lifecycle:transition": lifecycle,
+        "data": json.dumps(data, ensure_ascii=True, sort_keys=True),
+        "time:timestamp": datetime.now().isoformat(),
+    }
+    _append_xes_yaml_event(event)
+
+
+@app.middleware("http")
+async def log_raw_request(request: Request, call_next):
+    body = await request.body()
+    raw_text = body.decode("utf-8", errors="replace")
+
+    _write_middleware_xes_event(
+        request=request,
+        lifecycle="start",
+        data={
+            "kind": "request",
+            "method": request.method,
+            "path": request.url.path,
+            "content_type": request.headers.get("content-type"),
+            "body": raw_text,
+        },
+    )
+
+    response = await call_next(request)
+
+    _write_middleware_xes_event(
+        request=request,
+        lifecycle="complete",
+        data={
+            "kind": "response",
+            "method": request.method,
+            "path": request.url.path,
+            "status_code": response.status_code,
+        },
+    )
+
+    return response
 
 
 class ReadSensorRequest(BaseModel):
