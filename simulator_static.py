@@ -47,6 +47,23 @@ if not logger.handlers:
     logger.propagate = False
 
 
+def _parse_gt_target_range(value: Any) -> tuple[int, int]:
+    raw = str(value).strip()
+    if "-" in raw:
+        left, right = raw.split("-", 1)
+        low = int(left.strip())
+        high = int(right.strip())
+    else:
+        low = int(raw)
+        high = low
+
+    low = max(0, low)
+    high = max(0, high)
+    if high < low:
+        low, high = high, low
+    return low, high
+
+
 def _yaml_scalar(value: Any) -> str:
     text = str(value)
     escaped = text.replace("\\", "\\\\").replace('"', '\\"').replace("\n", "\\n")
@@ -135,6 +152,7 @@ class DatasetSimulatorState:
         parsed_rows: list[dict[str, Any]] = []
         for row in raw_rows:
             timestamp = datetime.fromisoformat(row["timestamp"])
+            gt_min, gt_max = _parse_gt_target_range(row["GT - Target"])
             parsed_rows.append(
                 {
                     "timestamp": timestamp,
@@ -142,7 +160,9 @@ class DatasetSimulatorState:
                     "occupancy_count": int(row["occupancy_count"]),
                     "motion_detected": row["motion_detected"].strip().upper() == "TRUE",
                     "hour": float(row["hour"]),
-                    "gt_target": int(row["GT - Target"]),
+                    "gt_target_min": gt_min,
+                    "gt_target_max": gt_max,
+                    "gt_target_range": f"{gt_min}-{gt_max}",
                     #"user_input": row["User Input"],
                     "trigger": row.get("trigger", "scheduled_30m"),
                 }
@@ -218,7 +238,9 @@ class DatasetSimulatorState:
             "motion_detected": row["motion_detected"],
             "hour": row["hour"],
             "current_light_lumen": self.current_lumen,
-            "gt_target_lumen": row["gt_target"],
+            "gt_target_lumen": row["gt_target_range"],
+            "gt_target_lumen_min": row["gt_target_min"],
+            "gt_target_lumen_max": row["gt_target_max"],
             #"user_input": row["user_input"],
         }
 
@@ -250,7 +272,9 @@ class DatasetSimulatorState:
             "motion_detected": row["motion_detected"],
             "hour": row["hour"],
             "current_light_lumen": self.current_lumen,
-            "gt_target_lumen": row["gt_target"],
+            "gt_target_lumen": row["gt_target_range"],
+            "gt_target_lumen_min": row["gt_target_min"],
+            "gt_target_lumen_max": row["gt_target_max"],
             #"user_input": row["user_input"],
         }
         logger.info("readsensor response=%s", payload)
