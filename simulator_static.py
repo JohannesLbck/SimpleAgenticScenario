@@ -71,9 +71,7 @@ def _write_middleware_xes_event(
     data: dict[str, Any],
 ) -> None:
     event = {
-        "concept:instance": request.url.path,
-        "concept:name": "http_middleware",
-        "id:id": "simulator_static",
+        "concept:name": request.url.path,
         "lifecycle:transition": lifecycle,
         "data": json.dumps(data, ensure_ascii=True, sort_keys=True),
         "time:timestamp": datetime.now().isoformat(),
