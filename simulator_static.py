@@ -142,7 +142,24 @@ class DatasetSimulatorState:
         self.started_at = datetime.now()
         self.last_mapped_second: float | None = None
         self.current_lumen = 0
+        self.last_dataset_ambient_lux = 0.0
+        self.current_ambient_lux = 0.0
         self._load_dataset()
+
+    def _lamp_lux(self) -> float:
+        return self.current_lumen / 7.5761 if self.current_lumen > 0 else 0.0
+
+    def _refresh_ambient_from_dataset(self, dataset_ambient_lux: float) -> float:
+        self.last_dataset_ambient_lux = dataset_ambient_lux
+
+        if self.current_lumen > 0:
+            self.current_ambient_lux = dataset_ambient_lux + self._lamp_lux()
+        elif self.current_ambient_lux <= 0.0:
+            self.current_ambient_lux = dataset_ambient_lux
+        else:
+            self.current_ambient_lux = min(self.current_ambient_lux, dataset_ambient_lux)
+
+        return self.current_ambient_lux
 
     def _load_dataset(self) -> None:
         with self.dataset_path.open(newline="", encoding="utf-8") as f:
@@ -172,6 +189,9 @@ class DatasetSimulatorState:
 
         dataset_start = parsed_rows[0]["timestamp"]
         self.rows = parsed_rows
+        if self.rows:
+            self.last_dataset_ambient_lux = float(self.rows[0]["ambient_light_lux"])
+            self.current_ambient_lux = self.last_dataset_ambient_lux
         self.row_seconds = [
             (row["timestamp"] - dataset_start).total_seconds() % LOOP_DATASET_SECONDS
             for row in parsed_rows
@@ -229,11 +249,13 @@ class DatasetSimulatorState:
         return dataset_delta / 600.0
 
     def payload_for_row(self, row: dict[str, Any], actual_now: datetime) -> dict[str, Any]:
+        ambient_light_lux = self._refresh_ambient_from_dataset(float(row["ambient_light_lux"]))
         return {
             "dataset_timestamp": row["timestamp"].isoformat(),
             "actual_timestamp": actual_now.isoformat(),
             "trigger": row["trigger"],
-            "ambient_light_lux": row["ambient_light_lux"],
+            "ambient_light_lux": ambient_light_lux,
+            "ambient_base_lux": row["ambient_light_lux"],
             "occupancy_count": row["occupancy_count"],
             "motion_detected": row["motion_detected"],
             "hour": row["hour"],
@@ -251,6 +273,8 @@ class DatasetSimulatorState:
         rows_since_last_read = self._rows_between(self.last_mapped_second, mapped_second)
         self.last_mapped_second = mapped_second
 
+        ambient_light_lux = self._refresh_ambient_from_dataset(float(row["ambient_light_lux"]))
+
         callbacks = [
             {
                 "dataset_timestamp": e["timestamp"].isoformat(),
@@ -267,7 +291,8 @@ class DatasetSimulatorState:
             "dataset_timestamp": row["timestamp"].isoformat(),
             "actual_timestamp": now.isoformat(),
             "trigger": row["trigger"],
-            "ambient_light_lux": row["ambient_light_lux"],
+            "ambient_light_lux": ambient_light_lux,
+            "ambient_base_lux": row["ambient_light_lux"],
             "occupancy_count": row["occupancy_count"],
             "motion_detected": row["motion_detected"],
             "hour": row["hour"],
@@ -468,9 +493,16 @@ async def change_lumens(request: Request, lumen: Optional[int] = None) -> JSONRe
         )
 
     state.current_lumen = lumen_value
+    if lumen_value > 0:
+        state.current_ambient_lux = state.last_dataset_ambient_lux + (lumen_value / 7.5761)
+    else:
+        state.current_ambient_lux = min(state.current_ambient_lux, state.last_dataset_ambient_lux) if state.current_ambient_lux > 0 else state.last_dataset_ambient_lux
+
     return JSONResponse(content={
         "status": "applied",
         "applied_lumen": state.current_lumen,
+        "ambient_light_lux": state.current_ambient_lux,
+        "ambient_base_lux": state.last_dataset_ambient_lux,
     })
 
 
@@ -483,6 +515,8 @@ async def change_lumens_alias(request: Request, lumen: Optional[int] = None) -> 
 def lumen_state() -> JSONResponse:
     return JSONResponse(content={
         "current_lumen": state.current_lumen,
+        "ambient_light_lux": state.current_ambient_lux,
+        "ambient_base_lux": state.last_dataset_ambient_lux,
     })
 
 

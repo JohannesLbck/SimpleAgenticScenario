@@ -197,7 +197,7 @@ data.time =
             <choose eid="e5" mode="exclusive" label="">
               <alternative eid="e10" condition="data.time == &quot;evening&quot;">
                 <manipulate id="a6" label="">
-                  <code>data.target = 300 - (data.ambient - data.current*7.5761)</code>
+                  <code>data.target = 300 - (data.ambient - data.current/7.5761)</code>
                   <annotations>
                     <_logging_behavior>
                       <_exclude>false</_exclude>
@@ -215,7 +215,7 @@ data.time =
               </alternative>
               <alternative eid="e9" condition="data.time == &quot;afternoon&quot;">
                 <manipulate id="a7" label="">
-                  <code>data.target = 300 - (data.ambient - data.current*7.5761)</code>
+                  <code>data.target = 300 - (data.ambient - data.current/7.5761)</code>
                   <annotations>
                     <_logging_behavior>
                       <_exclude>false</_exclude>
@@ -233,7 +233,7 @@ data.time =
               </alternative>
               <alternative eid="e8" condition="data.time == &quot;midday&quot;">
                 <manipulate id="a8" label="">
-                  <code>data.target = 500 - (data.ambient - data.current*7.5761)</code>
+                  <code>data.target = 500 - (data.ambient - data.current/7.5761)</code>
                   <annotations>
                     <_logging_behavior>
                       <_exclude>false</_exclude>
@@ -251,7 +251,7 @@ data.time =
               </alternative>
               <alternative eid="e7" condition="data.time == &quot;morning&quot;">
                 <manipulate id="a9" label="">
-                  <code>data.target = 200 - (data.ambient - data.current*7.5761)</code>
+                  <code>data.target = 200 - (data.ambient - data.current/7.5761)</code>
                   <annotations>
                     <_logging_behavior>
                       <_exclude>false</_exclude>
