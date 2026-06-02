@@ -261,12 +261,12 @@ async def change_lumens(request: Request, lumen: Optional[int] = None) -> JSONRe
                 },
             )
 
-    if lumen_value < 0 or lumen_value > 3000:
+    if lumen_value < 0 or lumen_value > 5000:
         return JSONResponse(
             status_code=400,
             content={
                 "status": "error",
-                "message": "'lumen' must be between 0 and 3000.",
+                "message": "'lumen' must be between 0 and 5000.",
             },
         )
 

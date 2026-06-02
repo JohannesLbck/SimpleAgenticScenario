@@ -143,7 +143,7 @@ class DatasetSimulatorState:
         self.last_mapped_second: float | None = None
         self.current_lumen = 0
         self.ambient_light_lux = 0
-        self.base_ambient_lux = 0
+        self.ambient_base_lux = 0
         self.last_timestamp = None
         self._load_dataset()
 
@@ -255,15 +255,7 @@ class DatasetSimulatorState:
         rows_since_last_read = self._rows_between(self.last_mapped_second, mapped_second)
         self.last_mapped_second = mapped_second
         self.ambient_base_lux = row["ambient_base_lux"]
-
-        if self.last_timestamp is None:
-            self.last_timestamp = row["timestamp"]
-            ambient_light = row["ambient_light_lux"]
-        elif row["timestamp"] == self.last_timestamp:
-            ambient_light = self.ambient_light_lux
-        else:
-            ambient_light = row["ambient_light_lux"]
-            self.last_timestamp = row["timestamp"]
+        ambient_light = int(self.current_lumen / 7.5761 + self.ambient_base_lux)
 
         callbacks = [
             {
@@ -472,17 +464,16 @@ async def change_lumens(request: Request, lumen: Optional[int] = None) -> JSONRe
                 },
             )
 
-    if lumen_value < 0 or lumen_value > 3000:
+    if lumen_value < 0 or lumen_value > 5000:
         return JSONResponse(
             status_code=400,
             content={
                 "status": "error",
-                "message": "'lumen' must be between 0 and 3000.",
+                "message": "'lumen' must be between 0 and 5000.",
             },
         )
 
     state.current_lumen = lumen_value
-    state.ambient_light_lux = int(lumen_value / 7.5761 + state.ambient_base_lux)
     return JSONResponse(content={
         "status": "applied",
         "applied_lumen": state.current_lumen,
