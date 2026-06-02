@@ -419,8 +419,7 @@ def main() -> None:
 		default=None,
 		help="Optional path to write detailed CSV report",
 	)
-	parser.add_argument(
-		"--timefilter",
+	parser.add_argument(		"--timefilter",
 		action="store_true",
 		help=f"Apply STARTDATASETTIMESTAMP filter ({STARTDATASETTIMESTAMP}) to sensor timestamps",
 	)
