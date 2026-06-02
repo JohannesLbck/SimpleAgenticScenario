@@ -238,12 +238,16 @@ def validate_dataset_gt_ranges(dataset_path: Path) -> list[dict[str, Any]]:
 	return mismatches
 
 
-def compare_log_with_csv(log_path: Path, dataset_path: Path) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+def compare_log_with_csv(
+	log_path: Path,
+	dataset_path: Path,
+	use_timefilter: bool = False,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
 	gt_targets = load_gt_targets(dataset_path)
 	dataset_rows = load_dataset_rows(dataset_path)
 	comparisons: list[dict[str, Any]] = []
 
-	last_dataset_timestamp = STARTDATASETTIMESTAMP
+	last_dataset_timestamp = STARTDATASETTIMESTAMP if use_timefilter else ""
 	pending_by_uuid: dict[str, int] = {}
 
 	with log_path.open("r", encoding="utf-8") as fh:
@@ -262,7 +266,8 @@ def compare_log_with_csv(log_path: Path, dataset_path: Path) -> tuple[list[dict[
 			if concept_name == SENSORCALLLABEL and cpee_transition == "activity/receiving":
 				ts = _extract_dataset_timestamp_from_getsensor(event)
 				if ts:
-					last_dataset_timestamp = ts
+					if not use_timefilter or ts >= STARTDATASETTIMESTAMP:
+						last_dataset_timestamp = ts
 				continue
 
 			if concept_name not in (LUMENCHANGELABEL, LUMENZEROINGLABEL):
@@ -411,9 +416,18 @@ def main() -> None:
 		default=None,
 		help="Optional path to write detailed CSV report",
 	)
+	parser.add_argument(
+		"--timefilter",
+		action="store_true",
+		help=f"Apply STARTDATASETTIMESTAMP filter ({STARTDATASETTIMESTAMP}) to sensor timestamps",
+	)
 	args = parser.parse_args()
 
-	rows, rule_mismatches = compare_log_with_csv(args.log, args.dataset)
+	rows, rule_mismatches = compare_log_with_csv(
+		args.log,
+		args.dataset,
+		use_timefilter=args.timefilter,
+	)
 	print_summary(rows, rule_mismatches)
 
 	if args.report is not None:
