@@ -22,7 +22,7 @@ class EnvironmentStatus < MCP::Tool
       MCP::Tool::Response.new([{
         type: "text",
         #text: "Ambient brightness is #{result['ambient_light_lux']} lux! Motion is #{result['motion_detected'] ? '' : 'not '}detected!",
-        text: "Ambient brightness is #{result['ambient_light_lux']} lux! The current brightness of the light is #{result['current_light_lumen']}! There are #{result['occupancy_count']} occupants! Motion is #{result['motion_detected'] ? '' : 'not '}detected! The time is currently #{result['dataset_timestamp'].split('T').last()}!",
+        text: "Ambient brightness is #{result['ambient_light_lux']} lux! The current brightness of the light is #{result['current_light_lumen']}! There are #{result['occupancy_count']} people in the room! Motion is #{result['motion_detected'] ? '' : 'not '}detected! The time is currently #{result['dataset_timestamp'].split('T').last()}!",
         #text: "Ambient brightness is #{result['ambient_light_lux']} lux! Motion is #{result['motion_detected'] ? '' : 'not '}detected! (#{result})",
       }])
     end
