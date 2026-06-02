@@ -142,6 +142,8 @@ class DatasetSimulatorState:
         self.started_at = datetime.now()
         self.last_mapped_second: float | None = None
         self.current_lumen = 0
+        self.ambient_light_lux = 0
+        self.last_timestamp = None
         self._load_dataset()
 
     def _load_dataset(self) -> None:
@@ -251,6 +253,14 @@ class DatasetSimulatorState:
         rows_since_last_read = self._rows_between(self.last_mapped_second, mapped_second)
         self.last_mapped_second = mapped_second
 
+        if self.last_timestamp is None:
+            self.last_timestamp = row["timestamp"]
+        elif row["timestamp"] == self.last_timestamp:
+            ambient_light = self.ambient_light_lux
+        else:
+            ambient_light = row["ambient_light_lux"]
+            self.last_timestamp = row["timestamp"]
+
         callbacks = [
             {
                 "dataset_timestamp": e["timestamp"].isoformat(),
@@ -267,7 +277,7 @@ class DatasetSimulatorState:
             "dataset_timestamp": row["timestamp"].isoformat(),
             "actual_timestamp": now.isoformat(),
             "trigger": row["trigger"],
-            "ambient_light_lux": row["ambient_light_lux"],
+            "ambient_light_lux": ambient_light,
             "occupancy_count": row["occupancy_count"],
             "motion_detected": row["motion_detected"],
             "hour": row["hour"],
@@ -468,6 +478,7 @@ async def change_lumens(request: Request, lumen: Optional[int] = None) -> JSONRe
         )
 
     state.current_lumen = lumen_value
+    state.ambient_light_lux = int(lumen_value / 7.5761 + state.ambient_light_lux)
     return JSONResponse(content={
         "status": "applied",
         "applied_lumen": state.current_lumen,
