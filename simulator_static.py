@@ -255,6 +255,7 @@ class DatasetSimulatorState:
 
         if self.last_timestamp is None:
             self.last_timestamp = row["timestamp"]
+            ambient_light = row["ambient_light_lux"]
         elif row["timestamp"] == self.last_timestamp:
             ambient_light = self.ambient_light_lux
         else:
