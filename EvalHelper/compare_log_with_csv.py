@@ -10,9 +10,12 @@ from typing import Any
 import yaml
 
 
-SENSORCALLLABEL = "GetSensor"
-TIMEOUTLABEL = "wait for next iteration"
-LUMENCHANGELABEL = "Change Lumens"
+#SENSORCALLLABEL = "GetSensor"
+SENSORCALLLABEL = "environment_status"
+#TIMEOUTLABEL = "wait for next iteration"
+TIMEOUTLABEL = "sleep"
+#LUMENCHANGELABEL = "Change Lumens"
+LUMENCHANGELABEL = "change_lumen"
 LUMENZEROINGLABEL = "Set lumen to 0"
 STARTDATASETTIMESTAMP = "2026-05-18T00:00:00"
 LUMEN_PER_LUX = 2 * math.pi * (3.0**2) * (1.0 - math.cos(math.radians(30.0)))
