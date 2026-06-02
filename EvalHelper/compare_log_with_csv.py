@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+from datetime import datetime
 import json
 import math
 from pathlib import Path
@@ -17,7 +18,7 @@ TIMEOUTLABEL = "wait for next iteration"
 LUMENCHANGELABEL = "Change Lumens"
 #LUMENCHANGELABEL = "change_lumen"
 LUMENZEROINGLABEL = "Set lumen to 0"
-STARTDATASETTIMESTAMP = "2026-05-18T00:00:00"
+STARTTIMESTAMP = "2026-06-02T09:51:23"
 LUMEN_PER_LUX = 2 * math.pi * (3.0**2) * (1.0 - math.cos(math.radians(30.0)))
 
 
@@ -97,6 +98,45 @@ def _parse_bool(value: Any) -> bool:
 	return str(value).strip().lower() in {"true", "1", "yes"}
 
 
+def _event_timestamp_text(value: Any) -> str:
+	if isinstance(value, datetime):
+		return value.isoformat(sep=" ")
+	return value if isinstance(value, str) else ""
+
+
+def _parse_timestamp(value: str) -> datetime:
+	s = value.strip()
+	if "T" in s:
+		date_part, time_part = s.split("T", 1)
+	else:
+		date_part, time_part = s.split(" ", 1)
+	time_part = time_part.strip().replace(" +", "+")
+	if time_part.count("-") == 1:
+		time_part = time_part.replace(" -", "-")
+	if "." in time_part:
+		base, remainder = time_part.split(".", 1)
+		frac_digits = []
+		suffix_start = 0
+		for index, char in enumerate(remainder):
+			if char.isdigit():
+				frac_digits.append(char)
+				suffix_start = index + 1
+			else:
+				break
+		frac = "".join(frac_digits)[:6]
+		suffix = remainder[suffix_start:]
+		time_part = f"{base}.{frac}{suffix}" if frac else f"{base}{suffix}"
+	parsed = datetime.fromisoformat(f"{date_part}T{time_part}")
+	return parsed.replace(tzinfo=None)
+
+
+def _timestamp_on_or_after(value: str, start: str) -> bool:
+	try:
+		return _parse_timestamp(value) >= _parse_timestamp(start)
+	except ValueError:
+		return value >= start
+
+
 def _time_of_day_target(hour: float, occupancy: int, movement: bool) -> tuple[float, float]:
 	if occupancy < 1:
 		return 0.0, 0.0
@@ -132,11 +172,13 @@ def _lux_to_lumen_range(target_low_lux: float, target_high_lux: float, ambient_l
 
 def _compute_expected_gt_range(row: dict[str, str]) -> tuple[int, int]:
 	ambient_lux = _parse_float(row.get("ambient_light_lux", 0.0))
+	current_light_lumen = _parse_float(row.get("Current Light Lumen", 0.0))
+	base_ambient_lux = max(0.0, ambient_lux - (current_light_lumen / LUMEN_PER_LUX))
 	occupancy = _parse_int(row.get("occupancy_count", 0)) or 0
 	movement = _parse_bool(row.get("motion_detected", False))
 	hour = _parse_float(row.get("hour", 0.0))
 	target_low_lux, target_high_lux = _time_of_day_target(hour, occupancy, movement)
-	return _lux_to_lumen_range(target_low_lux, target_high_lux, ambient_lux)
+	return _lux_to_lumen_range(target_low_lux, target_high_lux, base_ambient_lux)
 
 
 def _event_data_items(event: dict[str, Any]) -> list[dict[str, Any]]:
@@ -250,7 +292,7 @@ def compare_log_with_csv(
 	dataset_rows = load_dataset_rows(dataset_path)
 	comparisons: list[dict[str, Any]] = []
 
-	last_dataset_timestamp = STARTDATASETTIMESTAMP if use_timefilter else ""
+	last_timestamp = STARTTIMESTAMP if use_timefilter else ""
 	pending_by_uuid: dict[str, int] = {}
 
 	with log_path.open("r", encoding="utf-8") as fh:
@@ -265,18 +307,22 @@ def compare_log_with_csv(
 
 			cpee_transition = event.get("cpee:lifecycle:transition")
 			activity_uuid = event.get("cpee:activity_uuid")
+			event_time_str = _event_timestamp_text(event.get("time:timestamp"))
 
 			if concept_name == SENSORCALLLABEL and cpee_transition == "activity/receiving":
+				if use_timefilter and (not event_time_str or not _timestamp_on_or_after(event_time_str, STARTTIMESTAMP)):
+					continue
 				ts = _extract_dataset_timestamp_from_getsensor(event)
 				if ts:
-					if not use_timefilter or ts >= STARTDATASETTIMESTAMP:
-						last_dataset_timestamp = ts
+					last_timestamp = ts
 				continue
 
 			if concept_name not in (LUMENCHANGELABEL, LUMENZEROINGLABEL):
 				continue
 
 			if cpee_transition == "activity/calling":
+				if use_timefilter and (not event_time_str or not _timestamp_on_or_after(event_time_str, STARTTIMESTAMP)):
+					continue
 				lumen_value = _extract_lumen_from_call(event)
 				if lumen_value is None and concept_name == LUMENZEROINGLABEL:
 					lumen_value = 0
@@ -284,16 +330,16 @@ def compare_log_with_csv(
 				if isinstance(activity_uuid, str) and lumen_value is None:
 					pending_by_uuid[activity_uuid] = len(comparisons)
 
-				gt_range = gt_targets.get(last_dataset_timestamp)
+				gt_range = gt_targets.get(last_timestamp)
 				gt_min = gt_range[0] if gt_range is not None else None
 				gt_max = gt_range[1] if gt_range is not None else None
-				dataset_row = dataset_rows.get(last_dataset_timestamp, {})
+				dataset_row = dataset_rows.get(last_timestamp, {})
 				comparisons.append(
 					{
 						"concept:name": concept_name,
 						"activity_uuid": activity_uuid if isinstance(activity_uuid, str) else "",
-						"event_time": event.get("time:timestamp") if isinstance(event.get("time:timestamp"), str) else "",
-						"dataset_timestamp": last_dataset_timestamp,
+						"event_time": event_time_str,
+						"dataset_timestamp": last_timestamp,
 						"occupancy_count": dataset_row.get("occupancy_count"),
 						"ambient_light_lux": dataset_row.get("ambient_light_lux"),
 						"current_light_lumen": dataset_row.get("Current Light Lumen"),
@@ -421,7 +467,7 @@ def main() -> None:
 	)
 	parser.add_argument(		"--timefilter",
 		action="store_true",
-		help=f"Apply STARTDATASETTIMESTAMP filter ({STARTDATASETTIMESTAMP}) to sensor timestamps",
+		help=f"Apply STARTTIMESTAMP filter ({STARTTIMESTAMP}) to event timestamps",
 	)
 	args = parser.parse_args()
 
