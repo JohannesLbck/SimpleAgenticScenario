@@ -25,7 +25,7 @@ XES_YAML_LOG_FILE = "simulator_stepper.xes.yaml"
 #DATASET_FILE = "artificial_week_sensor_dataset.csv"
 DATASET_FILE = "artificial_week_sensor_dataset_no_user_input.csv"
 LOOP_DATASET_SECONDS = 7 * 24 * 60 * 60
-PORT = 4650
+PORT = 4649
 
 
 app = FastAPI(title="Stepper Sensor Dataset Simulator", version="1.0.0")
