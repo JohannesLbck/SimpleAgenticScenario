@@ -283,6 +283,14 @@ class DatasetSimulatorState:
             "gt_target_lumen_max": row["gt_target_max"],
             #"user_input": row["user_input"],
         }
+        logger.info(
+            "readsensor gt-range dataset_timestamp=%s actual_timestamp=%s gt_range=%s min=%s max=%s",
+            row["timestamp"].isoformat(),
+            now.isoformat(),
+            row["gt_target_range"],
+            row["gt_target_min"],
+            row["gt_target_max"],
+        )
         logger.info("readsensor response=%s", payload)
         return payload
 
@@ -473,7 +481,19 @@ async def change_lumens(request: Request, lumen: Optional[int] = None) -> JSONRe
             },
         )
 
+    now = datetime.now()
+    mapped_second = state._mapped_dataset_second(now)
+    row = state._row_at(mapped_second)
     state.current_lumen = lumen_value
+    logger.info(
+        "change_lumens gt-range dataset_timestamp=%s actual_timestamp=%s applied_lumen=%s gt_range=%s min=%s max=%s",
+        row["timestamp"].isoformat(),
+        now.isoformat(),
+        state.current_lumen,
+        row["gt_target_range"],
+        row["gt_target_min"],
+        row["gt_target_max"],
+    )
     return JSONResponse(content={
         "status": "applied",
         "applied_lumen": state.current_lumen,

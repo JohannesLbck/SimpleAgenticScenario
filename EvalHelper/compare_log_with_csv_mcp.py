@@ -259,14 +259,18 @@ def compare_log_with_csv(
     log_path: Path,
     dataset_path: Path,
     use_timefilter: bool = False,
-) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]], list[float]]:
     gt_targets = load_gt_targets(dataset_path)
     dataset_rows = load_dataset_rows(dataset_path)
     dataset_timestamps = load_dataset_timestamps(dataset_path)
     comparisons: list[dict[str, Any]] = []
+    false_negatives: list[dict[str, Any]] = []
+    reactivity_seconds: list[float] = []
 
     sensor_index = -1
     last_dataset_timestamp = ""
+    pending_required_change: dict[str, Any] | None = None
+    pending_sensor_time: str = ""
 
     with log_path.open("r", encoding="utf-8") as fh:
         for doc in yaml.safe_load_all(fh):
@@ -286,9 +290,23 @@ def compare_log_with_csv(
             if concept_name == SENSORCALLLABEL and transition == "start":
                 if use_timefilter and (not event_time_str or not _timestamp_on_or_after(event_time_str, STARTTIMESTAMP)):
                     continue
+                if pending_required_change is not None:
+                    false_negatives.append(pending_required_change)
+                    pending_required_change = None
                 sensor_index += 1
                 if 0 <= sensor_index < len(dataset_timestamps):
                     last_dataset_timestamp = dataset_timestamps[sensor_index]
+                    pending_sensor_time = event_time_str
+                    gt_range = gt_targets.get(last_dataset_timestamp)
+                    if gt_range is not None and gt_range[0] > 0:
+                        pending_required_change = {
+                            "event_time": event_time_str,
+                            "dataset_timestamp": last_dataset_timestamp,
+                            "gt_target": f"{gt_range[0]}-{gt_range[1]}",
+                            "gt_target_min": gt_range[0],
+                            "gt_target_max": gt_range[1],
+                            "reason": "missing_following_change_lumens",
+                        }
                 continue
 
             if concept_name not in (LUMENCHANGELABEL, LUMENZEROINGLABEL):
@@ -297,6 +315,20 @@ def compare_log_with_csv(
                 continue
             if use_timefilter and (not event_time_str or not _timestamp_on_or_after(event_time_str, STARTTIMESTAMP)):
                 continue
+
+            if pending_required_change is not None:
+                pending_required_change = None
+
+            reactivity_value: float | None = None
+            if pending_sensor_time and event_time_str:
+                try:
+                    delta_seconds = (_parse_timestamp(event_time_str) - _parse_timestamp(pending_sensor_time)).total_seconds()
+                    if delta_seconds >= 0:
+                        reactivity_value = delta_seconds
+                        reactivity_seconds.append(delta_seconds)
+                except ValueError:
+                    pass
+            pending_sensor_time = ""
 
             lumen_value = _extract_lumen_from_start_event(event)
             if lumen_value is None and concept_name == LUMENZEROINGLABEL:
@@ -325,38 +357,76 @@ def compare_log_with_csv(
                         if (lumen_value is not None and gt_range is not None)
                         else None
                     ),
+                    "classification": (
+                        "true_positive"
+                        if (lumen_value is not None and gt_range is not None and _in_gt_target_range(lumen_value, gt_range))
+                        else (
+                            "false_positive"
+                            if (lumen_value is not None and gt_range is not None)
+                            else "unknown"
+                        )
+                    ),
+                    "reactivity_seconds": reactivity_value,
                     "lumen_source": "start-data" if lumen_value is not None else "unknown",
                 }
             )
 
-    return comparisons, validate_dataset_gt_ranges(dataset_path)
+    if pending_required_change is not None:
+        false_negatives.append(pending_required_change)
+
+    return comparisons, validate_dataset_gt_ranges(dataset_path), false_negatives, reactivity_seconds
 
 
-def print_summary(rows: list[dict[str, Any]], rule_mismatches: list[dict[str, Any]]) -> None:
+def print_summary(
+    rows: list[dict[str, Any]],
+    rule_mismatches: list[dict[str, Any]],
+    false_negatives: list[dict[str, Any]],
+    reactivity_seconds: list[float],
+) -> None:
     comparable = [
         r
         for r in rows
         if r.get("lumen_sent") is not None and r.get("gt_target_min") is not None and r.get("gt_target_max") is not None
     ]
-    matches = [r for r in comparable if r.get("match") is True]
-    mismatches = [r for r in comparable if r.get("match") is False]
+    true_positives = [r for r in comparable if r.get("match") is True]
+    false_positives = [r for r in comparable if r.get("match") is False]
     missing_lumen = [r for r in rows if r.get("lumen_sent") is None]
     missing_gt = [r for r in rows if r.get("gt_target") is None]
+    tp = len(true_positives)
+    fp = len(false_positives)
+    fn = len(false_negatives)
+    precision = (tp / (tp + fp)) if (tp + fp) > 0 else 0.0
+    recall = (tp / (tp + fn)) if (tp + fn) > 0 else 0.0
+    f1 = (2 * precision * recall / (precision + recall)) if (precision + recall) > 0 else 0.0
+    reactivity_avg = (sum(reactivity_seconds) / len(reactivity_seconds)) if reactivity_seconds else 0.0
 
     print(f"Total lumen events: {len(rows)}")
     print(f"Comparable events: {len(comparable)}")
-    print(f"Matches: {len(matches)}")
-    print(f"Mismatches: {len(mismatches)}")
+    print(f"True positives: {tp}")
+    print(f"False positives: {fp}")
+    print(f"False negatives: {fn}")
     print(f"Missing lumen value: {len(missing_lumen)}")
     print(f"Missing GT target: {len(missing_gt)}")
+    print(f"Precision: {precision:.4f}")
+    print(f"Recall: {recall:.4f}")
+    print(f"F1 score: {f1:.4f}")
+    print(f"Average reactivity (s): {reactivity_avg:.4f} over {len(reactivity_seconds)} pairs")
     print(f"Rule mismatches: {len(rule_mismatches)}")
 
-    if mismatches:
-        print("\nFirst 20 mismatches:")
-        for row in mismatches[:20]:
+    if false_positives:
+        print("\nFirst 20 false positives:")
+        for row in false_positives[:20]:
             print(
                 f"- {row['event_time']} | {row['concept:name']} | "
                 f"dataset={row['dataset_timestamp']} | lumen={row['lumen_sent']} | gt_range={row['gt_target']}"
+            )
+
+    if false_negatives:
+        print("\nFirst 20 false negatives:")
+        for row in false_negatives[:20]:
+            print(
+                f"- {row['event_time']} | {SENSORCALLLABEL} start | "
+                f"dataset={row['dataset_timestamp']} | gt_range={row['gt_target']} | reason={row['reason']}"
             )
 
     if rule_mismatches:
@@ -382,12 +452,30 @@ def write_report(rows: list[dict[str, Any]], report_path: Path) -> None:
         "gt_target_min",
         "gt_target_max",
         "match",
+        "classification",
+        "reactivity_seconds",
         "lumen_source",
     ]
     with report_path.open("w", encoding="utf-8", newline="") as fh:
         writer = csv.DictWriter(fh, fieldnames=fieldnames)
         writer.writeheader()
         for row in rows:
+            writer.writerow({k: row.get(k) for k in fieldnames})
+
+
+def write_false_negative_report(false_negatives: list[dict[str, Any]], report_path: Path) -> None:
+    fieldnames = [
+        "event_time",
+        "dataset_timestamp",
+        "gt_target",
+        "gt_target_min",
+        "gt_target_max",
+        "reason",
+    ]
+    with report_path.open("w", encoding="utf-8", newline="") as fh:
+        writer = csv.DictWriter(fh, fieldnames=fieldnames)
+        writer.writeheader()
+        for row in false_negatives:
             writer.writerow({k: row.get(k) for k in fieldnames})
 
 
@@ -428,16 +516,20 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    rows, rule_mismatches = compare_log_with_csv(
+    rows, rule_mismatches, false_negatives, reactivity_seconds = compare_log_with_csv(
         args.log,
         args.dataset,
         use_timefilter=args.timefilter,
     )
-    print_summary(rows, rule_mismatches)
+    print_summary(rows, rule_mismatches, false_negatives, reactivity_seconds)
 
     if args.report is not None:
         write_report(rows, args.report)
         print(f"\nWrote report to {args.report}")
+        if false_negatives:
+            fn_report_path = args.report.with_name(f"{args.report.stem}.false_negatives.csv")
+            write_false_negative_report(false_negatives, fn_report_path)
+            print(f"Wrote false negative report to {fn_report_path}")
         if rule_mismatches:
             rule_report_path = args.report.with_name(f"{args.report.stem}.rule_mismatches.csv")
             write_rule_report(rule_mismatches, rule_report_path)
