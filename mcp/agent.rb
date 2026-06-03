@@ -2,6 +2,7 @@
 
 require 'ruby_llm'
 require "ruby_llm/mcp"
+require 'json'
 
 RubyLLM.configure do |config|
   config.anthropic_api_key = File.read(File.join(__dir__,'api.key'))
@@ -68,6 +69,7 @@ if(ARGV[0]) then
   puts "-------------------------------prompt:-------------------------------\n#{prompt}"
   response = anthropic_chat.ask(prompt)
   puts "-------------------------------answer:-------------------------------\n#{response.content()}"
+  File.write('messages.log',anthropic_chat.messages().map() { |message| "[#{message.role().to_s().upcase()}] #{message.content().strip()}" }.to_json())
 else
   puts "Provide the prompt as an argument!"
 end
