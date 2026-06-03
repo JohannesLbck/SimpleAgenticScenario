@@ -79,7 +79,9 @@ def _parse_gt_target_range(value: Any) -> tuple[int, int] | None:
 
 
 def _in_gt_target_range(lumen_value: int, gt_range: tuple[int, int]) -> bool:
-    return gt_range[0] <= lumen_value <= gt_range[1]
+    #return gt_range[0] <= lumen_value <= gt_range[1]
+    return (gt_range[0] <= lumen_value) and (lumen_value <= gt_range[1])
+
 
 
 def _parse_float(value: Any, default: float = 0.0) -> float:
@@ -293,7 +295,7 @@ def compare_log_with_csv(
 
             if concept_name not in (LUMENCHANGELABEL, LUMENZEROINGLABEL):
                 continue
-            if transition not in ("start", "activity/calling"):
+            if transition not in ("start", "activity/calling","complete"):
                 continue
             if use_timefilter and (not event_time_str or not _timestamp_on_or_after(event_time_str, STARTTIMESTAMP)):
                 continue
