@@ -8,6 +8,7 @@ NS_DESC = "http://cpee.org/ns/description/1.0"
 STRUCTURAL_TAGS = {
     "description",
     "call",
+    "manipulate",
     "parallel",
     "parallel_branch",
     "choose",
@@ -18,7 +19,7 @@ STRUCTURAL_TAGS = {
     "stop",
 }
 SEQUENCE_WRAPPER_TAGS = {"description", "parallel_branch", "alternative", "otherwise"}
-ACTIVITY_TAGS = {"call", "terminate", "stop"}
+ACTIVITY_TAGS = {"call", "manipulate", "terminate", "stop"}
 
 
 class Segment:
