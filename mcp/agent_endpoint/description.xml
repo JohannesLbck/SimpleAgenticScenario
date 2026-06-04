@@ -1,0 +1,18 @@
+<description datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" xmlns="http://riddl.org/ns/description/1.0" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+  <message name="llm_call">
+    <parameter name="prompt" type="string"/>
+    <parameter name="model" type="string"/>
+  </message>
+
+  <message name="json">
+    <parameter name="json" mimetype="application/json"/>
+  </message>
+
+  <resource>
+    <resource relative="llm_call">
+      <post in="llm_call" out="json"/>
+    </resource>
+  </resource>
+
+</description>
