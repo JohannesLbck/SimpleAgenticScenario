@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require 'bundler/setup'
 require 'riddl/server'
 require 'json'
 require 'ruby_llm'
@@ -16,18 +17,18 @@ class LLMCall < Riddl::Implementation
       config.log_level = :debug
       config.request_timeout = 600
     end
-    
+
     model = @p[1].value()
     anthropic_chat = RubyLLM.chat(model: model,provider: :anthropic,assume_model_exists: true)
     #anthropic_chat = RubyLLM.chat(model: 'mistralai/Ministral-3-14B-Reasoning-2512',provider: :anthropic,assume_model_exists: true)
     #anthropic_chat = RubyLLM.chat(model: 'google/gemma-4-31B-it',provider: :anthropic,assume_model_exists: true)
     #anthropic_chat = RubyLLM.chat(model: 'Qwen/Qwen3.6-35B-A3B',provider: :anthropic,assume_model_exists: true)
     #anthropic_chat = RubyLLM.chat(model: 'qwen-35-35b-coding',provider: :anthropic,assume_model_exists: true)
-    
+
     RubyLLM::MCP.configure do |config|
       config.default_adapter = :ruby_llm
     end
-    
+
     light_client = RubyLLM::MCP.client(
       name: "light",
       adapter: :ruby_llm,
@@ -36,7 +37,7 @@ class LLMCall < Riddl::Implementation
         url: "http://localhost:4567/_mcp",
       }
     )
-    
+
     sleep_client = RubyLLM::MCP.client(
       name: "sleep",
       adapter: :ruby_llm,
@@ -45,7 +46,7 @@ class LLMCall < Riddl::Implementation
         url: "http://localhost:4568/_mcp",
       }
     )
-    
+
     log_client = RubyLLM::MCP.client(
       name: "log",
       adapter: :ruby_llm,
@@ -54,7 +55,7 @@ class LLMCall < Riddl::Implementation
         url: "http://localhost:4569/_mcp",
       }
     )
-    
+
     anthropic_chat.with_tools(*light_client.tools)
     anthropic_chat.with_tools(*sleep_client.tools)
     anthropic_chat.with_tools(*log_client.tools)
@@ -64,7 +65,7 @@ class LLMCall < Riddl::Implementation
     callback = @h['CPEE_CALLBACK']
     pp callback
     if(callback.nil?().!())
-      Thread.new(prompt,callback) { |prompt,callback| 
+      Thread.new(prompt,callback) { |prompt,callback|
         resp = anthropic_chat.ask(prompt)
         Riddl::Client.new(callback).put [
           Riddl::Parameter::Complex.new("json","application/json",{:response => resp.content()}.to_json)

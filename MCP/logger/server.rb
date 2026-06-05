@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require 'bundler/setup'
 require 'riddl/server'
 require 'psych'
 require 'json'
@@ -23,7 +24,7 @@ class LogEvent < Riddl::Implementation
     pp event
     #File.write('log.log','a',flags:(File::CREAT | File::APPEND))
     File.write('log.log',"#{event.to_yaml()}",mode:'a+')
-    return 
+    return
   end
 end
 

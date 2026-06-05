@@ -1,0 +1,234 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    addressable (2.9.0)
+      public_suffix (>= 2.0.2, < 8.0)
+    base64 (0.3.0)
+    bigdecimal (4.1.2)
+    charlock_holmes (0.7.9)
+    connection_pool (3.0.2)
+    daemonite (0.7.1)
+    daemons (1.4.1)
+    em-websocket (0.5.3)
+      eventmachine (>= 0.12.9)
+      http_parser.rb (~> 0)
+    ethon (0.18.0)
+      ffi (>= 1.15.0)
+      logger
+    event_stream_parser (1.0.0)
+    eventmachine (1.2.7)
+    faraday (2.14.2)
+      faraday-net_http (>= 2.0, < 3.5)
+      json
+      logger
+    faraday-multipart (1.2.0)
+      multipart-post (~> 2.0)
+    faraday-net_http (3.4.4)
+      net-http (~> 0.5)
+    faraday-retry (2.4.0)
+      faraday (~> 2.0)
+    faye-websocket (0.12.0)
+      eventmachine (>= 0.12.0)
+      websocket-driver (>= 0.8.0)
+    ffi (1.17.4-aarch64-linux-gnu)
+    ffi (1.17.4-aarch64-linux-musl)
+    ffi (1.17.4-arm-linux-gnu)
+    ffi (1.17.4-arm-linux-musl)
+    ffi (1.17.4-arm64-darwin)
+    ffi (1.17.4-x86_64-darwin)
+    ffi (1.17.4-x86_64-linux-gnu)
+    ffi (1.17.4-x86_64-linux-musl)
+    http_parser.rb (0.8.1)
+    io-console (0.8.2)
+    json (2.19.8)
+    json-schema (6.2.0)
+      addressable (~> 2.8)
+      bigdecimal (>= 3.1, < 5)
+    logger (1.7.0)
+    marcel (1.2.1)
+    mcp (0.18.0)
+      json-schema (>= 4.1)
+    mime-types (3.7.0)
+      logger
+      mime-types-data (~> 3.2025, >= 3.2025.0507)
+    mime-types-data (3.2026.0414)
+    minitest (5.27.0)
+    mize (0.6.1)
+    multipart-post (2.4.1)
+    mustermann (3.1.1)
+    net-http (0.9.1)
+      uri (>= 0.11.1)
+    nokogiri (1.19.3-aarch64-linux-gnu)
+      racc (~> 1.4)
+    nokogiri (1.19.3-aarch64-linux-musl)
+      racc (~> 1.4)
+    nokogiri (1.19.3-arm-linux-gnu)
+      racc (~> 1.4)
+    nokogiri (1.19.3-arm-linux-musl)
+      racc (~> 1.4)
+    nokogiri (1.19.3-arm64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.19.3-x86_64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.19.3-x86_64-linux-gnu)
+      racc (~> 1.4)
+    nokogiri (1.19.3-x86_64-linux-musl)
+      racc (~> 1.4)
+    public_suffix (7.0.5)
+    racc (1.8.1)
+    rack (2.2.23)
+    rack-protection (3.2.0)
+      base64 (>= 0.1.0)
+      rack (~> 2.2, >= 2.2.4)
+    readline (0.0.4)
+      reline
+    redis (5.4.1)
+      redis-client (>= 0.22.0)
+    redis-client (0.29.0)
+      connection_pool
+    reline (0.6.3)
+      io-console (~> 0.5)
+    riddl (1.0.12)
+      charlock_holmes (~> 0, >= 0.7)
+      daemonite (~> 0.7, >= 0.7.0)
+      em-websocket (~> 0, >= 0.5.2)
+      eventmachine (~> 1.0, >= 1.0.0)
+      faye-websocket (~> 0, >= 0.1)
+      mime-types (~> 3, >= 3.0)
+      minitest (~> 5, >= 5.0.0)
+      rack (~> 2.2)
+      redis (~> 5.0)
+      thin (~> 1.6)
+      typhoeus (~> 1.3)
+      xml-smart (~> 0, >= 0.4.3)
+    ruby_llm (1.15.0)
+      base64
+      event_stream_parser (~> 1)
+      faraday (>= 1.10.0)
+      faraday-multipart (>= 1)
+      faraday-net_http (>= 1)
+      faraday-retry (>= 1)
+      marcel (~> 1)
+      ruby_llm-schema (~> 0)
+      zeitwerk (~> 2)
+    ruby_llm-schema (0.4.0)
+    sinatra (3.2.0)
+      mustermann (~> 3.0)
+      rack (~> 2.2, >= 2.2.4)
+      rack-protection (= 3.2.0)
+      tilt (~> 2.0)
+    sync (0.5.0)
+    term-ansicolor (1.11.3)
+      tins (~> 1)
+    thin (1.8.2)
+      daemons (~> 1.0, >= 1.0.9)
+      eventmachine (~> 1.0, >= 1.0.4)
+      rack (>= 1, < 3)
+    tilt (2.7.0)
+    tins (1.54.0)
+      bigdecimal
+      mize (~> 0.6)
+      readline
+      sync
+    typhoeus (1.6.0)
+      ethon (>= 0.18.0)
+    uri (1.1.1)
+    websocket-driver (0.8.1)
+      base64
+      websocket-extensions (>= 0.1.0)
+    websocket-extensions (0.1.5)
+    xml-smart (0.5.5)
+      minitest (~> 5, >= 5.0.0)
+      nokogiri (~> 1, >= 1.6.6)
+      term-ansicolor (~> 1, >= 1.3)
+    zeitwerk (2.8.2)
+
+PLATFORMS
+  aarch64-linux-gnu
+  aarch64-linux-musl
+  arm-linux-gnu
+  arm-linux-musl
+  arm64-darwin
+  x86_64-darwin
+  x86_64-linux-gnu
+  x86_64-linux-musl
+
+DEPENDENCIES
+  mcp
+  riddl
+  ruby_llm
+  sinatra
+
+CHECKSUMS
+  addressable (2.9.0) sha256=7fdf6ac3660f7f4e867a0838be3f6cf722ace541dd97767fa42bc6cfa980c7af
+  base64 (0.3.0) sha256=27337aeabad6ffae05c265c450490628ef3ebd4b67be58257393227588f5a97b
+  bigdecimal (4.1.2) sha256=53d217666027eab4280346fba98e7d5b66baaae1b9c3c1c0ffe89d48188a3fbd
+  charlock_holmes (0.7.9) sha256=b49e8a11ce1921e2c5b65511bb864ae51720ce9bd1c336ccf0e89e6c8ae62db0
+  connection_pool (3.0.2) sha256=33fff5ba71a12d2aa26cb72b1db8bba2a1a01823559fb01d29eb74c286e62e0a
+  daemonite (0.7.1) sha256=fd465aa0b64f4e3d6ca02637ab6dfecd7351e99bb547db81a6d64a589c347c84
+  daemons (1.4.1) sha256=8fc76d76faec669feb5e455d72f35bd4c46dc6735e28c420afb822fac1fa9a1d
+  em-websocket (0.5.3) sha256=f56a92bde4e6cb879256d58ee31f124181f68f8887bd14d53d5d9a292758c6a8
+  ethon (0.18.0) sha256=b598afc9f30448cb068b850714b7d6948e941476095d04f90a4ac65b8d6efcb2
+  event_stream_parser (1.0.0) sha256=a2683bab70126286f8184dc88f7968ffc4028f813161fb073ec90d171f7de3c8
+  eventmachine (1.2.7) sha256=994016e42aa041477ba9cff45cbe50de2047f25dd418eba003e84f0d16560972
+  faraday (2.14.2) sha256=73ccb9994a9e8648f010e32eca2ae82e41c57860aa10932cda29418b9e0223ad
+  faraday-multipart (1.2.0) sha256=7d89a949693714176f612323ca13746a2ded204031a6ba528adee788694ef757
+  faraday-net_http (3.4.4) sha256=0e78af151747ed1b00f33e25973b4bc220d7f16c00c39676817c8b12331eb588
+  faraday-retry (2.4.0) sha256=7b79c48fb7e56526faf247b12d94a680071ff40c9fda7cf1ec1549439ad11ebe
+  faye-websocket (0.12.0) sha256=ad9f7dfcd0306d0a13baeee450729657661129af15bb5f38716c242484ab42e1
+  ffi (1.17.4-aarch64-linux-gnu) sha256=b208f06f91ffd8f5e1193da3cae3d2ccfc27fc36fba577baf698d26d91c080df
+  ffi (1.17.4-aarch64-linux-musl) sha256=9286b7a615f2676245283aef0a0a3b475ae3aae2bb5448baace630bb77b91f39
+  ffi (1.17.4-arm-linux-gnu) sha256=d6dbddf7cb77bf955411af5f187a65b8cd378cb003c15c05697f5feee1cb1564
+  ffi (1.17.4-arm-linux-musl) sha256=9d4838ded0465bef6e2426935f6bcc93134b6616785a84ffd2a3d82bc3cf6f95
+  ffi (1.17.4-arm64-darwin) sha256=19071aaf1419251b0a46852abf960e77330a3b334d13a4ab51d58b31a937001b
+  ffi (1.17.4-x86_64-darwin) sha256=aa70390523cf3235096cf64962b709b4cfbd5c082a2cb2ae714eb0fe2ccda496
+  ffi (1.17.4-x86_64-linux-gnu) sha256=9d3db14c2eae074b382fa9c083fe95aec6e0a1451da249eab096c34002bc752d
+  ffi (1.17.4-x86_64-linux-musl) sha256=3fdf9888483de005f8ef8d1cf2d3b20d86626af206cbf780f6a6a12439a9c49e
+  http_parser.rb (0.8.1) sha256=9ae8df145b39aa5398b2f90090d651c67bd8e2ebfe4507c966579f641e11097a
+  io-console (0.8.2) sha256=d6e3ae7a7cc7574f4b8893b4fca2162e57a825b223a177b7afa236c5ef9814cc
+  json (2.19.8) sha256=6354310fd76ef69b87d5bd1f38b40d730613baf90b6803d2d0a48f618d32dfaa
+  json-schema (6.2.0) sha256=e8bff46ed845a22c1ab2bd0d7eccf831c01fe23bb3920caa4c74db4306813666
+  logger (1.7.0) sha256=196edec7cc44b66cfb40f9755ce11b392f21f7967696af15d274dde7edff0203
+  marcel (1.2.1) sha256=1678e9360e32f9eafa917c80029e2f6d10b2715c66a4b87b6d0da9b9cd1f859f
+  mcp (0.18.0) sha256=4d8ec572c1536f53370196539d5272355fb6480ed969ea58a8d24917ee2562c8
+  mime-types (3.7.0) sha256=dcebf61c246f08e15a4de34e386ebe8233791e868564a470c3fe77c00eed5e56
+  mime-types-data (3.2026.0414) sha256=461c4c655373a44bd6c5fe54bcf5b7776026ea96e808144b1ec465c4b99148cc
+  minitest (5.27.0) sha256=2d3b17f8a36fe7801c1adcffdbc38233b938eb0b4966e97a6739055a45fa77d5
+  mize (0.6.1) sha256=4031558979ff5426fda24c75a149b4e4c0faf4cacf2fae8938f83866ab94b780
+  multipart-post (2.4.1) sha256=9872d03a8e552020ca096adadbf5e3cb1cd1cdd6acd3c161136b8a5737cdb4a8
+  mustermann (3.1.1) sha256=4c6170c7234d5499c345562ba7c7dfe73e1754286dcc1abb053064d66a127198
+  net-http (0.9.1) sha256=25ba0b67c63e89df626ed8fac771d0ad24ad151a858af2cc8e6a716ca4336996
+  nokogiri (1.19.3-aarch64-linux-gnu) sha256=46b89e5d7b9e844c2ee360794240c6ea2a4e6fa0c5892a4ed487db621224b639
+  nokogiri (1.19.3-aarch64-linux-musl) sha256=8392dfdcd21be7a94dbbe9ccc138dea01b97b24cb2dc02a114ca98bfb1d9a0b7
+  nokogiri (1.19.3-arm-linux-gnu) sha256=3919d5ffc334ad778a4a9eb88fda7dcb8b1fb58c8a52ac640c6dcd2f038e774f
+  nokogiri (1.19.3-arm-linux-musl) sha256=9ce1cb6346bb9c67b1550eb537aa183ead91e4b6eadb2f36ade02d8dd2a79fb6
+  nokogiri (1.19.3-arm64-darwin) sha256=71b9bd424b1b7abc18b05052a1a3cfd3627abdca62be280854cc411791357e42
+  nokogiri (1.19.3-x86_64-darwin) sha256=77f3fba57d46c53ab31e62fc6c28f705109d1bf6264356c76f132b2be5728d4d
+  nokogiri (1.19.3-x86_64-linux-gnu) sha256=2f5078620fe12e83669b5b17311b32532a8153d02eee7ad06948b926d6080976
+  nokogiri (1.19.3-x86_64-linux-musl) sha256=248c906d2166eca5efb56d52fdee5f9a1f51d69a72e2b64fdac647b4ce39ea3f
+  public_suffix (7.0.5) sha256=1a8bb08f1bbea19228d3bed6e5ed908d1cb4f7c2726d18bd9cadf60bc676f623
+  racc (1.8.1) sha256=4a7f6929691dbec8b5209a0b373bc2614882b55fc5d2e447a21aaa691303d62f
+  rack (2.2.23) sha256=a8fe9d7e07064770b8ec123663fded8a59ef7e2b6db5cda7173d45a5718ab69c
+  rack-protection (3.2.0) sha256=3c74ba7fc59066453d61af9bcba5b6fe7a9b3dab6f445418d3b391d5ea8efbff
+  readline (0.0.4) sha256=6138eef17be2b98298b672c3ea63bf9cb5158d401324f26e1e84f235879c1d6a
+  redis (5.4.1) sha256=b5e675b57ad22b15c9bcc765d5ac26f60b675408af916d31527af9bd5a81faae
+  redis-client (0.29.0) sha256=0c65bf1f8f6dca22063ddb085c0bb2054feef6f03a84869f4161b18a9a15bea3
+  reline (0.6.3) sha256=1198b04973565b36ec0f11542ab3f5cfeeec34823f4e54cebde90968092b1835
+  riddl (1.0.12) sha256=4f47fd45448ba66fd245f877a2885ade061324625eb9fe3978515a216930bf1c
+  ruby_llm (1.15.0) sha256=ca207465bca1cca007010a79fce500d4012b1fbe188b025040cd37b884fb98af
+  ruby_llm-schema (0.4.0) sha256=e930f5a5316f9301bff3fb7fe572e44727d05bb8e50621001bbb49a47d63b8da
+  sinatra (3.2.0) sha256=6e727f4d034e87067d9aab37f328021d7c16722ffd293ef07b6e968915109807
+  sync (0.5.0) sha256=668356cc07c59ac7ed9ecf34fec3929831f179c07adb1f3e1c3b7a1609a638fd
+  term-ansicolor (1.11.3) sha256=8c01ec3abd095eb94dca8aed5a127d36e594239eb525eb306259c9e930534603
+  thin (1.8.2) sha256=1c55251aba5bee7cf6936ea18b048f4d3c74ef810aa5e6906cf6edff0df6e121
+  tilt (2.7.0) sha256=0d5b9ba69f6a36490c64b0eee9f6e9aad517e20dcc848800a06eb116f08c6ab3
+  tins (1.54.0) sha256=62e14ff2f8ace5eb52828f7262987a434f8411de3aac2aa27ef4680446557af9
+  typhoeus (1.6.0) sha256=bacc41c23e379547e29801dc235cd1699b70b955a1ba3d32b2b877aa844c331d
+  uri (1.1.1) sha256=379fa58d27ffb1387eaada68c749d1426738bd0f654d812fcc07e7568f5c57c6
+  websocket-driver (0.8.1) sha256=5ab238238ce230e5d4b262d2be39624c867914eab99171dc4952b58b577c2d96
+  websocket-extensions (0.1.5) sha256=1c6ba63092cda343eb53fc657110c71c754c56484aad42578495227d717a8241
+  xml-smart (0.5.5) sha256=7d70d2a21d2c708ccb78054cbf37f02bc2df8ee3cd338a823bd3d88dcc5b6835
+  zeitwerk (2.8.2) sha256=7212a61311083c604184b1ea2574b9aa05cd14f855a0841c06985cabe9181d12
+
+BUNDLED WITH
+  4.0.3

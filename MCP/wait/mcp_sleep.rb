@@ -1,3 +1,4 @@
+require 'bundler/setup'
 require "mcp"
 require "riddl/client"
 require "sinatra"

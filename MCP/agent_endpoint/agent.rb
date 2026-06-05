@@ -1,5 +1,5 @@
 #!/bin/ruby
-
+require 'bundler/setup'
 require 'ruby_llm'
 require 'ruby_llm/mcp'
 require 'json'
