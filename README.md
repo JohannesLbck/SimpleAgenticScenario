@@ -10,30 +10,28 @@ The project is useful for testing different control styles (LLM-based, heuristic
 
 ## Repository Overview
 
-- `agent.py`: FastAPI lighting agent service (LLM + heuristic fallback)
 - `Simulators/simulator.py`: dynamic simulator (randomized environment)
 - `Simulators/simulator_static.py`: dataset-driven simulator and ground-truth provider
 - `EvalHelper/`: log comparison and evaluation utilities
 - `EvalHelper/MetricCalculation/`: cyclomatic and ABC metric scripts for process XML files
-- `mcp/`: Ruby MCP tool servers + orchestration scripts (`oo1.sh`, `oo3.sh`, `ootest.sh`)
+- `mcp/`: MCP tool servers + orchestration scripts (`oo1.sh`, `oo3.sh`, `ootest.sh`)
 
 ## Architecture at a Glance
 
-Python path:
+Simulator, EvalHelper:
 
 1. Simulator exposes sensor endpoints and a lumen actuator endpoint
-2. Agent reads sensor signals, chooses target lumen, applies change
-3. Logs are evaluated with scripts in `EvalHelper/`
+2. Logs are evaluated with scripts in `EvalHelper`
 
-MCP path:
+MCP:
 
-1. Ruby MCP servers expose tools (`light`, `sleep`, `log`)
+1. MCP servers expose tools (`light`, `sleep`, `log`) which are connected with the python endpoints
 2. `mcp/agent.rb` invokes an LLM with these tools
-3. Logs are written and compared with evaluation scripts
+3. Logs are written and compared using `EvalHelper`
 
 ## Prerequisites
 
-## Python services
+## Simulator, EvalHelper:
 
 - Python 3.10+
 - Virtual environment recommended
@@ -41,20 +39,20 @@ MCP path:
 Install:
 
 ```bash
-cd /home/johannesl/Papers/AgenticFundamentals/SimpleAgenticScenario
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Ruby MCP services
+## MCP:
 
-You need Ruby plus gems used by the scripts:
+- Ruby 3.4+
+  
+Install:
 
-- `sinatra`
-- `mcp`
-- `riddl-client` / `riddl-server`
-- `ruby_llm`
+```bash
+bundler install
+```
 
 The MCP LLM scripts expect API credentials in:
 
@@ -63,19 +61,10 @@ The MCP LLM scripts expect API credentials in:
 
 ## Ports and Endpoints
 
-Python services:
+Simulator, EvalHelper:
 
-- Agent: `http://127.0.0.1:4749`
 - Static simulator: `http://127.0.0.1:4649`
 - Dynamic simulator: `http://127.0.0.1:4648`
-
-Useful agent endpoints:
-
-- `GET /health`
-- `POST /allinonelightagent`
-- `POST /deterministiclightagent`
-- `POST /lightagent`
-- `POST /light_agent` (alias)
 
 Useful simulator endpoints:
 
@@ -90,51 +79,51 @@ MCP services (expected by `mcp/agent.rb`):
 - Sleep MCP: `http://localhost:4568/_mcp`
 - Logger MCP: `http://localhost:4569/_mcp`
 
-Additional Ruby service ports:
+Additional MCP service ports:
 
 - Logger backend (`mcp/logger/server.rb`): `9091`
 - Agent endpoint (`mcp/agent_endpoint/server.rb`): `9092`
 
-## Quickstart (Python-Only Flow)
+## Quickstart (Python Flow)
 
 Run static simulator in one terminal:
 
 ```bash
-cd /home/johannesl/Papers/AgenticFundamentals/SimpleAgenticScenario/Simulators
+cd ~/Papers/AgenticFundamentals/SimpleAgenticScenario/Simulators
 source ../.venv/bin/activate
 python simulator_static.py --foreground
 ```
 
-## Running MCP Services
+## Quickstart (Ruby Flow)
 
 Start logger backend:
 
 ```bash
-cd /home/johannesl/Papers/AgenticFundamentals/SimpleAgenticScenario/mcp/logger
+cd ~/Papers/AgenticFundamentals/SimpleAgenticScenario/mcp/logger
 ruby server.rb
 ```
 
 Start MCP tool servers:
 
 ```bash
-cd /home/johannesl/Papers/AgenticFundamentals/SimpleAgenticScenario/mcp/light_sim_johannes
+cd ~/Papers/AgenticFundamentals/SimpleAgenticScenario/mcp/light_sim_johannes
 ruby -rsinatra -e 'set :port, 4567; load "mcp_light.rb"'
 ```
 
 ```bash
-cd /home/johannesl/Papers/AgenticFundamentals/SimpleAgenticScenario/mcp/wait
+cd ~/Papers/AgenticFundamentals/SimpleAgenticScenario/mcp/wait
 ruby mcp_sleep.rb
 ```
 
 ```bash
-cd /home/johannesl/Papers/AgenticFundamentals/SimpleAgenticScenario/mcp/logger
+cd ~/Papers/AgenticFundamentals/SimpleAgenticScenario/mcp/logger
 ruby mcp_logger.rb
 ```
 
 Run an orchestration experiment prompt:
 
 ```bash
-cd /home/johannesl/Papers/AgenticFundamentals/SimpleAgenticScenario/mcp
+cd !/Papers/AgenticFundamentals/SimpleAgenticScenario/mcp
 ./oo1.sh
 # or
 ./oo3.sh
@@ -145,7 +134,7 @@ cd /home/johannesl/Papers/AgenticFundamentals/SimpleAgenticScenario/mcp
 Direct invocation:
 
 ```bash
-cd /home/johannesl/Papers/AgenticFundamentals/SimpleAgenticScenario/mcp
+cd ~/Papers/AgenticFundamentals/SimpleAgenticScenario/mcp
 ruby agent.rb "Your instruction prompt here"
 ```
 
@@ -163,7 +152,7 @@ From `EvalHelper/`:
 Example:
 
 ```bash
-cd /home/johannesl/Papers/AgenticFundamentals/SimpleAgenticScenario/EvalHelper
+cd ~/Papers/AgenticFundamentals/SimpleAgenticScenario/EvalHelper
 python eval_sensor_log.py ../Simulators/simulator_static.log --report report.csv
 ```
 
@@ -193,7 +182,7 @@ From `EvalHelper/MetricCalculation/`:
 Examples:
 
 ```bash
-cd /home/johannesl/Papers/AgenticFundamentals/SimpleAgenticScenario/EvalHelper/MetricCalculation
+cd ~/Papers/AgenticFundamentals/SimpleAgenticScenario/EvalHelper/MetricCalculation
 python evaluate_all.py /path/to/process.xml
 ```
 
