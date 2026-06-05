@@ -54,3 +54,5 @@ Thumbs.db
 
 # key files
 *.key
+
+*.pid
