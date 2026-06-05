@@ -31,8 +31,8 @@ htmlcov/
 .nox/
 
 # Logs
-*.log
-*.xes.yaml
+#*.log
+#*.xes.yaml
 
 # IDE / editor
 .vscode/
