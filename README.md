@@ -10,7 +10,6 @@ The project is useful for testing different control styles (LLM-based, heuristic
 
 ## Repository Overview
 
-- `agent.py`: FastAPI lighting agent service (LLM + heuristic fallback)
 - `Simulators/simulator.py`: dynamic simulator (randomized environment)
 - `Simulators/simulator_static.py`: dataset-driven simulator and ground-truth provider
 - `EvalHelper/`: log comparison and evaluation utilities
@@ -19,17 +18,16 @@ The project is useful for testing different control styles (LLM-based, heuristic
 
 ## Architecture at a Glance
 
-Python path:
+Python:
 
 1. Simulator exposes sensor endpoints and a lumen actuator endpoint
-2. Agent reads sensor signals, chooses target lumen, applies change
-3. Logs are evaluated with scripts in `EvalHelper/`
+2. Logs are evaluated with scripts in `EvalHelper/`
 
-MCP path:
+MCP:
 
-1. Ruby MCP servers expose tools (`light`, `sleep`, `log`)
+1. Ruby MCP servers expose tools (`light`, `sleep`, `log`) which are connected with the python endpoints
 2. `mcp/agent.rb` invokes an LLM with these tools
-3. Logs are written and compared with evaluation scripts
+3. Logs are written and compared using python eval scripts
 
 ## Prerequisites
 
@@ -41,7 +39,6 @@ MCP path:
 Install:
 
 ```bash
-cd /home/johannesl/Papers/AgenticFundamentals/SimpleAgenticScenario
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -65,17 +62,8 @@ The MCP LLM scripts expect API credentials in:
 
 Python services:
 
-- Agent: `http://127.0.0.1:4749`
 - Static simulator: `http://127.0.0.1:4649`
 - Dynamic simulator: `http://127.0.0.1:4648`
-
-Useful agent endpoints:
-
-- `GET /health`
-- `POST /allinonelightagent`
-- `POST /deterministiclightagent`
-- `POST /lightagent`
-- `POST /light_agent` (alias)
 
 Useful simulator endpoints:
 
