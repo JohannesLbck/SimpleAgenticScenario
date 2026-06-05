@@ -105,22 +105,6 @@ source ../.venv/bin/activate
 python simulator_static.py --foreground
 ```
 
-Run agent in another terminal:
-
-```bash
-cd /home/johannesl/Papers/AgenticFundamentals/SimpleAgenticScenario
-source .venv/bin/activate
-SIMULATOR_BASE_URL=http://127.0.0.1:4649 python agent.py --foreground
-```
-
-Trigger a decision:
-
-```bash
-curl -X POST http://127.0.0.1:4749/deterministiclightagent \
-  -H "Content-Type: application/json" \
-  -d '{"apply_to_lumen_service": true}'
-```
-
 ## Running MCP Services
 
 Start logger backend:
