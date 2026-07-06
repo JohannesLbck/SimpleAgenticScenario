@@ -74,6 +74,7 @@ def _in_gt_target_range(lumen_value: int, gt_range: tuple[int, int]) -> bool:
 def parse_simulator_log(
     log_path: Path,
     start_timestamp: datetime | None,
+    end_timestamp: datetime | None = None,
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     sensors: list[dict[str, Any]] = []
     changes: list[dict[str, Any]] = []
@@ -83,6 +84,8 @@ def parse_simulator_log(
         for line in fh:
             line_ts = _parse_log_line_timestamp(line)
             if start_timestamp is not None and line_ts is not None and line_ts < start_timestamp:
+                continue
+            if end_timestamp is not None and line_ts is not None and line_ts > end_timestamp:
                 continue
 
             sensor_match = SENSOR_GT_RE.search(line)
@@ -143,8 +146,9 @@ def parse_simulator_log(
 def evaluate(
     log_path: Path,
     start_timestamp: datetime | None,
+    end_timestamp: datetime | None = None,
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[float]]:
-    sensors, changes = parse_simulator_log(log_path, start_timestamp)
+    sensors, changes = parse_simulator_log(log_path, start_timestamp, end_timestamp)
 
     comparisons: list[dict[str, Any]] = []
     false_negatives: list[dict[str, Any]] = []
@@ -246,6 +250,7 @@ def print_summary(
     false_negatives: list[dict[str, Any]],
     reactivity_seconds: list[float],
     start_timestamp: datetime | None,
+    end_timestamp: datetime | None,
 ) -> None:
     true_positives = [r for r in rows if r.get("match") is True]
     false_positives = [r for r in rows if r.get("match") is False]
@@ -332,6 +337,13 @@ def main() -> None:
         help="Only include log lines at or after this timestamp (e.g. 2026-06-03T14:22:00)",
     )
     parser.add_argument(
+        "--to",
+        dest="end",
+        default=None,
+        metavar="TIMESTAMP",
+        help="Only include log lines before this timestamp (e.g. 2026-06-03T14:22:00)",
+    )
+    parser.add_argument(
         "--report",
         type=Path,
         default=None,
@@ -343,8 +355,12 @@ def main() -> None:
     if args.start:
         start_timestamp = _parse_timestamp(args.start)
 
-    rows, false_negatives, reactivity_seconds = evaluate(args.log, start_timestamp)
-    print_summary(rows, false_negatives, reactivity_seconds, start_timestamp)
+    end_timestamp: datetime | None = None
+    if args.end:
+        end_timestamp = _parse_timestamp(args.end)
+
+    rows, false_negatives, reactivity_seconds = evaluate(args.log, start_timestamp, end_timestamp)
+    print_summary(rows, false_negatives, reactivity_seconds, start_timestamp, end_timestamp)
 
     if args.report is not None:
         write_report(rows, args.report)
