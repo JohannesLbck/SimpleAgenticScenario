@@ -21,6 +21,7 @@ class LogEvent < MCP::Tool
   class << self
     def call(label:, lifecycle:, parameters:, server_context:)
       pp parameters
+      pp server_context
       srv = Riddl::Client.new('http://localhost:9091/log')
       status, res = srv.post([
         Riddl::Parameter::Simple.new("label",label),

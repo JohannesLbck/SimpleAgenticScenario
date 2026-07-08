@@ -3,11 +3,12 @@ require 'bundler/setup'
 require 'ruby_llm'
 require "ruby_llm/mcp"
 require 'json'
+require 'riddl/client'
 
 RubyLLM.configure do |config|
   config.anthropic_api_key = File.read(File.join(__dir__,'api.key'))
   config.anthropic_api_base = "https://morpheus.cit.tum.de/api"
-  config.log_file = './ruby_llm.log'
+  config.log_file = "./ruby_llm_#{ARGV[1]}.log"
   config.log_level = :debug
   config.request_timeout = 600
 end
@@ -64,14 +65,35 @@ anthropic_chat.with_tools(*log_client.tools)
 #  anthropic_chat.messages.unshift(instruction)
 #end
 
+###### Set up logging
+srv = Riddl::Client.new('http://localhost:9091/log')
+status, res = srv.post([
+  Riddl::Parameter::Simple.new("log_name",ARGV[1]),
+])
+if status >= 200 && status < 300
+else
+  pp 'set up of logging failed'
+end
+###### Set up logging
+
+
 if(ARGV[0]) then
   prompt = ARGV[0]
   puts "-------------------------------prompt:-------------------------------\n#{prompt}"
   response = anthropic_chat.ask(prompt)
   puts "-------------------------------answer:-------------------------------\n#{response.content()}"
-  File.write('messages.log',anthropic_chat.messages().map() { |message| "[#{message.role().to_s().upcase()}] #{message.content().strip()}" }.to_json())
+  File.write("messages_#{ARGV[1]}.log",anthropic_chat.messages().map() { |message| "[#{message.role().to_s().upcase()}] #{message.content().strip()}" }.to_json())
 else
   puts "Provide the prompt as an argument!"
 end
 
-
+###### Redirect to standard log 
+srv = Riddl::Client.new('http://localhost:9091/log')
+status, res = srv.post([
+  Riddl::Parameter::Simple.new("log_name",ARGV[1]),
+])
+if status >= 200 && status < 300
+else
+  pp 'redirection to standard log failed'
+end
+###### Redirect to standard log 

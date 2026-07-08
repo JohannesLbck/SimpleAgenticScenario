@@ -5,10 +5,15 @@
     <parameter name="lifecycle" type="string"/>
     <parameter name="parameters" mimetype="application/json"/>
   </message>
+  
+  <message name="new_log">
+    <parameter name="log_name" type="string"/>
+  </message>
 
   <resource>
     <resource relative="log">
       <post in="event"/>
+      <post in="new_log"/>
     </resource>
   </resource>
 
