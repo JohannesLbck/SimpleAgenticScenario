@@ -1,0 +1,20 @@
+<description datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" xmlns="http://riddl.org/ns/description/1.0" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+  <message name="event">
+    <parameter name="label" type="string"/>
+    <parameter name="lifecycle" type="string"/>
+    <parameter name="parameters" mimetype="application/json"/>
+  </message>
+  
+  <message name="new_log">
+    <parameter name="log_name" type="string"/>
+  </message>
+
+  <resource>
+    <resource relative="log">
+      <post in="event"/>
+      <post in="new_log"/>
+    </resource>
+  </resource>
+
+</description>
