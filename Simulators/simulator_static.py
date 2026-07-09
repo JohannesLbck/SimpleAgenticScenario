@@ -139,7 +139,7 @@ class DatasetSimulatorState:
         self.dataset_path = dataset_path
         self.rows: list[dict[str, Any]] = []
         self.row_seconds: list[float] = []
-        self.started_at = datetime.now()
+        self.started_at = datetime(1997, 6, 20, 0, 0 , 0)
         self.last_mapped_second: float | None = None
         self.current_lumen = 0
         self.ambient_light_lux = 0
