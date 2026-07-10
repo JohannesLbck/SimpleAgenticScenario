@@ -553,7 +553,7 @@ def main() -> None:
         help="Optional path to write detailed CSV report",
     )
     parser.add_argument(
-        "--time_sensitive",
+        "--time-sensitive",
         action="store_true",
         help="Count expected GT CSV events that are missing from the log as false negatives",
     )
@@ -562,7 +562,7 @@ def main() -> None:
         type=Path,
         default=DEFAULT_GT_CSV,
         help=(
-            "Path to GT CSV used by --time_sensitive "
+            "Path to GT CSV used by --time-sensitive "
             f"(default: {DEFAULT_GT_CSV})"
         ),
     )
