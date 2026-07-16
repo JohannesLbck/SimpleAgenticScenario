@@ -109,28 +109,8 @@ def _event_data_items(event: dict[str, Any]) -> list[dict[str, Any]]:
     return []
 
 
-def _extract_dataset_timestamp(event: dict[str, Any]) -> str | None:
-    direct = event.get("dataset_timestamp")
-    if isinstance(direct, str) and direct.strip():
-        return direct.strip()
-
-    for item in _event_data_items(event):
-        if item.get("name") != "result":
-            continue
-        payload = item.get("data")
-        if isinstance(payload, dict):
-            value = payload.get("dataset_timestamp")
-            if isinstance(value, str) and value.strip():
-                return value.strip()
-        if isinstance(payload, str):
-            try:
-                parsed = json.loads(payload)
-            except json.JSONDecodeError:
-                continue
-            value = parsed.get("dataset_timestamp")
-            if isinstance(value, str) and value.strip():
-                return value.strip()
-    return None
+def _event_key(event_type: str, event_order: int) -> tuple[str, int]:
+    return event_type, event_order
 
 
 def parse_agent_log(
@@ -139,7 +119,7 @@ def parse_agent_log(
     end_timestamp: datetime | None,
 ) -> list[dict[str, str]]:
     events: list[dict[str, str]] = []
-    pending_sensor_dataset: str | None = None
+    event_order = 0
 
     with agent_log_path.open("r", encoding="utf-8") as fh:
         for doc in yaml.safe_load_all(fh):
@@ -160,13 +140,11 @@ def parse_agent_log(
                 transition = str(event.get("lifecycle:transition") or "")
 
             if concept_name in SENSOR_EVENT_NAMES:
-                dataset_timestamp = _extract_dataset_timestamp(event)
-                if dataset_timestamp:
-                    pending_sensor_dataset = dataset_timestamp
-                    events.append(
+                event_order += 1
+                events.append(
                         {
                             "event_type": "sensor",
-                            "dataset_timestamp": dataset_timestamp,
+                            "event_order": str(event_order),
                             "event_time": event_time,
                             "source": "agent",
                         }
@@ -180,12 +158,11 @@ def parse_agent_log(
                 "start",
                 "complete",
             }:
-                dataset_timestamp = _extract_dataset_timestamp(event) or pending_sensor_dataset
-                if dataset_timestamp:
-                    events.append(
+                event_order += 1
+                events.append(
                         {
                             "event_type": "change",
-                            "dataset_timestamp": dataset_timestamp,
+                            "event_order": str(event_order),
                             "event_time": event_time,
                             "source": "agent",
                         }
@@ -194,7 +171,7 @@ def parse_agent_log(
     # Keep one record per identical event signature in the log.
     dedup: dict[tuple[str, str, str], dict[str, str]] = {}
     for row in events:
-        key = (row["event_type"], row["dataset_timestamp"], row["event_time"])
+        key = (row["event_type"], row["event_order"], row["event_time"])
         dedup[key] = row
 
     deduped = list(dedup.values())
@@ -209,6 +186,7 @@ def parse_simulator_log(
 ) -> list[dict[str, str]]:
     events: list[dict[str, str]] = []
     sensor_by_actual: dict[str, dict[str, str]] = {}
+    event_order = 0
 
     with simulator_log_path.open("r", encoding="utf-8") as fh:
         for line in fh:
@@ -223,12 +201,13 @@ def parse_simulator_log(
 
                 row = {
                     "event_type": "sensor",
-                    "dataset_timestamp": sensor_match.group("dataset"),
+                    "event_order": str(event_order),
                     "event_time": actual_ts,
                     "source": "simulator",
                 }
                 events.append(row)
                 sensor_by_actual[actual_ts] = row
+                event_order += 1
                 continue
 
             change_match = CHANGE_GT_RE.search(line)
@@ -243,11 +222,12 @@ def parse_simulator_log(
                 events.append(
                     {
                         "event_type": "change",
-                        "dataset_timestamp": change_match.group("dataset"),
+                        "event_order": str(event_order),
                         "event_time": actual_ts,
                         "source": "simulator",
                     }
                 )
+                event_order += 1
                 continue
 
             response_match = RESPONSE_RE.search(line)
@@ -273,14 +253,14 @@ def evaluate_traceability(
     agent_events: list[dict[str, str]],
     simulator_events: list[dict[str, str]],
 ) -> tuple[list[dict[str, str]], list[dict[str, str]], dict[str, int]]:
-    agent_counter = Counter((row["event_type"], row["dataset_timestamp"]) for row in agent_events)
-    sim_counter = Counter((row["event_type"], row["dataset_timestamp"]) for row in simulator_events)
+    agent_counter = Counter((row["event_type"], row["event_order"]) for row in agent_events)
+    sim_counter = Counter((row["event_type"], row["event_order"]) for row in simulator_events)
 
     sim_remaining = sim_counter.copy()
     classified_agent_rows: list[dict[str, str]] = []
 
     for row in agent_events:
-        key = (row["event_type"], row["dataset_timestamp"])
+        key = (row["event_type"], row["event_order"])
         if sim_remaining[key] > 0:
             classification = "true_positive"
             sim_remaining[key] -= 1
@@ -290,22 +270,22 @@ def evaluate_traceability(
         classified_agent_rows.append(
             {
                 "event_type": row["event_type"],
-                "dataset_timestamp": row["dataset_timestamp"],
+                "event_order": row["event_order"],
                 "event_time": row["event_time"],
                 "classification": classification,
             }
         )
 
     false_negatives: list[dict[str, str]] = []
-    for (event_type, dataset_timestamp), count in sim_remaining.items():
+    for (event_type, event_order), count in sim_remaining.items():
         if count <= 0:
             continue
         for _ in range(count):
             false_negatives.append(
                 {
                     "event_type": event_type,
-                    "dataset_timestamp": dataset_timestamp,
-                    "event_time": dataset_timestamp,
+                    "event_order": event_order,
+                    "event_time": "",
                     "reason": "missing_in_agent_log",
                 }
             )
@@ -355,22 +335,16 @@ def print_summary(
     if fps:
         print("\nFirst 20 false positives:")
         for row in fps[:20]:
-            print(
-                f"  {row['event_time']} | type={row['event_type']} "
-                f"| dataset={row['dataset_timestamp']}"
-            )
+            print(f"  {row['event_time']} | type={row['event_type']} | order={row['event_order']}")
 
     if false_negatives:
         print("\nFirst 20 false negatives:")
         for row in false_negatives[:20]:
-            print(
-                f"  {row['event_time']} | type={row['event_type']} "
-                f"| dataset={row['dataset_timestamp']} | reason={row['reason']}"
-            )
+            print(f"  order={row['event_order']} | type={row['event_type']} | reason={row['reason']}")
 
 
 def write_report(rows: list[dict[str, str]], report_path: Path) -> None:
-    fieldnames = ["event_time", "event_type", "dataset_timestamp", "classification"]
+    fieldnames = ["event_time", "event_type", "event_order", "classification"]
     with report_path.open("w", encoding="utf-8", newline="") as fh:
         writer = csv.DictWriter(fh, fieldnames=fieldnames)
         writer.writeheader()
@@ -379,7 +353,7 @@ def write_report(rows: list[dict[str, str]], report_path: Path) -> None:
 
 
 def write_false_negative_report(false_negatives: list[dict[str, str]], report_path: Path) -> None:
-    fieldnames = ["event_time", "event_type", "dataset_timestamp", "reason"]
+    fieldnames = ["event_time", "event_type", "event_order", "reason"]
     with report_path.open("w", encoding="utf-8", newline="") as fh:
         writer = csv.DictWriter(fh, fieldnames=fieldnames)
         writer.writeheader()
