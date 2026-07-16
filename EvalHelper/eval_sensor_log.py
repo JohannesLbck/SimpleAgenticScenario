@@ -4,7 +4,7 @@ import argparse
 import ast
 import csv
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -36,6 +36,14 @@ LOG_TIMESTAMP_RE = re.compile(r"^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d+)")
 
 def _parse_timestamp(value: str) -> datetime:
     s = value.strip()
+    if not s:
+        raise ValueError("timestamp is empty")
+
+    try:
+        return datetime.fromtimestamp(float(s), tz=timezone.utc).replace(tzinfo=None)
+    except ValueError:
+        pass
+
     if "T" in s:
         date_part, time_part = s.split("T", 1)
     else:
