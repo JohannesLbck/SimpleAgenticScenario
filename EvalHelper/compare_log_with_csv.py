@@ -18,7 +18,6 @@ TIMEOUTLABEL = "wait for next iteration"
 LUMENCHANGELABEL = "Change Lumens"
 #LUMENCHANGELABEL = "change_lumen"
 LUMENZEROINGLABEL = "Set lumen to 0"
-STARTTIMESTAMP = "2026-06-02T09:51:23"
 LUMEN_PER_LUX = 2 * math.pi * (3.0**2) * (1.0 - math.cos(math.radians(30.0)))
 
 
@@ -106,6 +105,15 @@ def _event_timestamp_text(value: Any) -> str:
 
 def _parse_timestamp(value: str) -> datetime:
 	s = value.strip()
+	if not s:
+		raise ValueError("timestamp is empty")
+
+	# Support Unix timestamps directly via datetime.
+	try:
+		return datetime.fromtimestamp(float(s)).replace(tzinfo=None)
+	except ValueError:
+		pass
+
 	if "T" in s:
 		date_part, time_part = s.split("T", 1)
 	else:
@@ -135,6 +143,26 @@ def _timestamp_on_or_after(value: str, start: str) -> bool:
 		return _parse_timestamp(value) >= _parse_timestamp(start)
 	except ValueError:
 		return value >= start
+
+
+def _event_in_time_range(
+	event_time_str: str,
+	start_timestamp: datetime | None,
+	end_timestamp: datetime | None,
+) -> bool:
+	if not event_time_str:
+		return start_timestamp is None and end_timestamp is None
+	try:
+		event_time = _parse_timestamp(event_time_str)
+	except ValueError:
+		# Mirror eval_sensor_log filtering style: only filter when parseable.
+		return True
+
+	if start_timestamp is not None and event_time < start_timestamp:
+		return False
+	if end_timestamp is not None and event_time > end_timestamp:
+		return False
+	return True
 
 
 def _time_of_day_target(hour: float, occupancy: int, movement: bool) -> tuple[float, float]:
@@ -283,10 +311,92 @@ def validate_dataset_gt_ranges(dataset_path: Path) -> list[dict[str, Any]]:
 	return mismatches
 
 
+def _dedupe_false_negatives(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+	deduped: list[dict[str, Any]] = []
+	seen: set[tuple[str, str, str]] = set()
+	for row in rows:
+		key = (
+			str(row.get("dataset_timestamp", "")),
+			str(row.get("reason", "")),
+			str(row.get("event_time", "")),
+		)
+		if key in seen:
+			continue
+		seen.add(key)
+		deduped.append(row)
+	return deduped
+
+
+def _time_sensitive_false_negatives(
+	gt_targets: dict[str, tuple[int, int]],
+	observed_sensor_timestamps: set[str],
+	observed_change_timestamps: set[str],
+	start_dataset_timestamp: str | None,
+	end_dataset_timestamp: str | None,
+) -> list[dict[str, Any]]:
+	if not gt_targets:
+		return []
+
+	if start_dataset_timestamp is None or end_dataset_timestamp is None:
+		return []
+
+	try:
+		start_dt = _parse_timestamp(start_dataset_timestamp)
+		end_dt = _parse_timestamp(end_dataset_timestamp)
+	except ValueError:
+		return []
+
+	if end_dt < start_dt:
+		start_dt, end_dt = end_dt, start_dt
+
+	missing_rows: list[dict[str, Any]] = []
+	for dataset_timestamp, gt_range in sorted(
+		gt_targets.items(),
+		key=lambda item: _parse_timestamp(item[0]),
+	):
+		try:
+			dataset_dt = _parse_timestamp(dataset_timestamp)
+		except ValueError:
+			continue
+		if dataset_dt < start_dt or dataset_dt > end_dt:
+			continue
+
+		gt_min, gt_max = gt_range
+		if gt_min <= 0:
+			continue
+
+		has_sensor = dataset_timestamp in observed_sensor_timestamps
+		has_change = dataset_timestamp in observed_change_timestamps
+		if has_sensor and has_change:
+			continue
+
+		if not has_sensor and not has_change:
+			reason = "missing_sensor_read_and_change_lumens_time_sensitive"
+		elif not has_sensor:
+			reason = "missing_sensor_read_time_sensitive"
+		else:
+			reason = "missing_change_lumens_time_sensitive"
+
+		missing_rows.append(
+			{
+				"event_time": dataset_timestamp,
+				"dataset_timestamp": dataset_timestamp,
+				"gt_target": f"{gt_min}-{gt_max}",
+				"gt_target_min": gt_min,
+				"gt_target_max": gt_max,
+				"reason": reason,
+			}
+		)
+
+	return missing_rows
+
+
 def compare_log_with_csv(
 	log_path: Path,
 	dataset_path: Path,
-	use_timefilter: bool = False,
+	start_timestamp: datetime | None = None,
+	end_timestamp: datetime | None = None,
+	time_sensitive: bool = False,
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]], list[float]]:
 	gt_targets = load_gt_targets(dataset_path)
 	dataset_rows = load_dataset_rows(dataset_path)
@@ -294,10 +404,13 @@ def compare_log_with_csv(
 	false_negatives: list[dict[str, Any]] = []
 	reactivity_seconds: list[float] = []
 
-	last_timestamp = STARTTIMESTAMP if use_timefilter else ""
+	last_timestamp = ""
 	pending_by_uuid: dict[str, int] = {}
 	pending_required_change: dict[str, Any] | None = None
 	pending_sensor_time: str = ""
+	observed_sensor_timestamps: set[str] = set()
+	observed_change_timestamps: set[str] = set()
+	dataset_timeline: list[str] = []
 
 	with log_path.open("r", encoding="utf-8") as fh:
 		for doc in yaml.safe_load_all(fh):
@@ -312,16 +425,18 @@ def compare_log_with_csv(
 			cpee_transition = event.get("cpee:lifecycle:transition")
 			activity_uuid = event.get("cpee:activity_uuid")
 			event_time_str = _event_timestamp_text(event.get("time:timestamp"))
+			if not _event_in_time_range(event_time_str, start_timestamp, end_timestamp):
+				continue
 
 			if concept_name == SENSORCALLLABEL and cpee_transition in {"activity/receiving", "activity/complete"}:
-				if use_timefilter and (not event_time_str or not _timestamp_on_or_after(event_time_str, STARTTIMESTAMP)):
-					continue
 				ts = _extract_dataset_timestamp_from_getsensor(event)
 				if ts:
 					if pending_required_change is not None:
 						false_negatives.append(pending_required_change)
 						pending_required_change = None
 					last_timestamp = ts
+					observed_sensor_timestamps.add(ts)
+					dataset_timeline.append(ts)
 					pending_sensor_time = event_time_str
 					gt_range = gt_targets.get(last_timestamp)
 					if gt_range is not None and gt_range[0] > 0:
@@ -339,8 +454,6 @@ def compare_log_with_csv(
 				continue
 
 			if cpee_transition == "activity/calling":
-				if use_timefilter and (not event_time_str or not _timestamp_on_or_after(event_time_str, STARTTIMESTAMP)):
-					continue
 				if pending_required_change is not None:
 					pending_required_change = None
 				reactivity_value: float | None = None
@@ -363,6 +476,9 @@ def compare_log_with_csv(
 				gt_range = gt_targets.get(last_timestamp)
 				gt_min = gt_range[0] if gt_range is not None else None
 				gt_max = gt_range[1] if gt_range is not None else None
+				if last_timestamp:
+					observed_change_timestamps.add(last_timestamp)
+					dataset_timeline.append(last_timestamp)
 				dataset_row = dataset_rows.get(last_timestamp, {})
 				comparisons.append(
 					{
@@ -421,6 +537,18 @@ def compare_log_with_csv(
 	if pending_required_change is not None:
 		false_negatives.append(pending_required_change)
 
+	if time_sensitive and dataset_timeline:
+		false_negatives.extend(
+			_time_sensitive_false_negatives(
+				gt_targets=gt_targets,
+				observed_sensor_timestamps=observed_sensor_timestamps,
+				observed_change_timestamps=observed_change_timestamps,
+				start_dataset_timestamp=dataset_timeline[0],
+				end_dataset_timestamp=dataset_timeline[-1],
+			)
+		)
+		false_negatives = _dedupe_false_negatives(false_negatives)
+
 	return comparisons, validate_dataset_gt_ranges(dataset_path), false_negatives, reactivity_seconds
 
 
@@ -429,6 +557,9 @@ def print_summary(
 	rule_mismatches: list[dict[str, Any]],
 	false_negatives: list[dict[str, Any]],
 	reactivity_seconds: list[float],
+	start_timestamp: datetime | None,
+	end_timestamp: datetime | None,
+	time_sensitive: bool,
 ) -> None:
 	comparable = [
 		r
@@ -447,6 +578,9 @@ def print_summary(
 	f1 = (2 * precision * recall / (precision + recall)) if (precision + recall) > 0 else 0.0
 	reactivity_avg = (sum(reactivity_seconds) / len(reactivity_seconds)) if reactivity_seconds else 0.0
 
+	print(f"Start timestamp filter: {start_timestamp.isoformat() if start_timestamp else 'none'}")
+	print(f"End timestamp filter:   {end_timestamp.isoformat() if end_timestamp else 'none'}")
+	print(f"Time-sensitive mode:    {'enabled' if time_sensitive else 'disabled'}")
 	print(f"Total lumen events: {len(rows)}")
 	print(f"Comparable events: {len(comparable)}")
 	print(f"True positives: {tp}")
@@ -550,23 +684,56 @@ def main() -> None:
 	parser.add_argument("log", type=Path, help="Path to filtered log (.xes.yaml)")
 	parser.add_argument("dataset", type=Path, help="Path to artificial_week_sensor_dataset.csv")
 	parser.add_argument(
+		"--from",
+		dest="start",
+		default=None,
+		metavar="TIMESTAMP",
+		help="Only include events at or after this timestamp (e.g. 2026-06-03T14:22:00)",
+	)
+	parser.add_argument(
+		"--to",
+		dest="end",
+		default=None,
+		metavar="TIMESTAMP",
+		help="Only include events before this timestamp (e.g. 2026-06-03T14:22:00)",
+	)
+	parser.add_argument(
+		"--time-sensitive",
+		action="store_true",
+		help="Count expected GT events missing from the log as false negatives",
+	)
+	parser.add_argument(
 		"--report",
 		type=Path,
 		default=None,
 		help="Optional path to write detailed CSV report",
 	)
-	parser.add_argument(		"--timefilter",
-		action="store_true",
-		help=f"Apply STARTTIMESTAMP filter ({STARTTIMESTAMP}) to event timestamps",
-	)
 	args = parser.parse_args()
+
+	start_timestamp: datetime | None = None
+	if args.start:
+		start_timestamp = _parse_timestamp(args.start)
+
+	end_timestamp: datetime | None = None
+	if args.end:
+		end_timestamp = _parse_timestamp(args.end)
 
 	rows, rule_mismatches, false_negatives, reactivity_seconds = compare_log_with_csv(
 		args.log,
 		args.dataset,
-		use_timefilter=args.timefilter,
+		start_timestamp=start_timestamp,
+		end_timestamp=end_timestamp,
+		time_sensitive=args.time_sensitive,
 	)
-	print_summary(rows, rule_mismatches, false_negatives, reactivity_seconds)
+	print_summary(
+		rows,
+		rule_mismatches,
+		false_negatives,
+		reactivity_seconds,
+		start_timestamp,
+		end_timestamp,
+		args.time_sensitive,
+	)
 
 	if args.report is not None:
 		write_report(rows, args.report)
