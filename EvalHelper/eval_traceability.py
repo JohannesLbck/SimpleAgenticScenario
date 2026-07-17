@@ -1,5 +1,5 @@
 import argparse
-from datetime import datetime
+from datetime import datetime, timezone
 import re
 from pathlib import Path
 import yaml
@@ -25,7 +25,7 @@ TIMESTAMP_SPLIT_RE = re.compile(
 )
 
 
-def _sanitize_timestamp_input(timestamp: str | None) -> str | None:
+def _sanitize_timestamp_input(timestamp: str | None) -> datetime | None:
     if timestamp is None:
         return None
 
@@ -39,8 +39,11 @@ def _sanitize_timestamp_input(timestamp: str | None) -> str | None:
 
     # Fast path: let datetime handle already-valid ISO timestamps.
     try:
-        datetime.fromisoformat(value)
-        return value
+        return datetime.fromisoformat(value)
+    except ValueError:
+        pass
+    try:
+        return datetime.fromtimestamp(float(value), tz=timezone.utc).replace(tzinfo=None)
     except ValueError:
         pass
 
@@ -59,12 +62,12 @@ def _sanitize_timestamp_input(timestamp: str | None) -> str | None:
     else:
         normalized_fraction = ""
 
-    return f"{base}{normalized_fraction}{tz}"
+    return datetime.fromisoformat(f"{base}{normalized_fraction}{tz}")
 
 
 def normalize_timestamp(timestamp: str | None) -> str | None:
     """Normalize timestamps to 'YYYY-mm-dd HH:MM:SS.ffffff' without tz info."""
-    dt = parse_timestamp(timestamp)
+    dt = _sanitize_timestamp_input(timestamp)
     if dt is None:
         return None
     return dt.strftime("%Y-%m-%d %H:%M:%S.%f")
@@ -75,7 +78,7 @@ def parse_timestamp(timestamp: str | None) -> datetime | None:
     if not sanitized:
         return None
     try:
-        parsed = datetime.fromisoformat(sanitized)
+        parsed = sanitized
         # Keep wall-clock comparisons stable by using naive datetimes everywhere.
         if parsed.tzinfo is not None:
             parsed = parsed.replace(tzinfo=None)
