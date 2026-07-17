@@ -9,7 +9,7 @@ EVENTTYPES = [
     "read sensor",
 ]
 EVENTNAMEALIASES = {
-    "change lumen": ["changelumen", "change_lumen", "change_lumens", "changelumens"],
+    "change lumen": ["changelumen", "change_lumen", "change_lumens", "changelumens", "setlumento0"],
     "read sensor": ["readsensor", "read_sensor", "read_sensors", "getsensor"],
 }
 
@@ -23,6 +23,8 @@ SENSOR_HTTP_LINE_RE = re.compile(
 TIMESTAMP_SPLIT_RE = re.compile(
     r"^(?P<base>\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2})(?P<fraction>[.,]\d+)?(?P<tz>Z|[+-]\d{2}:\d{2})?$"
 )
+
+LOCAL_TIMEZONE = datetime.now().astimezone().tzinfo or timezone.utc
 
 
 def _sanitize_timestamp_input(timestamp: str | None) -> datetime | None:
@@ -43,7 +45,7 @@ def _sanitize_timestamp_input(timestamp: str | None) -> datetime | None:
     except ValueError:
         pass
     try:
-        return datetime.fromtimestamp(float(value), tz=timezone.utc).replace(tzinfo=None)
+        return datetime.fromtimestamp(float(value), tz=LOCAL_TIMEZONE)
     except ValueError:
         pass
 
@@ -77,14 +79,12 @@ def parse_timestamp(timestamp: str | None) -> datetime | None:
     sanitized = _sanitize_timestamp_input(timestamp)
     if not sanitized:
         return None
-    try:
-        parsed = sanitized
-        # Keep wall-clock comparisons stable by using naive datetimes everywhere.
-        if parsed.tzinfo is not None:
-            parsed = parsed.replace(tzinfo=None)
-        return parsed
-    except ValueError:
-        return None
+
+    parsed = sanitized
+    # Align all timestamps to local wall-clock time for consistent filtering.
+    if parsed.tzinfo is not None:
+        parsed = parsed.astimezone(LOCAL_TIMEZONE)
+    return parsed.replace(tzinfo=None)
 
 
 
@@ -97,20 +97,19 @@ def read_xes_yaml_log(file_path: str, start_timestamp: str | None = None, end_ti
 
     path = Path(file_path)
     with path.open("r", encoding="utf-8") as fh:
-        for event in yaml.safe_load_all(fh):
-            event = event.get("event")
-            if event is None:
+        for doc in yaml.safe_load_all(fh):
+            if not isinstance(doc, dict):
+                continue
+            event = doc.get("event") if isinstance(doc.get("event"), dict) else doc
+            if not isinstance(event, dict):
                 continue
             event_dt = parse_timestamp(str(event.get("time:timestamp")))
             if start_dt and event_dt and event_dt < start_dt:
                 continue
             if end_dt and event_dt and event_dt > end_dt:
-                continue
-            try:
-                event["lifecycle:transition"]
-            except TypeError:
-                continue
-            if event["lifecycle:transition"] != "complete":
+                return lumen_events, sensor_events
+            transition = event.get("lifecycle:transition") or event.get("cpee:lifecycle:transition")
+            if transition not in {"complete", "activity/done"}:
                 continue
             concept_name = event.get("concept:name", "").replace(" ", "").lower()
             if concept_name in EVENTNAMEALIASES["change lumen"]:
@@ -162,6 +161,8 @@ def read_sensor_log(file_path: str, start_timestamp: str | None = None, end_time
                 lumen_events += 1
             elif normalized_event in EVENTNAMEALIASES["read sensor"]:
                 sensor_events += 1
+                
+    sensor_events = sensor_events // 2  # Each sensor read generates two log entries, so divide by 2.
     return lumen_events, sensor_events
 
 
