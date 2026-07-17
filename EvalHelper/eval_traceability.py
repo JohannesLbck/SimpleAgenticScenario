@@ -20,17 +20,12 @@ SENSOR_HTTP_LINE_RE = re.compile(
     r"^(?P<timestamp>\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2}(?:[.,]\d+)?)?.*\"[A-Z]+\s+(?P<event>/[\w-]+)\s+HTTP/"
 )
 
-TIMESTAMP_RE = re.compile(
-    r"^(?P<base>\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2})(?P<fraction>[.,]\d+)?$"
+TIMESTAMP_SPLIT_RE = re.compile(
+    r"^(?P<base>\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2})(?P<fraction>[.,]\d+)?(?P<tz>Z|[+-]\d{2}:\d{2})?$"
 )
 
 
-def normalize_timestamp(timestamp: str | None) -> str | None:
-    """Normalize timestamps to a consistent format parseable by datetime.
-
-    Supports inputs like: 2026-07-13 21:38:06.541947935 and truncates
-    fractional seconds to microseconds (6 digits), which Python datetime uses.
-    """
+def _sanitize_timestamp_input(timestamp: str | None) -> str | None:
     if timestamp is None:
         return None
 
@@ -38,27 +33,53 @@ def normalize_timestamp(timestamp: str | None) -> str | None:
     if not value:
         return None
 
-    value = value.replace("T", " ")
-    match = TIMESTAMP_RE.match(value)
+    value = value.replace(",", ".")
+    if value.endswith("Z"):
+        value = f"{value[:-1]}+00:00"
+
+    # Fast path: let datetime handle already-valid ISO timestamps.
+    try:
+        datetime.fromisoformat(value)
+        return value
+    except ValueError:
+        pass
+
+    # Handle nanosecond-like precision by truncating/padding to microseconds.
+    match = TIMESTAMP_SPLIT_RE.match(value)
     if not match:
         return None
 
     base = match.group("base")
-    fraction = match.group("fraction")
-    if not fraction:
-        return base
+    fraction = match.group("fraction") or ""
+    tz = match.group("tz") or ""
 
-    digits = fraction[1:]
-    normalized_digits = (digits + "000000")[:6]
-    return f"{base}.{normalized_digits}"
+    if fraction:
+        digits = fraction[1:]
+        normalized_fraction = f".{(digits + '000000')[:6]}"
+    else:
+        normalized_fraction = ""
+
+    return f"{base}{normalized_fraction}{tz}"
+
+
+def normalize_timestamp(timestamp: str | None) -> str | None:
+    """Normalize timestamps to 'YYYY-mm-dd HH:MM:SS.ffffff' without tz info."""
+    dt = parse_timestamp(timestamp)
+    if dt is None:
+        return None
+    return dt.strftime("%Y-%m-%d %H:%M:%S.%f")
 
 
 def parse_timestamp(timestamp: str | None) -> datetime | None:
-    normalized = normalize_timestamp(timestamp)
-    if not normalized:
+    sanitized = _sanitize_timestamp_input(timestamp)
+    if not sanitized:
         return None
     try:
-        return datetime.fromisoformat(normalized)
+        parsed = datetime.fromisoformat(sanitized)
+        # Keep wall-clock comparisons stable by using naive datetimes everywhere.
+        if parsed.tzinfo is not None:
+            parsed = parsed.replace(tzinfo=None)
+        return parsed
     except ValueError:
         return None
 
@@ -69,19 +90,14 @@ def read_xes_yaml_log(file_path: str, start_timestamp: str | None = None, end_ti
     lumen_events = 0
     sensor_events = 0
     start_dt = parse_timestamp(start_timestamp)
-    print(start_dt)
     end_dt = parse_timestamp(end_timestamp)
 
     path = Path(file_path)
     with path.open("r", encoding="utf-8") as fh:
         for event in yaml.safe_load_all(fh):
             event = event.get("event")
-            print(f"Unparsed Event DT: {event.get("time:timestamp")}")
             event_dt = parse_timestamp(str(event.get("time:timestamp")))
-            print(f"Event DT{event_dt}")
-            print(f"Start Dt: {start_dt}")
             if start_dt and event_dt and event_dt < start_dt:
-                print("reached")
                 continue
             if end_dt and event_dt and event_dt > end_dt:
                 continue
