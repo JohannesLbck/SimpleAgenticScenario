@@ -1,3 +1,0 @@
-event_time,concept:name,activity_uuid,dataset_timestamp,occupancy_count,ambient_light_lux,current_light_lumen,lumen_sent,gt_target,gt_target_min,gt_target_max,match,classification,reactivity_seconds,lumen_source
-2026-06-02 09:56:52.822490+02:00,change_lumen,,2026-05-18T01:00:00,0,3.4,0,0,0-0,0,0,True,true_positive,0.101307,start-data
-2026-06-02 09:58:56.073434+02:00,change_lumen,,2026-05-18T16:30:00,2,316.7,0,0,0-0,0,0,True,true_positive,4.050963,start-data
