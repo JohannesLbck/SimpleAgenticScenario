@@ -120,6 +120,7 @@ def read_sensor_log(file_path: str, start_timestamp: str | None = None, end_time
     sensor_events = 0
     start_dt = parse_timestamp(start_timestamp)
     end_dt = parse_timestamp(end_timestamp)
+    has_time_filter = start_dt is not None or end_dt is not None
 
     def parse_line_timestamp_and_event(line: str) -> tuple[str | None, str | None]:
         app_match = SENSOR_APP_LINE_RE.search(line)
@@ -144,6 +145,8 @@ def read_sensor_log(file_path: str, start_timestamp: str | None = None, end_time
             if event is None:
                 continue
             timestamp_dt = parse_timestamp(timestamp)
+            if has_time_filter and timestamp_dt is None:
+                continue
             if start_dt and timestamp_dt and timestamp_dt < start_dt:
                 continue
             if end_dt and timestamp_dt and timestamp_dt > end_dt:
