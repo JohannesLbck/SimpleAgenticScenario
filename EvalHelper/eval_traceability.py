@@ -21,7 +21,7 @@ SENSOR_HTTP_LINE_RE = re.compile(
 
 
 
-def read_xes_yaml_log(file_path: str, start_timestamp: str = None, end_timestamp: str = None) -> tuple[int, int]:
+def read_xes_yaml_log(file_path: str, start_timestamp: str | None = None, end_timestamp: str | None = None) -> tuple[int, int]:
     
     lumen_events = 0
     sensor_events = 0
@@ -48,7 +48,7 @@ def read_xes_yaml_log(file_path: str, start_timestamp: str = None, end_timestamp
     return lumen_events, sensor_events
                 
     
-def read_sensor_log(file_path: str, start_timestamp: str = None, end_timestamp: str = None) -> tuple[int, int]:
+def read_sensor_log(file_path: str, start_timestamp: str | None = None, end_timestamp: str | None = None) -> tuple[int, int]:
     lumen_events = 0
     sensor_events = 0
 
