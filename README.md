@@ -12,6 +12,7 @@ The project is useful for testing different control styles (LLM-based, heuristic
 
 - `Simulators/simulator.py`: dynamic simulator (randomized environment)
 - `Simulators/simulator_static.py`: dataset-driven simulator and ground-truth provider
+- `ComplexScenario/`: blood-donation registration workflow with a multi-step, agentic decision process
 - `EvalHelper/`: log comparison and evaluation utilities
 - `EvalHelper/MetricCalculation/`: cyclomatic and ABC metric scripts for process XML files
 - `mcp/`: MCP tool servers + orchestration scripts (`oo1.sh`, `oo3.sh`, `ootest.sh`)
@@ -123,7 +124,7 @@ ruby mcp_logger.rb
 Run an orchestration experiment prompt:
 
 ```bash
-cd !/Papers/AgenticFundamentals/SimpleAgenticScenario/mcp
+cd ~/Papers/AgenticFundamentals/SimpleAgenticScenario/mcp
 ./oo1.sh
 # or
 ./oo3.sh
@@ -137,6 +138,10 @@ Direct invocation:
 cd ~/Papers/AgenticFundamentals/SimpleAgenticScenario/mcp
 ruby agent.rb "Your instruction prompt here"
 ```
+
+## ComplexScenario
+
+Described in its own README in ComplexScenario.
 
 ## Evaluation Scripts
 
@@ -196,10 +201,5 @@ For `agent.py`:
 
 - `SIMULATOR_BASE_URL` (default: `http://127.0.0.1:8001`)
 - `OPENAI_MODEL` (default: `gpt-4o-mini`)
-- `OPENAI_API_KEY` (optional; if unset, heuristic mode is used)
+- `OPENAI_API_KEY`
 
-## Notes
-
-- In the current scripts, the most reliable way to run Python services is with `--foreground`.
-- Several scripts produce logs/reports in-place under `EvalHelper/`, `Simulators/`, and `mcp/`.
-- Use separate terminals for each long-running service.
