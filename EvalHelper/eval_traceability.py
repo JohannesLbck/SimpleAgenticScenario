@@ -69,14 +69,19 @@ def read_xes_yaml_log(file_path: str, start_timestamp: str | None = None, end_ti
     lumen_events = 0
     sensor_events = 0
     start_dt = parse_timestamp(start_timestamp)
+    print(start_dt)
     end_dt = parse_timestamp(end_timestamp)
 
     path = Path(file_path)
     with path.open("r", encoding="utf-8") as fh:
         for event in yaml.safe_load_all(fh):
             event = event.get("event")
+            print(f"Unparsed Event DT: {event.get("time:timestamp")}")
             event_dt = parse_timestamp(str(event.get("time:timestamp")))
+            print(f"Event DT{event_dt}")
+            print(f"Start Dt: {start_dt}")
             if start_dt and event_dt and event_dt < start_dt:
+                print("reached")
                 continue
             if end_dt and event_dt and event_dt > end_dt:
                 continue
