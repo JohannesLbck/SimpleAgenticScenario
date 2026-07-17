@@ -465,42 +465,6 @@ def print_summary(
             )
 
 
-def write_report(rows: list[dict[str, Any]], report_path: Path) -> None:
-    fieldnames = [
-        "event_time",
-        "concept:name",
-        "dataset_timestamp",
-        "lumen_sent",
-        "gt_target",
-        "gt_target_min",
-        "gt_target_max",
-        "match",
-        "classification",
-        "reactivity_seconds",
-    ]
-    with report_path.open("w", encoding="utf-8", newline="") as fh:
-        writer = csv.DictWriter(fh, fieldnames=fieldnames)
-        writer.writeheader()
-        for row in rows:
-            writer.writerow({k: row.get(k) for k in fieldnames})
-
-
-def write_false_negative_report(false_negatives: list[dict[str, Any]], report_path: Path) -> None:
-    fieldnames = [
-        "event_time",
-        "dataset_timestamp",
-        "gt_target",
-        "gt_target_min",
-        "gt_target_max",
-        "reason",
-    ]
-    with report_path.open("w", encoding="utf-8", newline="") as fh:
-        writer = csv.DictWriter(fh, fieldnames=fieldnames)
-        writer.writeheader()
-        for row in false_negatives:
-            writer.writerow({k: row.get(k) for k in fieldnames})
-
-
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Evaluate MCP agent log against GT from simulator sensor log"
@@ -520,12 +484,6 @@ def main() -> None:
         default=None,
         metavar="TIMESTAMP",
         help="Only include events before this timestamp",
-    )
-    parser.add_argument(
-        "--report",
-        type=Path,
-        default=None,
-        help="Optional path to write detailed CSV report",
     )
     args = parser.parse_args()
 
@@ -552,13 +510,6 @@ def main() -> None:
         end_timestamp,
     )
 
-    if args.report is not None:
-        write_report(rows, args.report)
-        print(f"\nWrote report to {args.report}")
-        if false_negatives:
-            fn_path = args.report.with_name(f"{args.report.stem}.false_negatives.csv")
-            write_false_negative_report(false_negatives, fn_path)
-            print(f"Wrote false negative report to {fn_path}")
 
 
 if __name__ == "__main__":

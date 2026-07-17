@@ -3,7 +3,6 @@ from __future__ import annotations
 import argparse
 import ast
 import csv
-import json
 import re
 from collections import Counter
 from datetime import datetime, timezone
@@ -73,11 +72,11 @@ def _event_in_time_range(
     end_timestamp: datetime | None,
 ) -> bool:
     if not event_time_str:
-        return start_timestamp is None and end_timestamp is None
+        return False
     try:
         event_time = _parse_timestamp(event_time_str)
     except ValueError:
-        return True
+        return False
 
     if start_timestamp is not None and event_time < start_timestamp:
         return False
@@ -102,21 +101,8 @@ def _event_timestamp_text(value: Any) -> str:
     return value if isinstance(value, str) else ""
 
 
-def _event_data_items(event: dict[str, Any]) -> list[dict[str, Any]]:
-    data = event.get("data")
-    if isinstance(data, list):
-        return [item for item in data if isinstance(item, dict)]
-    return []
-
-
-def _event_key(event_type: str, event_order: int) -> tuple[str, int]:
-    return event_type, event_order
-
-
 def parse_agent_log(
     agent_log_path: Path,
-    start_timestamp: datetime | None,
-    end_timestamp: datetime | None,
 ) -> list[dict[str, str]]:
     events: list[dict[str, str]] = []
     event_order = 0
@@ -132,7 +118,7 @@ def parse_agent_log(
                 continue
 
             event_time = _event_timestamp_text(event.get("time:timestamp"))
-            if not _event_in_time_range(event_time, start_timestamp, end_timestamp):
+            if not event_time:
                 continue
 
             transition = event.get("cpee:lifecycle:transition")
@@ -181,8 +167,6 @@ def parse_agent_log(
 
 def parse_simulator_log(
     simulator_log_path: Path,
-    start_timestamp: datetime | None,
-    end_timestamp: datetime | None,
 ) -> list[dict[str, str]]:
     events: list[dict[str, str]] = []
     sensor_by_actual: dict[str, dict[str, str]] = {}
@@ -193,12 +177,12 @@ def parse_simulator_log(
             sensor_match = SENSOR_GT_RE.search(line)
             if sensor_match:
                 actual_ts = sensor_match.group("actual")
-                actual_dt = _parse_timestamp(actual_ts)
-                if start_timestamp is not None and actual_dt < start_timestamp:
-                    continue
-                if end_timestamp is not None and actual_dt > end_timestamp:
+                try:
+                    _parse_timestamp(actual_ts)
+                except ValueError:
                     continue
 
+                event_order += 1
                 row = {
                     "event_type": "sensor",
                     "event_order": str(event_order),
@@ -207,18 +191,17 @@ def parse_simulator_log(
                 }
                 events.append(row)
                 sensor_by_actual[actual_ts] = row
-                event_order += 1
                 continue
 
             change_match = CHANGE_GT_RE.search(line)
             if change_match:
                 actual_ts = change_match.group("actual")
-                actual_dt = _parse_timestamp(actual_ts)
-                if start_timestamp is not None and actual_dt < start_timestamp:
-                    continue
-                if end_timestamp is not None and actual_dt > end_timestamp:
+                try:
+                    _parse_timestamp(actual_ts)
+                except ValueError:
                     continue
 
+                event_order += 1
                 events.append(
                     {
                         "event_type": "change",
@@ -227,7 +210,6 @@ def parse_simulator_log(
                         "source": "simulator",
                     }
                 )
-                event_order += 1
                 continue
 
             response_match = RESPONSE_RE.search(line)
@@ -247,6 +229,33 @@ def parse_simulator_log(
 
     events.sort(key=lambda row: _parse_timestamp(row["event_time"]))
     return events
+
+
+def _derive_comparison_window(
+    agent_events: list[dict[str, str]],
+) -> tuple[datetime | None, datetime | None]:
+    if not agent_events:
+        return None, None
+
+    start_timestamp = _parse_timestamp(agent_events[0]["event_time"])
+    end_timestamp = _parse_timestamp(agent_events[-1]["event_time"])
+    if end_timestamp < start_timestamp:
+        start_timestamp, end_timestamp = end_timestamp, start_timestamp
+    return start_timestamp, end_timestamp
+
+
+def _filter_events_to_window(
+    events: list[dict[str, str]],
+    start_timestamp: datetime | None,
+    end_timestamp: datetime | None,
+) -> list[dict[str, str]]:
+    if start_timestamp is None or end_timestamp is None:
+        return []
+    return [
+        row
+        for row in events
+        if _event_in_time_range(str(row.get("event_time", "")), start_timestamp, end_timestamp)
+    ]
 
 
 def evaluate_traceability(
@@ -320,8 +329,8 @@ def print_summary(
     recall = (tp / (tp + fn)) if (tp + fn) > 0 else 0.0
     f1 = (2 * precision * recall / (precision + recall)) if (precision + recall) > 0 else 0.0
 
-    print(f"Start timestamp filter: {start_timestamp.isoformat() if start_timestamp else 'none'}")
-    print(f"End timestamp filter:   {end_timestamp.isoformat() if end_timestamp else 'none'}")
+    print(f"Comparison window start: {start_timestamp.isoformat() if start_timestamp else 'none'}")
+    print(f"Comparison window end:   {end_timestamp.isoformat() if end_timestamp else 'none'}")
     print(f"Agent total events:     {stats['agent_total_events']}")
     print(f"Simulator total events: {stats['simulator_total_events']}")
     print(f"True positives:         {tp}")
@@ -368,20 +377,6 @@ def main() -> None:
     parser.add_argument("agent_log", type=Path, help="Path to agent XES/YAML log")
     parser.add_argument("simulator_log", type=Path, help="Path to simulator log")
     parser.add_argument(
-        "--from",
-        dest="start",
-        default=None,
-        metavar="TIMESTAMP",
-        help="Only include events at or after this timestamp",
-    )
-    parser.add_argument(
-        "--to",
-        dest="end",
-        default=None,
-        metavar="TIMESTAMP",
-        help="Only include events before this timestamp",
-    )
-    parser.add_argument(
         "--report",
         type=Path,
         default=None,
@@ -389,16 +384,11 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    start_timestamp: datetime | None = None
-    if args.start:
-        start_timestamp = _parse_timestamp(args.start)
-
-    end_timestamp: datetime | None = None
-    if args.end:
-        end_timestamp = _parse_timestamp(args.end)
-
-    agent_events = parse_agent_log(args.agent_log, start_timestamp, end_timestamp)
-    simulator_events = parse_simulator_log(args.simulator_log, start_timestamp, end_timestamp)
+    agent_events_all = parse_agent_log(args.agent_log)
+    simulator_events_all = parse_simulator_log(args.simulator_log)
+    start_timestamp, end_timestamp = _derive_comparison_window(agent_events_all)
+    agent_events = _filter_events_to_window(agent_events_all, start_timestamp, end_timestamp)
+    simulator_events = _filter_events_to_window(simulator_events_all, start_timestamp, end_timestamp)
     classified_rows, false_negatives, stats = evaluate_traceability(agent_events, simulator_events)
 
     print_summary(classified_rows, false_negatives, stats, start_timestamp, end_timestamp)

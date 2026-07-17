@@ -111,8 +111,6 @@ def _event_data_items(event: dict[str, Any]) -> list[dict[str, Any]]:
 
 def parse_agent_log(
     log_path: Path,
-    start_timestamp: datetime | None,
-    end_timestamp: datetime | None,
 ) -> list[dict[str, str]]:
     events: list[dict[str, str]] = []
     event_order = 0
@@ -128,7 +126,7 @@ def parse_agent_log(
                 continue
 
             event_time_str = _event_timestamp_text(event.get("time:timestamp"))
-            if not _event_in_time_range(event_time_str, start_timestamp, end_timestamp):
+            if not event_time_str:
                 continue
 
             cpee_transition = event.get("cpee:lifecycle:transition")
@@ -169,8 +167,6 @@ def parse_agent_log(
 
 def parse_simulator_log(
     simulator_log_path: Path,
-    start_timestamp: datetime | None,
-    end_timestamp: datetime | None,
 ) -> list[dict[str, str]]:
     events: list[dict[str, str]] = []
     sensor_by_actual: dict[str, dict[str, str]] = {}
@@ -181,12 +177,12 @@ def parse_simulator_log(
             sensor_match = SENSOR_GT_RE.search(line)
             if sensor_match:
                 actual_ts = sensor_match.group("actual")
-                actual_dt = _parse_timestamp(actual_ts)
-                if start_timestamp is not None and actual_dt < start_timestamp:
-                    continue
-                if end_timestamp is not None and actual_dt > end_timestamp:
+                try:
+                    _parse_timestamp(actual_ts)
+                except ValueError:
                     continue
 
+                event_order += 1
                 row = {
                     "event_type": "sensor",
                     "event_order": str(event_order),
@@ -195,18 +191,17 @@ def parse_simulator_log(
                 }
                 events.append(row)
                 sensor_by_actual[actual_ts] = row
-                event_order += 1
                 continue
 
             change_match = CHANGE_GT_RE.search(line)
             if change_match:
                 actual_ts = change_match.group("actual")
-                actual_dt = _parse_timestamp(actual_ts)
-                if start_timestamp is not None and actual_dt < start_timestamp:
-                    continue
-                if end_timestamp is not None and actual_dt > end_timestamp:
+                try:
+                    _parse_timestamp(actual_ts)
+                except ValueError:
                     continue
 
+                event_order += 1
                 events.append(
                     {
                         "event_type": "change",
@@ -215,7 +210,6 @@ def parse_simulator_log(
                         "source": "simulator",
                     }
                 )
-                event_order += 1
                 continue
 
             response_match = RESPONSE_RE.search(line)
@@ -235,6 +229,33 @@ def parse_simulator_log(
 
     events.sort(key=lambda row: _parse_timestamp(row["event_time"]))
     return events
+
+
+def _derive_comparison_window(
+    agent_events: list[dict[str, str]],
+) -> tuple[datetime | None, datetime | None]:
+    if not agent_events:
+        return None, None
+
+    start_timestamp = _parse_timestamp(agent_events[0]["event_time"])
+    end_timestamp = _parse_timestamp(agent_events[-1]["event_time"])
+    if end_timestamp < start_timestamp:
+        start_timestamp, end_timestamp = end_timestamp, start_timestamp
+    return start_timestamp, end_timestamp
+
+
+def _filter_events_to_window(
+    events: list[dict[str, str]],
+    start_timestamp: datetime | None,
+    end_timestamp: datetime | None,
+) -> list[dict[str, str]]:
+    if start_timestamp is None or end_timestamp is None:
+        return []
+    return [
+        row
+        for row in events
+        if _event_in_time_range(str(row.get("event_time", "")), start_timestamp, end_timestamp)
+    ]
 
 
 def evaluate_traceability(
@@ -307,8 +328,8 @@ def print_summary(
     recall = (tp / (tp + fn)) if (tp + fn) > 0 else 0.0
     f1 = (2 * precision * recall / (precision + recall)) if (precision + recall) > 0 else 0.0
 
-    print(f"Start timestamp filter: {start_timestamp.isoformat() if start_timestamp else 'none'}")
-    print(f"End timestamp filter:   {end_timestamp.isoformat() if end_timestamp else 'none'}")
+    print(f"Comparison window start: {start_timestamp.isoformat() if start_timestamp else 'none'}")
+    print(f"Comparison window end:   {end_timestamp.isoformat() if end_timestamp else 'none'}")
     print(f"Total agent events:     {stats['agent_total_events']}")
     print(f"Total simulator events: {stats['simulator_total_events']}")
     print(f"Agent unique keys:      {stats['agent_unique_event_keys']}")
@@ -331,74 +352,21 @@ def print_summary(
         for row in false_negatives[:20]:
             print(f"  order={row['event_order']} | type={row['event_type']} | reason={row['reason']}")
 
-
-def write_report(rows: list[dict[str, str]], report_path: Path) -> None:
-    fieldnames = ["event_time", "event_type", "event_order", "classification"]
-    with report_path.open("w", encoding="utf-8", newline="") as fh:
-        writer = csv.DictWriter(fh, fieldnames=fieldnames)
-        writer.writeheader()
-        for row in rows:
-            writer.writerow({k: row.get(k) for k in fieldnames})
-
-
-def write_false_negative_report(false_negatives: list[dict[str, str]], report_path: Path) -> None:
-    fieldnames = ["event_time", "event_type", "event_order", "reason"]
-    with report_path.open("w", encoding="utf-8", newline="") as fh:
-        writer = csv.DictWriter(fh, fieldnames=fieldnames)
-        writer.writeheader()
-        for row in false_negatives:
-            writer.writerow({k: row.get(k) for k in fieldnames})
-
-
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Compare traceability between XES/YAML agent log and simulator log"
     )
     parser.add_argument("log", type=Path, help="Path to filtered log (.xes.yaml)")
     parser.add_argument("simulator_log", type=Path, help="Path to simulator_static.log")
-    parser.add_argument(
-        "--from",
-        dest="start",
-        default=None,
-        metavar="TIMESTAMP",
-        help="Only include events at or after this timestamp",
-    )
-    parser.add_argument(
-        "--to",
-        dest="end",
-        default=None,
-        metavar="TIMESTAMP",
-        help="Only include events before this timestamp",
-    )
-    parser.add_argument(
-        "--report",
-        type=Path,
-        default=None,
-        help="Optional path to write detailed CSV report",
-    )
     args = parser.parse_args()
 
-    start_timestamp: datetime | None = None
-    if args.start:
-        start_timestamp = _parse_timestamp(args.start)
-
-    end_timestamp: datetime | None = None
-    if args.end:
-        end_timestamp = _parse_timestamp(args.end)
-
-    agent_events = parse_agent_log(args.log, start_timestamp, end_timestamp)
-    simulator_events = parse_simulator_log(args.simulator_log, start_timestamp, end_timestamp)
+    agent_events_all = parse_agent_log(args.log)
+    simulator_events_all = parse_simulator_log(args.simulator_log)
+    start_timestamp, end_timestamp = _derive_comparison_window(agent_events_all)
+    agent_events = _filter_events_to_window(agent_events_all, start_timestamp, end_timestamp)
+    simulator_events = _filter_events_to_window(simulator_events_all, start_timestamp, end_timestamp)
     rows, false_negatives, stats = evaluate_traceability(agent_events, simulator_events)
     print_summary(rows, false_negatives, stats, start_timestamp, end_timestamp)
-
-    if args.report is not None:
-        write_report(rows, args.report)
-        print(f"\nWrote report to {args.report}")
-        if false_negatives:
-            fn_report_path = args.report.with_name(f"{args.report.stem}.false_negatives.csv")
-            write_false_negative_report(false_negatives, fn_report_path)
-            print(f"Wrote false negative report to {fn_report_path}")
-
 
 if __name__ == "__main__":
     main()
