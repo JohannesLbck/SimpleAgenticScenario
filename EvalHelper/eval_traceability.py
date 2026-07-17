@@ -99,6 +99,8 @@ def read_xes_yaml_log(file_path: str, start_timestamp: str | None = None, end_ti
     with path.open("r", encoding="utf-8") as fh:
         for event in yaml.safe_load_all(fh):
             event = event.get("event")
+            if event is None:
+                continue
             event_dt = parse_timestamp(str(event.get("time:timestamp")))
             if start_dt and event_dt and event_dt < start_dt:
                 continue
