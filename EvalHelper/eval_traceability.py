@@ -10,7 +10,7 @@ EVENTTYPES = [
 ]
 EVENTNAMEALIASES = {
     "change lumen": ["changelumen", "change_lumen", "change_lumens", "changelumens", "setlumento0"],
-    "read sensor": ["readsensor", "read_sensor", "read_sensors", "getsensor"],
+    "read sensor": ["readsensor", "read_sensor", "read_sensors", "getsensor", "environment_status", "environmentstatus"],
 }
 
 SENSOR_APP_LINE_RE = re.compile(
