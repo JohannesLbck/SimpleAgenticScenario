@@ -154,6 +154,7 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
+  json
   mcp
   riddl
   ruby_llm

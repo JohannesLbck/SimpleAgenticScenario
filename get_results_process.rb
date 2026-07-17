@@ -1,0 +1,80 @@
+#!/bin/ruby
+
+require 'bundler/setup'
+require 'optparse'
+
+options = {
+  time_sensitive: false,
+}
+OptionParser.new do |opts|
+  opts.on("-t", "--time-sensitive", "enable time sensitive mode") do |f|
+    options[:time_sensitive] = f
+  end
+end.parse!
+
+#python3 EvalHelper/eval_sensor_log.py --from '2026-07-13 12:57:12.644' --to '2026-07-13 13:11:49.022' Simulators/simulator_static.log --time-sensitive
+
+start_ts = nil
+end_ts = nil
+counter = 0
+times = nil
+eval("times=#{ARGV[0]}")
+
+times.map!() { |t| t += 7200 }
+start_ts = times.first()
+
+precisions = []
+recalls = []
+f_ones = []
+reactivities = []
+times.each_with_index() { |time,index|
+  if(index != 0 && index % 72 == 0) then
+    end_ts = time
+  end
+  if(start_ts.nil?().!() && end_ts.nil?().!()) then
+    puts "Iteration #{counter}"
+    res = `python3 EvalHelper/eval_sensor_log.py --from '#{start_ts}' --to '#{end_ts}' Simulators/simulator_static.log #{options[:time_sensitive] ? '--time-sensitive' : ''}`
+    puts res
+    res_lines = res.split("\n")
+    res_lines.each() { |res_line|
+      #pp res_line
+      case res_line
+      when /^Precision:.*(\d\.\d\d\d\d)/
+        precisions.push($1.to_f())
+      when /^Recall:.*(\d\.\d\d\d\d)/
+        recalls.push($1.to_f())
+      when /^F1 score:.*(\d\.\d\d\d\d)/
+        f_ones.push($1.to_f())
+      when /^Average reactivity \(s\):.*(\d\.\d\d\d\d)/
+        reactivities.push($1.to_f())
+      end
+    }
+    start_ts = end_ts 
+    end_ts = nil
+    counter += 1
+  end
+}
+
+puts "Precisions: #{precisions}"
+mean_precision = precisions.sum().to_f() / precisions.length()
+std_dev_precision = Math.sqrt(precisions.map { |x| (x - mean_precision) ** 2 }.sum() / precisions.length())
+puts "Mean Precision: #{mean_precision}"
+puts "Std. Dev. Precision: #{std_dev_precision}"
+
+puts "Recalls: #{recalls}"
+mean_recall = recalls.sum().to_f() / recalls.length()
+std_dev_recall = Math.sqrt(recalls.map { |x| (x - mean_recall) ** 2 }.sum() / recalls.length())
+puts "Mean Recall: #{mean_recall}"
+puts "Std. Dev. Recall: #{std_dev_recall}"
+
+puts "F1 scores: #{f_ones}"
+mean_f_one = f_ones.sum().to_f() / f_ones.length()
+std_dev_f_one = Math.sqrt(f_ones.map { |x| (x - mean_f_one) ** 2 }.sum() / f_ones.length())
+puts "Mean F1: #{mean_f_one}"
+puts "Std. Dev. F1: #{std_dev_f_one}"
+
+puts "Reactivities: #{reactivities}"
+mean_reactivity = reactivities.sum().to_f() / reactivities.length()
+std_dev_reactivity = Math.sqrt(reactivities.map { |x| (x - mean_reactivity) ** 2 }.sum() / reactivities.length())
+puts "Mean Reactivity: #{mean_reactivity}"
+puts "Std. Dev. Reactivity: #{std_dev_reactivity}"

@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-
 require 'bundler/setup'
 require 'riddl/server'
 require 'json'
@@ -81,7 +80,7 @@ class LLMCall < Riddl::Implementation
   end
 end
 
-Riddl::Server.new(File.dirname(__FILE__) + '/description.xml', :bind => '127.0.0.1',  :port => 9092) do
+Riddl::Server.new(File.dirname(__FILE__) + '/description.xml', :bind => '127.0.0.1',  :port => 9093) do
   accessible_description true
   #cross_site_xhr true
   cross_site_xhr false

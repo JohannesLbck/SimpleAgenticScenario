@@ -1,3 +1,5 @@
+#!/usr/bin/ruby
+
 require 'bundler/setup'
 require "mcp"
 require "riddl/client"
