@@ -1,10 +1,23 @@
 from __future__ import annotations
 
+import argparse
 import logging
 import os
+import time
 import warnings
 from operator import add
 from typing import Annotated, Literal, TypedDict
+
+warnings.filterwarnings(
+    "ignore",
+    message=r"Core Pydantic V1 functionality isn't compatible with Python 3\.14 or greater\.",
+    category=UserWarning,
+)
+warnings.filterwarnings(
+    "ignore",
+    message=r"create_react_agent has been moved to `langchain\.agents`\. Please update your import to `from langchain\.agents import create_agent`\.",
+    category=DeprecationWarning,
+)
 
 import httpx
 from langchain_core.tools import tool
@@ -13,7 +26,27 @@ from langgraph.prebuilt import create_react_agent
 
 LOG_FILE = "ComplexScenario.log"
 
-BASE_URL = "https://power.bpm.cit.tum.de/BloodDonationServices"
+DEFAULT_BASE_URL = "http://127.0.0.1:4650"
+BASE_URL = os.getenv("BLOOD_DONATION_BASE_URL", DEFAULT_BASE_URL).rstrip("/")
+MODEL_NAME = os.getenv("OPENAI_MODEL", "openai:gpt-5.5")
+DEFAULT_EXAMPLE_MESSAGE = (
+    "Please continue my blood donation registration. Use my digital ID for identity verification "
+    "and digital signature for consent. I am 32 years old, weigh 72 kg, last donated 5 months "
+    "ago, I am not pregnant, and I have had no recent illness, travel, surgery, antibiotics, "
+    "or infection risks."
+)
+DEFAULT_EXAMPLE_INPUTS = [
+    "Please explain what happens after the identity verification step.",
+    "Please use my digital signature to complete the consent verification.",
+    "I am 32 years old, weigh 72 kg, last donated blood 5 months ago, I am not pregnant, and I have had no recent illness, fever, infection symptoms, travel to risk areas, surgery, tattoos, antibiotics, transfusions, or drug-risk exposures. I feel well today and I am eligible to donate.",
+]
+DEFAULT_EXAMPLE_FALLBACK = (
+    "I am 32 years old, weigh 72 kg, last donated blood 5 months ago, I am not pregnant, and I have had no recent illness, fever, infection symptoms, travel to risk areas, surgery, tattoos, antibiotics, transfusions, or drug-risk exposures. I feel well today and I am eligible to donate."
+)
+DEFAULT_EXAMPLE_QUERY_RESPONSE = "Please explain what happens after the identity verification step."
+DEFAULT_EXAMPLE_IDENTITY_RESPONSE = "Please verify me with my digital ID."
+DEFAULT_EXAMPLE_CONSENT_RESPONSE = "Please use my digital signature to complete the consent verification."
+DEFAULT_EXAMPLE_INTERVIEW_RESPONSE = DEFAULT_EXAMPLE_FALLBACK
 
 logger = logging.getLogger("identityverifier")
 if not logger.handlers:
@@ -23,6 +56,10 @@ if not logger.handlers:
     file_handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(message)s"))
     logger.addHandler(file_handler)
     logger.propagate = False
+
+
+_example_input_queue: list[str] = []
+_example_input_fallback: str | None = None
 
 
 # --- StateGraph process model (aligned with AgenticBloodRegistration.xml) ---
@@ -59,6 +96,60 @@ def _call_service(path: str, success_text: str, failure_text: str) -> tuple[bool
         return False, f"{failure_text} Error while calling service: {exc}"
 
 
+def _using_local_simulator() -> bool:
+    return BASE_URL in {DEFAULT_BASE_URL, "http://localhost:4650"}
+
+
+def _probe_service() -> None:
+    probe_path = "/health" if _using_local_simulator() else "/digital-id"
+    response = httpx.get(f"{BASE_URL}{probe_path}", timeout=2.0)
+    response.raise_for_status()
+
+
+def _ensure_service_ready() -> None:
+    try:
+        _probe_service()
+        return
+    except Exception:
+        if not _using_local_simulator():
+            raise
+
+    from BoolSimulator import _start_daemon
+
+    _start_daemon()
+    deadline = time.monotonic() + 10.0
+    last_error = None
+    while time.monotonic() < deadline:
+        try:
+            _probe_service()
+            return
+        except Exception as exc:
+            last_error = exc
+            time.sleep(0.5)
+    raise RuntimeError(f"Service at {BASE_URL} did not become ready: {last_error}")
+
+
+def configure_example_inputs(inputs: list[str], fallback: str | None = None) -> None:
+    global _example_input_queue, _example_input_fallback
+    _example_input_queue = list(inputs)
+    _example_input_fallback = fallback
+
+
+def _match_example_input(prompt: str) -> str | None:
+    lowered = prompt.lower()
+    if not lowered:
+        return None
+    if any(token in lowered for token in ["clarified", "clarify", "what happens", "what would you like clarified", "what can i help", "what do you want clarified"]):
+        return DEFAULT_EXAMPLE_QUERY_RESPONSE
+    if any(token in lowered for token in ["identity", "digital id", "face scan", "verification option"]):
+        return DEFAULT_EXAMPLE_IDENTITY_RESPONSE
+    if any(token in lowered for token in ["consent", "digital signature", "vocal consent", "signature option", "which verification option", "which option do you prefer"]):
+        return DEFAULT_EXAMPLE_CONSENT_RESPONSE
+    if any(token in lowered for token in ["age", "weight", "pregnan", "travel", "illness", "surgery", "antibiotic", "donation history", "last donated", "risk factor", "infection", "drug", "tattoo", "transfusion", "questionnaire", "eligible"]):
+        return DEFAULT_EXAMPLE_INTERVIEW_RESPONSE
+    return None
+
+
 def _normalize_requested_action(message: str) -> str:
     lowered = message.lower()
     if "stop" in lowered or "cancel" in lowered:
@@ -83,6 +174,13 @@ def conduct_facescan() -> str:
 @tool
 def user_input(message: str) -> str:
     """Prompt the user and return typed input."""
+    matched_example = _match_example_input(message or "")
+    if matched_example is not None:
+        return matched_example
+    if _example_input_queue:
+        return _example_input_queue.pop(0)
+    if _example_input_fallback is not None:
+        return _example_input_fallback
     prompt = (message or "").strip()
     if prompt:
         prompt = f"{prompt} "
@@ -146,7 +244,7 @@ def _get_verify_identity_agent():
     global _verify_identity_agent
     if _verify_identity_agent is None:
         _verify_identity_agent = create_react_agent(
-            model="openai:gpt-5.5",
+            model=MODEL_NAME,
             tools=[
                 user_input,
                 conduct_facescan,
@@ -165,7 +263,7 @@ def _get_obtain_consent_agent():
     global _obtain_consent_agent
     if _obtain_consent_agent is None:
         _obtain_consent_agent = create_react_agent(
-            model="openai:gpt-5.5",
+            model=MODEL_NAME,
             tools=[
                 user_input,
                 verify_digital_signature,
@@ -186,7 +284,7 @@ def _get_answer_user_queries_agent():
     global _answer_user_queries_agent
     if _answer_user_queries_agent is None:
         _answer_user_queries_agent = create_react_agent(
-            model="openai:gpt-5.5",
+            model=MODEL_NAME,
             tools=[user_input],
             prompt=(
                 "You handle the Answer User Queries step. "
@@ -201,7 +299,7 @@ def _get_interview_questionnaire_agent():
     global _interview_questionnaire_agent
     if _interview_questionnaire_agent is None:
         _interview_questionnaire_agent = create_react_agent(
-            model="openai:gpt-5.5",
+            model=MODEL_NAME,
             tools=[user_input],
             prompt=(
                 "You conduct the interview and questionnaire step. "
@@ -220,7 +318,20 @@ def _invoke_agent_text(agent, message: str) -> str:
     if not messages:
         return ""
     last_message = messages[-1]
-    return last_message.content if hasattr(last_message, "content") else str(last_message)
+    content = last_message.content if hasattr(last_message, "content") else last_message
+    if isinstance(content, str):
+        return content
+    if isinstance(content, list):
+        parts = []
+        for item in content:
+            if isinstance(item, dict):
+                text = item.get("text")
+                if text:
+                    parts.append(str(text))
+            elif item:
+                parts.append(str(item))
+        return "\n".join(parts)
+    return str(content)
 
 
 def _did_pass(agent_text: str) -> bool:
@@ -452,11 +563,51 @@ def render_workflow_graph(output_path: str = "workflow_graph.png") -> str:
     return target_path
 
 
-if __name__ == "__main__":
-    warnings.filterwarnings(
-        "ignore",
-        message=r"Core Pydantic V1 functionality isn't compatible with Python 3\.14 or greater\.",
-        category=UserWarning,
+def run_example(
+    message: str = DEFAULT_EXAMPLE_MESSAGE,
+    example_inputs: list[str] | None = None,
+    fallback_input: str = DEFAULT_EXAMPLE_FALLBACK,
+) -> dict:
+    _ensure_service_ready()
+    configure_example_inputs(example_inputs or DEFAULT_EXAMPLE_INPUTS, fallback_input)
+    try:
+        return workflow.invoke(
+            {
+                "message": message,
+                "requested_action": _normalize_requested_action(message),
+                "identity_result": None,
+                "consent_result": None,
+                "interview_result": None,
+                "physician_result": None,
+                "final_decision": "",
+                "terminate": False,
+                "notes": [],
+                "final_response": "",
+            }
+        )
+    finally:
+        configure_example_inputs([], None)
+
+
+def _build_argument_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description="Run the ComplexScenario workflow against live endpoints")
+    parser.add_argument(
+        "--message",
+        default=DEFAULT_EXAMPLE_MESSAGE,
+        help="Example donor request sent into the workflow",
     )
-    image_path = render_workflow_graph()
-    print(f"Workflow image written to: {image_path}")
+    parser.add_argument(
+        "--render-graph",
+        action="store_true",
+        help="Render the workflow graph before invoking the example workflow",
+    )
+    return parser
+
+
+if __name__ == "__main__":
+    args = _build_argument_parser().parse_args()
+    if args.render_graph:
+        image_path = render_workflow_graph()
+        print(f"Workflow image written to: {image_path}")
+    result = run_example(args.message)
+    print(result.get("final_response", ""))

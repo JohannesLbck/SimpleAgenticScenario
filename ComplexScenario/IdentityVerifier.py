@@ -3,16 +3,22 @@ from __future__ import annotations
 import argparse
 import logging
 import os
+import time
 
 import httpx
-from fastapi import FastAPI, HTTPException
 from langchain_core.tools import tool
 from langgraph.prebuilt import create_react_agent
-from pydantic import BaseModel
 
 LOG_FILE = "identityverifier.log"
 
-BASE_URL = "https://power.bpm.cit.tum.de/BloodDonationServices"
+DEFAULT_BASE_URL = "http://127.0.0.1:4650"
+BASE_URL = os.getenv("BLOOD_DONATION_BASE_URL", DEFAULT_BASE_URL).rstrip("/")
+MODEL_NAME = os.getenv("OPENAI_MODEL", "openai:gpt-5.5")
+DEFAULT_EXAMPLE_MESSAGE = (
+    "Please verify my blood donation identity. I want to use my digital ID, and if you need to "
+    "check eligibility further you may request physician clearance."
+)
+DEFAULT_EXAMPLE_VERIFICATION_RESPONSE = "Please use my digital ID for verification."
 
 
 logger = logging.getLogger("identityverifier")
@@ -23,6 +29,9 @@ if not logger.handlers:
     file_handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(message)s"))
     logger.addHandler(file_handler)
     logger.propagate = False
+
+
+_example_input_enabled = False
 
 
 # --- Tools ---
@@ -86,6 +95,8 @@ def physician_clearance() -> str:
 @tool
 def user_input(message: str) -> str:
     """Prompt the user and return typed input."""
+    if _example_input_enabled:
+        return DEFAULT_EXAMPLE_VERIFICATION_RESPONSE
     prompt = (message or "").strip()
     if prompt:
         prompt = f"{prompt} "
@@ -106,8 +117,9 @@ SYSTEM_PROMPT = (
 )
 
 agent = create_react_agent(
-    model="openai:gpt-5.5",
+    model=MODEL_NAME,
     tools=[
+        user_input,
         conduct_facescan,
         verify_digital_id,
         verify_digital_signature,
@@ -117,5 +129,88 @@ agent = create_react_agent(
     ],
     prompt=SYSTEM_PROMPT,
 )
+
+
+def _using_local_simulator() -> bool:
+    return BASE_URL in {DEFAULT_BASE_URL, "http://localhost:4650"}
+
+
+def _probe_service() -> None:
+    probe_path = "/health" if _using_local_simulator() else "/digital-id"
+    response = httpx.get(f"{BASE_URL}{probe_path}", timeout=2.0)
+    response.raise_for_status()
+
+
+def _ensure_service_ready() -> None:
+    try:
+        _probe_service()
+        return
+    except Exception:
+        if not _using_local_simulator():
+            raise
+
+    from BoolSimulator import _start_daemon
+
+    _start_daemon()
+    deadline = time.monotonic() + 10.0
+    last_error = None
+    while time.monotonic() < deadline:
+        try:
+            _probe_service()
+            return
+        except Exception as exc:
+            last_error = exc
+            time.sleep(0.5)
+    raise RuntimeError(f"Service at {BASE_URL} did not become ready: {last_error}")
+
+
+def _extract_text(message) -> str:
+    content = getattr(message, "content", message)
+    if isinstance(content, str):
+        return content
+    if isinstance(content, list):
+        parts = []
+        for item in content:
+            if isinstance(item, dict):
+                text = item.get("text")
+                if text:
+                    parts.append(str(text))
+            elif item:
+                parts.append(str(item))
+        return "\n".join(parts)
+    return str(content)
+
+
+def invoke_agent_text(message: str) -> str:
+    result = agent.invoke({"messages": [{"role": "user", "content": message}]})
+    messages = result.get("messages", [])
+    if not messages:
+        return ""
+    return _extract_text(messages[-1])
+
+
+def run_example(message: str = DEFAULT_EXAMPLE_MESSAGE) -> str:
+    global _example_input_enabled
+    _ensure_service_ready()
+    _example_input_enabled = True
+    try:
+        return invoke_agent_text(message)
+    finally:
+        _example_input_enabled = False
+
+
+def _build_argument_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description="Run the identity verification agent against live endpoints")
+    parser.add_argument(
+        "--message",
+        default=DEFAULT_EXAMPLE_MESSAGE,
+        help="Example user request sent to the agent",
+    )
+    return parser
+
+
+if __name__ == "__main__":
+    args = _build_argument_parser().parse_args()
+    print(run_example(args.message))
 
 
