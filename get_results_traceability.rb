@@ -28,7 +28,7 @@ lines.each() { |line|
   end
   if(start_ts.nil?().!() && end_ts.nil?().!()) then
     puts "Iteration #{counter}"
-    res = `python3 EvalHelper/eval_traceability.py --start-timestamp '#{start_ts}' --end-timestamp '#{end_ts}' MCP/logger/logs/#{ARGV[1]}_run_#{counter}.log Simulators/simulator_static_oo1_oo3.log`
+    res = `python3 EvalHelper/eval_traceability.py --start-timestamp '#{start_ts}' --end-timestamp '#{end_ts}' MCP/logger/logs/#{ARGV[1]}_run_#{counter}.log Simulators/simulator_static_oo1_oo2.log`
     puts res
     res_lines = res.split("\n")
     res_lines.each() { |res_line|
