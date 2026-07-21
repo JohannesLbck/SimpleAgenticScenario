@@ -29,36 +29,6 @@ class LLMCall < Riddl::Implementation
       config.default_adapter = :ruby_llm
     end
 
-    light_client = RubyLLM::MCP.client(
-      name: "light",
-      adapter: :ruby_llm,
-      transport_type: :streamable_http,
-      config: {
-        url: "http://localhost:4567/_mcp",
-      }
-    )
-
-    sleep_client = RubyLLM::MCP.client(
-      name: "sleep",
-      adapter: :ruby_llm,
-      transport_type: :streamable_http,
-      config: {
-        url: "http://localhost:4568/_mcp",
-      }
-    )
-
-    log_client = RubyLLM::MCP.client(
-      name: "log",
-      adapter: :ruby_llm,
-      transport_type: :streamable_http,
-      config: {
-        url: "http://localhost:4569/_mcp",
-      }
-    )
-
-    anthropic_chat.with_tools(*light_client.tools)
-    anthropic_chat.with_tools(*sleep_client.tools)
-    anthropic_chat.with_tools(*log_client.tools)
     #prompt = "hello"
     prompt = @p[0].value()
 
