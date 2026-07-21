@@ -15,7 +15,7 @@ The project is useful for testing different control styles (LLM-based, heuristic
 - `ComplexScenario/`: blood-donation registration workflow with a multi-step, agentic decision process
 - `EvalHelper/`: log comparison and evaluation utilities
 - `EvalHelper/MetricCalculation/`: cyclomatic and ABC metric scripts for process XML files
-- `mcp/`: MCP tool servers + orchestration scripts (`oo1.sh`, `oo3.sh`, `ootest.sh`)
+- `MCP/`: MCP tool servers + orchestration scripts (`eval_oo1.sh`, `eval_oo3.sh`)
 
 ## Architecture at a Glance
 
@@ -27,7 +27,7 @@ Simulator, EvalHelper:
 MCP:
 
 1. MCP servers expose tools (`light`, `sleep`, `log`) which are connected with the python endpoints
-2. `mcp/agent.rb` invokes an LLM with these tools
+2. `MCP/agent.rb` invokes an LLM with these tools
 3. Logs are written and compared using `EvalHelper`
 
 ## Prerequisites
@@ -57,8 +57,9 @@ bundler install
 
 The MCP LLM scripts expect API credentials in:
 
-- `mcp/api.key` (for `mcp/agent.rb`)
-- `mcp/agent_endpoint/api.key` (for `mcp/agent_endpoint/server.rb`)
+- `MCP/api.key` (for `MCP/agent.rb`)
+- `MCP/agent_endpoint/api.key` (for `MCP/agent_endpoint/server.rb`)
+- `MCP/agent_endpoint_no_tools/api.key` (for `MCP/agent_endpoint_no_tools/server.rb`)
 
 ## Ports and Endpoints
 
@@ -82,8 +83,9 @@ MCP services (expected by `mcp/agent.rb`):
 
 Additional MCP service ports:
 
-- Logger backend (`mcp/logger/server.rb`): `9091`
-- Agent endpoint (`mcp/agent_endpoint/server.rb`): `9092`
+- Logger backend (`MCP/logger/server.rb`): `9091`
+- Agent endpoint (`MCP/agent_endpoint/server.rb`): `9092`
+- Agent endpoint without tools (`MCP/agent_endpoint_no_tools/server.rb`): `9092`
 
 ## Quickstart (Python Flow)
 
@@ -112,30 +114,30 @@ ruby -rsinatra -e 'set :port, 4567; load "mcp_light.rb"'
 ```
 
 ```bash
-cd ~/Papers/AgenticFundamentals/SimpleAgenticScenario/mcp/wait
+cd ~/Papers/AgenticFundamentals/SimpleAgenticScenario/MCP/wait
 ruby mcp_sleep.rb
 ```
 
 ```bash
-cd ~/Papers/AgenticFundamentals/SimpleAgenticScenario/mcp/logger
+cd ~/Papers/AgenticFundamentals/SimpleAgenticScenario/MCP/logger
 ruby mcp_logger.rb
 ```
 
 Run an orchestration experiment prompt:
 
 ```bash
-cd ~/Papers/AgenticFundamentals/SimpleAgenticScenario/mcp
-./oo1.sh
+cd ~/Papers/AgenticFundamentals/SimpleAgenticScenario/MCP
+./do_it.sh eval_oo1
 # or
-./oo3.sh
+./do_it.sh eval_oo2
 # or
-./ootest.sh
+./eval.sh
 ```
 
 Direct invocation:
 
 ```bash
-cd ~/Papers/AgenticFundamentals/SimpleAgenticScenario/mcp
+cd ~/Papers/AgenticFundamentals/SimpleAgenticScenario/MCP
 ruby agent.rb "Your instruction prompt here"
 ```
 
