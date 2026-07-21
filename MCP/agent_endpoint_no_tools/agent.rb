@@ -24,16 +24,6 @@ RubyLLM::MCP.configure do |config|
   #config.default_adapter = :mcp_sdk
 end
 
-#anthropic_chat.after_message do |_|
-#  pp "after message"
-#  instruction = anthropic_chat.messages().shift()
-#  while(anthropic_chat.messages().size() >= 10)
-#    pp "clean messages"
-#    anthropic_chat.messages().shift()
-#  end
-#  anthropic_chat.messages.unshift(instruction)
-#end
-
 ###### Set up logging
 srv = Riddl::Client.new('http://localhost:9091/log')
 status, res = srv.post([

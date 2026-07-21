@@ -44,6 +44,7 @@ sleep_client = RubyLLM::MCP.client(
   adapter: :ruby_llm,
   transport_type: :streamable_http,
   config: {
+    #url: "http://localhost:4568/_mcp",
     url: "https://power.bpm.cit.tum.de/sleep_mcp/_mcp",
   }
 )
@@ -53,6 +54,7 @@ log_client = RubyLLM::MCP.client(
   adapter: :ruby_llm,
   transport_type: :streamable_http,
   config: {
+    #url: "http://localhost:4569/_mcp",
     url: "https://power.bpm.cit.tum.de/log_mcp/_mcp",
   }
 )
@@ -60,16 +62,6 @@ log_client = RubyLLM::MCP.client(
 anthropic_chat.with_tools(*light_client.tools)
 anthropic_chat.with_tools(*sleep_client.tools)
 anthropic_chat.with_tools(*log_client.tools)
-
-#anthropic_chat.after_message do |_|
-#  pp "after message"
-#  instruction = anthropic_chat.messages().shift()
-#  while(anthropic_chat.messages().size() >= 10)
-#    pp "clean messages"
-#    anthropic_chat.messages().shift()
-#  end
-#  anthropic_chat.messages.unshift(instruction)
-#end
 
 ###### Set up logging
 #srv = Riddl::Client.new('http://localhost:9091/log')
