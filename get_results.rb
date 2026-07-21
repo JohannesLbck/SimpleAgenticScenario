@@ -40,7 +40,7 @@ lines.each() { |line|
   end
   if(start_ts.nil?().!() && end_ts.nil?().!()) then
     puts "Iteration #{counter}"
-    res = `python3 EvalHelper/eval_sensor_log.py --from '#{start_ts}' --to '#{end_ts}' Simulators/simulator_static_oo1_oo3.log #{options[:time_sensitive] ? '--time-sensitive' : ''}`
+    res = `python3 EvalHelper/eval_sensor_log.py --from '#{start_ts}' --to '#{end_ts}' Simulators/simulator_static_oo1_oo2.log #{options[:time_sensitive] ? '--time-sensitive' : ''}`
     puts res
     res_lines = res.split("\n")
     res_lines.each() { |res_line|
