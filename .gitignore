@@ -45,6 +45,7 @@ htmlcov/
 .env.*
 *.local
 
+
 # Jupyter
 .ipynb_checkpoints/
 
@@ -59,3 +60,6 @@ Thumbs.db
 
 # tests
 MCP/tests
+
+# installation
+Gemfile.lock
