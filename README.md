@@ -92,7 +92,7 @@ Additional MCP service ports:
 Run static simulator in one terminal:
 
 ```bash
-cd ~/Papers/AgenticFundamentals/SimpleAgenticScenario/Simulators
+cd SimpleAgenticScenario/Simulators
 source ../.venv/bin/activate
 python simulator_static.py --foreground
 ```
@@ -123,10 +123,10 @@ cd SimpleAgenticScenario/MCP/logger
 ruby mcp_logger.rb
 ```
 
-Run an orchestration experiment prompt:
+Run an orchestration experiment prompt (beforehand the log files in SimpleAgenticScenario/MCP/output\_logs and SimpleAgenticScenario/MCP/logger/logs can be renamed/deleted to get completelynew log files):
 
 ```bash
-cd ~/Papers/AgenticFundamentals/SimpleAgenticScenario/MCP
+cd SimpleAgenticScenario/MCP
 ./do_it.sh eval_oo1
 # or
 ./do_it.sh eval_oo2
@@ -137,7 +137,7 @@ cd ~/Papers/AgenticFundamentals/SimpleAgenticScenario/MCP
 Direct invocation:
 
 ```bash
-cd ~/Papers/AgenticFundamentals/SimpleAgenticScenario/MCP
+cd SimpleAgenticScenario/MCP
 ruby agent.rb "Your instruction prompt here"
 ```
 
@@ -156,10 +156,13 @@ From `EvalHelper/`:
 - `recalculate_gt_ranges.py`: recompute and validate GT lumen ranges in dataset CSV
 - `filter.py`: filter XES-YAML events by scenario-relevant labels/transitions
 
+Reproduce results (can also be done without running the experiments because logs from the original experiments are provided):
+
+
 Example:
 
 ```bash
-cd ~/Papers/AgenticFundamentals/SimpleAgenticScenario/EvalHelper
+cd SimpleAgenticScenario/EvalHelper
 python eval_sensor_log.py ../Simulators/simulator_static.log --report report.csv
 ```
 
