@@ -1,0 +1,76 @@
+---
+event:
+  concept:name: Lighting adjustment process
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-13 22:24:26.112400097 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 400
+  time:timestamp: 2026-07-13 22:26:50.196855314 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-13 22:27:17.735376078 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 400
+  time:timestamp: 2026-07-13 22:28:15.567380318 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-13 22:28:23.142698151 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 400
+  time:timestamp: 2026-07-13 22:28:48.637656561 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-13 22:28:54.605271288 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 400
+  time:timestamp: 2026-07-13 22:28:58.493587279 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-13 22:29:02.285464592 +02:00
+---
+event:
+  concept:name: Lighting adjustment process
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-13 22:29:39.448302496 +02:00

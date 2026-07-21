@@ -1,0 +1,120 @@
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: start
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-13 22:16:10.439349480 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-13 22:16:10.492622447 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: start
+  data:
+  - name: lumen
+    value: 200
+  time:timestamp: 2026-07-13 22:17:03.126233076 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 200
+  time:timestamp: 2026-07-13 22:17:03.177805653 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: start
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-13 22:17:07.735266399 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-13 22:17:07.786140857 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: start
+  data:
+  - name: lumen
+    value: 200
+  time:timestamp: 2026-07-13 22:17:16.776092592 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 200
+  time:timestamp: 2026-07-13 22:17:16.824276507 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: start
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-13 22:17:22.385808497 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: start
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-13 22:17:22.435964406 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-13 22:17:22.486961646 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: start
+  data:
+  - name: lumen
+    value: 200
+  time:timestamp: 2026-07-13 22:19:26.650649881 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 200
+  time:timestamp: 2026-07-13 22:19:26.699138880 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: start
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-13 22:19:34.471424906 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-13 22:19:34.522195172 +02:00

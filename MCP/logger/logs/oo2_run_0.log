@@ -1,0 +1,1574 @@
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:12:54.032366777 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:13:19.039161651 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:13:23.716809226 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 300
+  time:timestamp: 2026-07-14 00:13:23.824130141 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:13:28.721834114 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 200
+  time:timestamp: 2026-07-14 00:13:28.824082518 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:13:32.118426979 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:13:35.217637518 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:13:38.429830290 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:14:15.822284130 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-14 00:14:15.924624745 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:14:19.017610067 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:14:22.337773988 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:14:25.921845478 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:14:29.077505087 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:14:32.204204557 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:14:35.368125703 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:14:38.556897372 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:14:41.954833386 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:14:45.463081850 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:14:48.680348080 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:14:53.472675968 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 50
+  time:timestamp: 2026-07-14 00:14:53.571112115 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:14:58.562563549 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-14 00:14:58.664521979 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:15:01.944339297 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:15:05.172800985 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:15:08.346959146 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:15:11.285569067 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:15:14.451889845 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:15:19.083063410 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 100
+  time:timestamp: 2026-07-14 00:15:19.185086491 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:15:23.796931901 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 300
+  time:timestamp: 2026-07-14 00:15:23.899848803 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:15:27.024496597 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:15:30.124214370 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:15:33.206390720 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:15:37.678655054 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-14 00:15:37.779473451 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:15:40.899026042 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:15:45.544052542 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 300
+  time:timestamp: 2026-07-14 00:15:45.644520124 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:15:48.897038180 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:15:53.464423083 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-14 00:15:53.566456194 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:15:56.769229000 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:15:59.946736932 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:16:04.666104989 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 200
+  time:timestamp: 2026-07-14 00:16:04.767734646 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:16:08.021501628 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:16:11.273213253 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:16:14.495659539 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:16:17.601095099 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:16:22.065548280 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-14 00:16:22.167612231 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:16:25.528221591 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:16:28.874163677 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:16:32.200203489 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:16:35.523105637 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:16:38.889790002 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:16:42.255332994 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:16:45.651080519 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:16:49.058381834 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:16:52.439104216 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:16:55.850556782 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:16:59.341768099 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:17:04.328908488 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 50
+  time:timestamp: 2026-07-14 00:17:04.430524004 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:17:10.339991580 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-14 00:17:10.440473782 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-14 00:17:10.492515551 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:17:13.993258052 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:17:17.448898950 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:17:20.935994743 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:17:24.383483160 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:17:27.776243349 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:17:31.172320387 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:17:36.114931197 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 100
+  time:timestamp: 2026-07-14 00:17:36.215639372 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:17:39.663082731 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:17:43.129013994 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:17:48.391433850 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 300
+  time:timestamp: 2026-07-14 00:17:48.492994386 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:17:52.132421427 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:17:55.797679657 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:17:59.521189153 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:18:03.166982640 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:18:06.909639850 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:18:10.614271335 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:18:14.305231159 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:18:18.084830306 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:18:21.921365053 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:18:25.707411134 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:18:29.607538770 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:18:33.461337719 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:18:37.284867770 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:18:41.133896489 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:18:44.959247591 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:18:48.702909720 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:18:52.472356697 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:18:56.281861869 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:19:00.126135152 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:19:05.319354470 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-14 00:19:05.421407342 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:19:09.439021135 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:19:13.372167630 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:19:17.239362610 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:19:21.157474567 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:19:25.306392862 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:19:29.440728468 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:19:33.585204534 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:19:37.760886605 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:19:42.025694953 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:19:46.236845742 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:19:50.450525032 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:19:54.760388225 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:19:59.123528020 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:20:03.408073556 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:20:07.784010864 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:20:12.218582879 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:20:18.206832315 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 300
+  time:timestamp: 2026-07-14 00:20:18.306543288 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:20:22.742043807 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:20:26.996921086 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:20:31.338683100 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:20:35.739695352 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:20:41.755788133 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 200
+  time:timestamp: 2026-07-14 00:20:41.857648432 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:20:46.339504790 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:20:51.067792371 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:20:55.571063735 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:21:00.075965119 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:21:04.631737467 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:21:09.227326626 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:21:13.812583237 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:21:18.459712868 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:21:23.148426128 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:21:29.404100080 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-14 00:21:29.505351713 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:21:34.327225563 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:21:39.226075321 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:21:44.078742423 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:21:48.979095160 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:21:53.905609903 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:21:58.841955584 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:22:03.762022662 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:22:09.115471680 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:22:14.106283348 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:22:19.113252409 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:22:25.844939084 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:22:31.115067390 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:22:36.394846340 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:22:44.282321719 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 300
+  time:timestamp: 2026-07-14 00:22:44.384147938 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:22:49.792352370 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:22:55.591678291 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:23:01.026168134 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:23:08.747730978 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 200
+  time:timestamp: 2026-07-14 00:23:08.850514218 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:23:14.390445613 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:23:19.862701067 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:23:25.302586171 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:23:30.744358427 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:23:36.146478837 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:23:42.481674747 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:23:48.137359369 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:23:55.988049456 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-14 00:23:56.090476843 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:24:02.270154618 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:24:08.001498561 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:24:13.767791618 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:24:19.776119845 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:24:25.647057704 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:24:34.087928773 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 50
+  time:timestamp: 2026-07-14 00:24:34.189712271 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:24:41.816695364 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 100
+  time:timestamp: 2026-07-14 00:24:41.918122308 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:24:47.764804950 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:24:53.655882770 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:25:01.252967153 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 300
+  time:timestamp: 2026-07-14 00:25:01.356906588 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:25:07.542131579 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:25:13.517409753 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:25:19.505476944 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:25:25.459422764 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:25:33.190651729 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 200
+  time:timestamp: 2026-07-14 00:25:33.292449998 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:25:39.411041306 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:25:45.498572117 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:25:53.348996691 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:26:01.407741777 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-14 00:26:01.509868950 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:26:08.300535879 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:26:16.869854077 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 200
+  time:timestamp: 2026-07-14 00:26:16.971399662 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:26:25.590383164 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-14 00:26:25.691629796 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:26:32.260398102 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:26:39.194640741 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:26:45.721565215 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:26:52.474491665 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:26:59.184169275 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:27:06.524919476 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:27:14.724287899 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 100
+  time:timestamp: 2026-07-14 00:27:14.826769496 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:27:23.105315785 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 300
+  time:timestamp: 2026-07-14 00:27:23.207855723 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:27:29.748158381 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:27:36.581270871 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:27:43.369850905 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:27:50.617585910 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:27:59.879943479 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 200
+  time:timestamp: 2026-07-14 00:27:59.981257642 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:28:06.998886359 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:28:14.074510364 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:28:21.320877345 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:28:28.889539452 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:28:35.887776335 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:28:44.437844570 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-14 00:28:44.537844447 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:28:51.537492168 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:28:58.602677424 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:29:05.633353479 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:29:12.672181130 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:29:19.735643522 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:29:26.834165896 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:29:34.037533596 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:29:41.242767676 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:29:49.217344894 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:29:56.541611054 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:30:03.856051154 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:30:12.980420217 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 300
+  time:timestamp: 2026-07-14 00:30:13.082403438 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:30:22.314318020 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 200
+  time:timestamp: 2026-07-14 00:30:22.416492903 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:30:29.861823323 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:30:37.851276808 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:30:45.526100631 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:30:53.114859817 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:31:00.797393765 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:31:10.073825411 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-14 00:31:10.173160270 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:31:17.917970048 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:31:27.653559600 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:31:35.720979259 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:31:45.889212557 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 50
+  time:timestamp: 2026-07-14 00:31:45.991846236 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 00:31:56.351263976 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-14 00:31:56.453681202 +02:00

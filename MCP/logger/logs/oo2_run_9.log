@@ -1,0 +1,3028 @@
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 02:58:20.312459255 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 02:58:20.413060516 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:00:12.225424184 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:00:13.384612914 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:01:01.234471736 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:01:01.334016660 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:01:01.384382023 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:01:02.492777514 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:01:40.885217585 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:01:40.987124005 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:01:41.038017904 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:01:42.144601853 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:02:34.306596191 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:02:34.410577138 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:02:34.463878596 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:02:35.569922918 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:02:40.386054764 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:02:40.488246808 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:02:40.539394221 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:02:41.647185022 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:02:46.272154690 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:02:46.371499569 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:02:46.423964238 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:02:47.531999101 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:02:51.950860829 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:02:52.054288790 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:02:52.103866343 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:02:53.211694435 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: start
+  data:
+  - name: lumen
+    value: 50
+  time:timestamp: 2026-07-14 03:03:52.977327873 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 50
+  time:timestamp: 2026-07-14 03:03:53.077790337 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:03:53.129774989 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:03:53.231924163 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:03:53.283430761 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:03:54.390446396 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: start
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-14 03:04:01.782423952 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-14 03:04:01.882920796 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:04:01.932480591 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:04:02.035300892 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:04:02.086479106 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:04:03.195847560 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: start
+  data:
+  - name: lumen
+    value: 250
+  time:timestamp: 2026-07-14 03:04:09.839931807 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 250
+  time:timestamp: 2026-07-14 03:04:09.942132772 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:04:09.993241724 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:04:10.095122485 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:04:10.145478719 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:04:11.253144012 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:04:16.479610790 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:04:16.580743502 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:04:16.631819483 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:04:17.740576289 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:04:22.176896279 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:04:22.278952232 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:04:22.329437087 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:04:23.437810309 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: start
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-14 03:04:30.839158150 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-14 03:04:30.941454406 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:04:30.991066451 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:04:31.095424741 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:04:31.145800634 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:04:32.254449111 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:04:36.969710633 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:04:37.071802336 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:04:37.123052790 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:04:38.228814810 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:04:42.923060982 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:04:43.021969207 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:04:43.072288540 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:04:44.181202129 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:04:48.903698998 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:04:49.003577425 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:04:49.054620146 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:04:50.162026586 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:04:54.912037986 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:04:55.013221420 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:04:55.061232715 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:04:56.171209487 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:05:00.763536516 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:05:00.863798058 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:05:00.916142565 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:05:02.021744004 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: start
+  data:
+  - name: lumen
+    value: 50
+  time:timestamp: 2026-07-14 03:05:09.503213026 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 50
+  time:timestamp: 2026-07-14 03:05:09.606341662 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:05:09.657135160 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:05:09.759543448 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:05:09.807825807 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:05:10.916670294 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: start
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-14 03:05:18.174031307 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-14 03:05:18.275850617 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:05:18.327492266 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:05:18.427499584 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:05:18.478051600 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:05:19.586546232 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:05:24.464202833 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:05:24.565687879 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:05:24.617604010 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:05:25.725175683 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:05:30.611723788 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:05:30.713513278 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:05:30.764331486 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:05:31.870597933 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: start
+  data:
+  - name: lumen
+    value: 150
+  time:timestamp: 2026-07-14 03:05:39.984858788 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 150
+  time:timestamp: 2026-07-14 03:05:40.086349024 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:05:40.135024418 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:05:40.238000210 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:05:40.286996059 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:05:41.393909201 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:05:46.174154890 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:05:46.272932434 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:05:46.325664916 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:05:47.433224715 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: start
+  data:
+  - name: lumen
+    value: 400
+  time:timestamp: 2026-07-14 03:05:55.581779901 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 400
+  time:timestamp: 2026-07-14 03:05:55.684089847 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:05:55.733954694 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:05:55.835995286 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:05:55.887767937 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:05:56.993864439 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:06:01.814570074 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:06:01.916423726 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:06:01.967098093 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:06:03.074879074 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:06:08.063410632 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:06:08.165487305 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:06:08.216488636 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:06:09.324341548 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:06:13.990691997 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:06:14.091567457 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:06:14.141437134 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:06:15.249554151 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: start
+  data:
+  - name: lumen
+    value: 250
+  time:timestamp: 2026-07-14 03:06:22.526060633 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 250
+  time:timestamp: 2026-07-14 03:06:22.625069269 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:06:22.675281370 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:06:22.778319135 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:06:22.829591978 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:06:23.935985125 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:06:28.388202578 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:06:28.489385709 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:06:28.540587054 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:06:29.645644364 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:06:34.044059772 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:06:34.145988743 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:06:34.196715331 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:06:35.304323031 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:06:39.678662971 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:06:39.779214606 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:06:39.830909655 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:06:40.937465283 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:06:45.382489611 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:06:45.482136025 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:06:45.534568903 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:06:46.642765480 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:06:51.043331397 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:06:51.144040831 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:06:51.193465235 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:06:52.300225094 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:06:57.337418435 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:06:57.438994852 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:06:57.489394936 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:06:58.595185075 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:07:03.671864899 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:07:03.770406369 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:07:03.823207172 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:07:04.930247455 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: start
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-14 03:07:12.672090713 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-14 03:07:12.773403146 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:07:12.824001332 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:07:12.925807172 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:07:12.976221475 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:07:14.082328338 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:07:19.351770620 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:07:19.453945695 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:07:19.504725944 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:07:20.611477083 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:07:25.584712637 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:07:25.685836069 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:07:25.736998442 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:07:26.843889323 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:07:32.107009621 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:07:32.208961992 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:07:32.259947654 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:07:33.368431346 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:07:38.518500717 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:07:38.620901514 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:07:38.671834485 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:07:39.778498874 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:07:45.172186757 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:07:45.273256209 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:07:45.325447614 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:07:46.431772528 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:07:51.357125571 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:07:51.457573264 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:07:51.509076380 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:07:52.616714043 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:07:58.252547427 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:07:58.354402166 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:07:58.405759573 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:07:59.512148379 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:08:04.416084311 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:08:04.516301392 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:08:04.567970370 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:08:05.675540890 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:08:10.525378194 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:08:10.625769708 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:08:10.676403015 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:08:11.784159977 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:08:16.441944488 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:08:16.543878729 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:08:16.592211768 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:08:17.701871323 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: start
+  data:
+  - name: lumen
+    value: 400
+  time:timestamp: 2026-07-14 03:08:24.976215785 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 400
+  time:timestamp: 2026-07-14 03:08:25.078166187 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:08:25.127153344 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:08:25.228510828 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:08:25.281387361 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:08:26.388668278 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:08:31.025418942 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:08:31.125834434 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:08:31.177894808 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:08:32.284604108 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:08:37.359185664 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:08:37.461157406 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:08:37.512608063 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:08:38.620617647 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: start
+  data:
+  - name: lumen
+    value: 250
+  time:timestamp: 2026-07-14 03:08:46.030253673 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 250
+  time:timestamp: 2026-07-14 03:08:46.132147123 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:08:46.183288246 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:08:46.285847455 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:08:46.334273506 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:08:47.442637425 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:08:52.148135171 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:08:52.250344584 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:08:52.302067835 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:08:53.409082998 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:08:59.376511763 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:08:59.477908518 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:08:59.528923889 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:09:00.635522347 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:09:05.817307176 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:09:05.918856532 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:09:05.968115534 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:09:07.077161141 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:09:12.468783025 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:09:12.569430991 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:09:12.621215361 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:09:13.729323899 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:09:19.404149428 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:09:19.507101202 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:09:19.555613614 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:09:20.663868581 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:09:25.675607893 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:09:25.776705515 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:09:25.826190667 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:09:26.935299105 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: start
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-14 03:09:34.424630921 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-14 03:09:34.526789195 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:09:34.577520122 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:09:34.679116649 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:09:34.728209847 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:09:35.836003080 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:09:41.436318557 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:09:41.537543160 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:09:41.587044053 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:09:42.696817009 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:09:48.160711981 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:09:48.260674208 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:09:48.311387316 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:09:49.420803828 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:09:54.798292805 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:09:54.898427155 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:09:54.948338633 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:09:56.058302271 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:10:01.390153841 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:10:01.492315125 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:10:01.543314657 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:10:02.650904307 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:10:08.194577733 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:10:08.296823348 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:10:08.347314193 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:10:09.456295970 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:10:14.860545279 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:10:14.962133876 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:10:15.011909353 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:10:16.121633219 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:10:21.463256525 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:10:21.563502016 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:10:21.613763098 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:10:22.721412799 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:10:28.536455548 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:10:28.638532472 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:10:28.689322890 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:10:29.796640087 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:10:35.446075183 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:10:35.549796647 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:10:35.600039809 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:10:36.710104078 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:10:42.358547681 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:10:42.460839767 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:10:42.511999910 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:10:43.618670839 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: start
+  data:
+  - name: lumen
+    value: 400
+  time:timestamp: 2026-07-14 03:10:52.607055646 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 400
+  time:timestamp: 2026-07-14 03:10:52.708882396 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:10:52.759904057 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:10:52.861854658 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:10:52.912972031 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:10:54.020851985 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:10:59.549158887 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:10:59.652005180 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:10:59.701728746 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:11:00.809317705 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:11:06.491239637 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:11:06.591814572 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:11:06.644180490 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:11:07.751082092 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: start
+  data:
+  - name: lumen
+    value: 250
+  time:timestamp: 2026-07-14 03:11:16.590765436 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 250
+  time:timestamp: 2026-07-14 03:11:16.692259743 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:11:16.743609507 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:11:16.845175415 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:11:16.893881278 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:11:18.002112645 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:11:23.603430984 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:11:23.705788820 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:11:23.757353878 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:11:24.864313501 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:11:30.589110628 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:11:30.689661252 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:11:30.741169100 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:11:31.846918388 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:11:37.606819294 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:11:37.707038094 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:11:37.759061287 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:11:38.864324100 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:11:44.641845658 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:11:44.742689897 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:11:44.794482426 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:11:45.898994891 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:11:51.696285765 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:11:51.798413009 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:11:51.847215843 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:11:52.957014980 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: start
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-14 03:12:01.498180139 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-14 03:12:01.600315833 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:12:01.650782697 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:12:01.753659400 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:12:01.801771697 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:12:02.909676719 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:12:08.574070792 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:12:08.676014905 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:12:08.727225428 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:12:09.832176986 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:12:15.414880743 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:12:15.516477310 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:12:15.567112667 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:12:16.675296145 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:12:22.357969025 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:12:22.458410277 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:12:22.509650772 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:12:23.614402339 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:12:29.462859161 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:12:29.563104642 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:12:29.615702852 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:12:30.723451145 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: start
+  data:
+  - name: lumen
+    value: 50
+  time:timestamp: 2026-07-14 03:12:39.388225593 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 50
+  time:timestamp: 2026-07-14 03:12:39.490637430 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:12:39.540862342 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:12:39.640496776 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:12:39.693070336 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:12:40.798803605 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: start
+  data:
+  - name: lumen
+    value: 150
+  time:timestamp: 2026-07-14 03:12:49.840585702 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 150
+  time:timestamp: 2026-07-14 03:12:49.939506387 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:12:49.989963211 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:12:50.093168578 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:12:50.143466399 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:12:51.250072350 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:12:57.020349210 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:12:57.122350872 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:12:57.173272842 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:12:58.280526689 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: start
+  data:
+  - name: lumen
+    value: 400
+  time:timestamp: 2026-07-14 03:13:07.408648306 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 400
+  time:timestamp: 2026-07-14 03:13:07.511068553 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:13:07.561973343 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:13:07.663435388 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:13:07.716385283 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:13:08.820881487 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:13:14.812314534 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:13:14.911395961 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:13:14.963149131 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:13:16.070446059 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:13:21.799883669 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:13:21.902234306 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:13:21.952749321 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:13:23.059881517 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:13:28.763169143 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:13:28.862945809 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:13:28.912729615 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:13:30.021612312 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: start
+  data:
+  - name: lumen
+    value: 250
+  time:timestamp: 2026-07-14 03:13:39.441178083 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 250
+  time:timestamp: 2026-07-14 03:13:39.542978263 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:13:39.594660752 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:13:39.695140086 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:13:39.745259067 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:13:40.853484405 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:13:46.561673420 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:13:46.661922641 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:13:46.713672421 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:13:47.820055097 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:13:53.780568054 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:13:53.879919165 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:13:53.932275702 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:13:55.039831963 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:14:00.833424701 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:14:00.935475654 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:14:00.987459357 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:14:02.095411032 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: start
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-14 03:14:10.799579637 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 0
+  time:timestamp: 2026-07-14 03:14:10.900762650 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:14:10.952045984 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:14:11.053546100 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:14:11.102672159 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:14:12.212372205 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: start
+  data:
+  - name: lumen
+    value: 250
+  time:timestamp: 2026-07-14 03:14:21.723799950 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 250
+  time:timestamp: 2026-07-14 03:14:21.825483359 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: start
+  data: []
+  time:timestamp: 2026-07-14 03:14:21.874126342 +02:00
+---
+event:
+  concept:name: environment_status
+  lifecycle:transition: complete
+  data: []
+  time:timestamp: 2026-07-14 03:14:21.976879203 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: start
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:14:22.025821580 +02:00
+---
+event:
+  concept:name: sleep
+  lifecycle:transition: complete
+  data:
+  - name: timeout
+    value: 1
+  time:timestamp: 2026-07-14 03:14:23.132446767 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: start
+  data:
+  - name: lumen
+    value: 50
+  time:timestamp: 2026-07-14 03:14:27.313585654 +02:00
+---
+event:
+  concept:name: change_lumen
+  lifecycle:transition: complete
+  data:
+  - name: lumen
+    value: 50
+  time:timestamp: 2026-07-14 03:14:27.415108831 +02:00
