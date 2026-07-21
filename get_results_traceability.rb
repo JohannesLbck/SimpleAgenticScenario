@@ -1,18 +1,5 @@
 #!/bin/ruby
 
-#require 'bundler/setup'
-require 'optparse'
-require 'date'
-
-options = {
-  time_sensitive: false,
-}
-OptionParser.new do |opts|
-  opts.on("-t", "--time-sensitive", "enable time sensitive mode") do |f|
-    options[:time_sensitive] = f
-  end
-end.parse!
-
 #python3 EvalHelper/eval_traceability.py --start-timestamp '2026-07-13 21:38:06.541947935' --end-timestamp '2026-07-13 21:43:46.723293031' MCP/logger/logs/oo1_run_0.log Simulators/simulator_static_oo1_oo3.log
 
 next_start = false
@@ -41,10 +28,7 @@ lines.each() { |line|
   end
   if(start_ts.nil?().!() && end_ts.nil?().!()) then
     puts "Iteration #{counter}"
-    pp start_ts
-    pp (DateTime.parse(start_ts).to_time()-0.5).strftime('%Y-%m-%d %H:%M:%S.%9N')
     res = `python3 EvalHelper/eval_traceability.py --start-timestamp '#{start_ts}' --end-timestamp '#{end_ts}' MCP/logger/logs/#{ARGV[1]}_run_#{counter}.log Simulators/simulator_static_oo1_oo3.log`
-    #res = `python3 EvalHelper/eval_traceability.py --start-timestamp '#{(DateTime.parse(start_ts).to_time()-0.5).strftime('%Y-%m-%d %H:%M:%S.%9N')}' --end-timestamp '#{(DateTime.parse(end_ts).to_time()+0.5).strftime('%Y-%m-%d %H:%M:%S.%9N')}' MCP/logger/logs/#{ARGV[1]}_run_#{counter}.log Simulators/simulator_static_oo1_oo3.log`
     puts res
     res_lines = res.split("\n")
     res_lines.each() { |res_line|

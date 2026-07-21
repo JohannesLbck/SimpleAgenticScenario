@@ -1,17 +1,5 @@
 #!/bin/ruby
 
-#require 'bundler/setup'
-require 'optparse'
-
-options = {
-  time_sensitive: false,
-}
-OptionParser.new do |opts|
-  opts.on("-t", "--time-sensitive", "enable time sensitive mode") do |f|
-    options[:time_sensitive] = f
-  end
-end.parse!
-
 #python3 EvalHelper/eval_traceability.py --start-timestamp '1784128764' --end-timestamp '1784128770' EvalHelper/cpee_logs/gt.xes.yaml Simulators/simulator_static.log
 
 start_ts = nil
