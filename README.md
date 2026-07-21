@@ -102,24 +102,24 @@ python simulator_static.py --foreground
 Start logger backend:
 
 ```bash
-cd ~/Papers/AgenticFundamentals/SimpleAgenticScenario/mcp/logger
+cd SimpleAgenticScenario/MCP/logger
 ruby server.rb
 ```
 
 Start MCP tool servers:
 
 ```bash
-cd ~/Papers/AgenticFundamentals/SimpleAgenticScenario/mcp/light_sim_johannes
-ruby -rsinatra -e 'set :port, 4567; load "mcp_light.rb"'
+cd SimpleAgenticScenario/MCP/light_sim_johannes
+ruby mcp_light.rb
 ```
 
 ```bash
-cd ~/Papers/AgenticFundamentals/SimpleAgenticScenario/MCP/wait
+cd SimpleAgenticScenario/MCP/wait
 ruby mcp_sleep.rb
 ```
 
 ```bash
-cd ~/Papers/AgenticFundamentals/SimpleAgenticScenario/MCP/logger
+cd SimpleAgenticScenario/MCP/logger
 ruby mcp_logger.rb
 ```
 
